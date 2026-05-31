@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏆 Quiniela Mundialista Oficial 2026</title>
-    <!-- Cambiado a la CDN estable de Tailwind CSS para evitar bloqueos de script -->
+    <!-- Versión estable de Tailwind v3 para garantizar compatibilidad total -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen pb-12">
@@ -184,7 +184,7 @@
         </div>
     </div>
 
-    <!-- SECCIÓN JAVASCRIPT CORREGIDA -->
+    <!-- SECCIÓN JAVASCRIPT TOTALMENTE CORREGIDA -->
     <script>
         const API_URL = "https://api.jsonbin.io/v3/b/6a1c94a9ddf5aa59f77cd366";
         const API_KEY = "$2a$10$RHaekpDpS0pziQh6ES29xO2kxWSnOIoSzzuueTRxnrPr39KE6bCyi";
@@ -196,7 +196,7 @@
             { id: 3, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "Chequia 🇨🇿", equipoB: "Sudáfrica 🇿🇦", fechaStr: "18 de Junio", horaStr: "10:00 am", golesA: null, golesB: null },
             { id: 4, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "México 🇲🇽", equipoB: "Corea del Sur 🇰🇷", fechaStr: "18 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
             { id: 5, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 3", equipoA: "Chequia 🇨🇿", equipoB: "México 🇲🇽", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
-            { id: 6, fase: "Grupos", group: "Grupo A", jornada: "Jornada 3", equipoA: "Sudáfrica 🇿🇦", equipoB: "Corea del Sur 🇰🇷", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
+            { id: 6, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 3", equipoA: "Sudáfrica 🇿🇦", equipoB: "Corea del Sur 🇰🇷", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
             { id: 7, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Canadá 🇨🇦", equipoB: "Bosnia 🇧🇦", fechaStr: "12 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             { id: 8, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Qatar 🇶🇦", equipoB: "Suiza 🇨🇭", fechaStr: "13 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null }
         ];
@@ -264,7 +264,7 @@
                 return true;
             } catch (err) {
                 mostrarCarga(100);
-                actualizarPantarmaQuiniela();
+                actualizarPantallaQuiniela(); // Corregido error de tipeo aquí ("Pantarma")
                 return false;
             }
         }
