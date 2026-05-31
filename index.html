@@ -92,6 +92,7 @@
         </div>
     </main>
 
+    <!-- MODAL DE ADMINISTRADOR (CON FUNCIÓN DE RESET) -->
     <div id="modal-admin" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50 overflow-y-auto">
         <div class="bg-gray-800 border border-gray-700 max-w-2xl w-full rounded-xl p-6 shadow-2xl my-8">
             <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
@@ -144,9 +145,18 @@
             
             <div id="admin-lista-partidos-render" class="space-y-2 mb-6 max-h-64 overflow-y-auto pr-1"></div>
             
-            <div class="flex justify-end gap-3 border-t border-gray-700 pt-4">
-                <button onclick="cerrarModalAdmin()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm transition">Cerrar</button>
-                <button onclick="guardarResultadosAdminReales()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded text-sm font-bold transition">Guardar Marcadores Oficiales</button>
+            <!-- SECCIÓN DE BOTONES DE ACCIÓN DEL MODAL -->
+            <div class="flex flex-col sm:flex-row justify-between gap-4 border-t border-gray-700 pt-4">
+                <!-- Botón de Reset Peligroso (Izquierda) -->
+                <button onclick="resetearTodoElTorneo()" class="bg-red-950 hover:bg-red-900 text-red-400 border border-red-700 px-4 py-2 rounded text-xs font-bold transition text-center">
+                    🚨 Resetear Todo el Torneo
+                </button>
+                
+                <!-- Botones de Gestión de Cambios (Derecha) -->
+                <div class="flex justify-end gap-3">
+                    <button onclick="cerrarModalAdmin()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm transition">Cerrar</button>
+                    <button onclick="guardarResultadosAdminReales()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded text-sm font-bold transition">Guardar Marcadores Oficiales</button>
+                </div>
             </div>
         </div>
     </div>
@@ -211,7 +221,7 @@
                 mostrarCarga(100);
             } finally {
                 if(!estadoGlobal.usuarios.includes(usuarioActivo)) {
-                    usuarioActivo = estadoGlobal.usuarios[0] || "Ron";
+                    usuarioActivo = estadoGlobal.usuarios[0] || "Admin";
                 }
                 actualizarPantallaQuiniela();
             }
@@ -250,18 +260,14 @@
             actualizarPantallaQuiniela();
         }
 
-        // 📊 LÓGICA CORREGIDA: Inicio estricto en 0. Solo suma por aciertos reales.
         function calcularPuntosUsuario(nombreUsuario) {
             let totalPuntos = 0;
             const pronosticosUsuario = estadoGlobal.pronosticos[nombreUsuario] || {};
             
-            // Evaluamos partido por partido
             estadoGlobal.partidos.forEach(partido => {
-                // Si el administrador no ha puesto el resultado real del partido, no da puntos.
                 if (partido.golesA === null || partido.golesB === null) return;
 
                 const pronostico = pronosticosUsuario[partido.id];
-                // Si el usuario no completó el pronóstico para este partido, no da puntos.
                 if (!pronostico || pronostico.golesA === null || pronostico.golesB === null) return;
 
                 const gRealA = parseInt(partido.golesA);
@@ -273,9 +279,9 @@
                 const tendenciaPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
 
                 if (gRealA === gPronA && gRealB === gPronB) {
-                    totalPuntos += 3; // Marcador Exacto (3 puntos)
+                    totalPuntos += 3; 
                 } else if (tendenciaReal === tendenciaPron) {
-                    totalPuntos += 1; // Solo tendencia (1 punto)
+                    totalPuntos += 1; 
                 }
             });
 
@@ -466,7 +472,7 @@
             await guardarDatosNube();
             cerrarModalAdmin();
         }
-        
+
         function ejecutarCreacionPartido() {
             const fase = document.getElementById('crear-partido-fase').value;
             const grupo = document.getElementById('crear-partido-grupo-nombre').value.trim() || "Grupo Único";
@@ -503,6 +509,40 @@
             alert("⚽ Partido creado exitosamente.");
             renderizarListaPartidosAdmin();
             actualizarPantallaQuiniela();
+        }
+
+        // 🚨 NUEVA FUNCIÓN: Resetea por completo los datos del torneo de forma segura
+        async function resetearTodoElTorneo() {
+            const confirmacion1 = confirm("⚠️ ¿ESTÁS SEGURO? Esto borrará permanentemente todos los concursantes registrados y sus pronósticos.");
+            if (!confirmacion1) return;
+
+            const confirmacion2 = confirm("🛑 ¿También deseas reiniciar todos los resultados reales del administrador a 'Pendiente'?");
+            if (!confirmacion2) return;
+
+            // 1. Reestablecemos a un único usuario inicial por defecto para evitar errores de interfaz
+            estadoGlobal.usuarios = ["Admin"];
+            
+            // 2. Limpiamos todos los historiales de pronósticos
+            estadoGlobal.pronosticos = { "Admin": {} };
+
+            // 3. Devolvemos los marcadores reales de todos los partidos a null (Pendiente)
+            estadoGlobal.partidos.forEach(p => {
+                p.golesA = null;
+                p.golesB = null;
+            });
+
+            // 4. Cambiamos el entorno local al usuario inicial temporal
+            usuarioActivo = "Admin";
+            localStorage.setItem('q_pro_usuario', "Admin");
+
+            // 5. Guardamos en el servidor en la nube y cerramos el modal
+            const exito = await guardarDatosNube();
+            if (exito) {
+                alert("💥 El torneo ha sido reseteado con éxito. Todo ha vuelto a 0 puntos.");
+                cerrarModalAdmin();
+            } else {
+                alert("❌ Hubo un problema al guardar los cambios en la nube. Inténtalo de nuevo.");
+            }
         }
     </script>
 </body>
