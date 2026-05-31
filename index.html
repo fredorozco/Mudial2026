@@ -133,7 +133,7 @@
             { id: 6, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 3", equipoA: "Sudáfrica 🇿🇦", equipoB: "Corea del Sur 🇰🇷", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
             { id: 7, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Canadá 🇨🇦", equipoB: "Bosnia 🇧🇦", fechaStr: "12 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             { id: 8, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Qatar 🇶🇦", equipoB: "Suiza 🇨🇭", fechaStr: "13 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
-            { id: 9, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 2", equipoA: "Suiza 🇨🇭", equipoB: "Bosnia 🇧🇦", fechaStr: "18 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
+            { id: 9, fase: "Grupos", group: "Grupo B", jornada: "Jornada 2", equipoA: "Suiza 🇨🇭", equipoB: "Bosnia 🇧🇦", fechaStr: "18 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             { id: 10, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 2", equipoA: "Canadá 🇨🇦", equipoB: "Qatar 🇶🇦", fechaStr: "18 de Junio", horaStr: "4:00 pm", golesA: null, golesB: null },
             { id: 11, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 3", equipoA: "Suiza 🇨🇭", equipoB: "Canadá 🇨🇦", fechaStr: "24 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             { id: 12, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 3", equipoA: "Bosnia 🇧🇦", equipoB: "Qatar 🇶🇦", fechaStr: "24 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
@@ -155,8 +155,7 @@
         let faseActiva = "Grupos";
 
         window.onload = function() {
-            // Inicialización de emergencia inmediata: si la red falla, la web ya está pintada
-            actualizarPantallaQuiniela(); 
+            cambiarFaseFiltro("Grupos");
             cargarDatosNube();
         };
 
@@ -183,7 +182,6 @@
                     if (data.record.partidos && data.record.partidos.length > 0) {
                         estadoGlobal = data.record;
                     } else {
-                        // Si el bin está vacío en la nube, lo estructuramos localmente y lo subimos
                         estadoGlobal.usuarios = data.record.usuarios || ["fedy", "Carlos"];
                         estadoGlobal.partidos = partidosBase;
                         estadoGlobal.pronosticos = data.record.pronosticos || {};
@@ -207,9 +205,13 @@
             try {
                 const respuesta = await fetch(API_URL, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                    headers: { 
+                        'Content-Type': 'application/json', 
+                        'X-Master-Key': API_KEY 
+                    },
                     body: JSON.stringify(estadoGlobal)
                 });
+                
                 mostrarCarga(100);
                 actualizarPantallaQuiniela();
                 return respuesta.ok;
@@ -286,7 +288,6 @@
         }
 
         function actualizarPantallaQuiniela() {
-            // 1. Selector de Usuarios
             const select = document.getElementById('select-usuario');
             if(select) {
                 select.innerHTML = '';
@@ -297,7 +298,6 @@
             const badge = document.getElementById('badge-usuario');
             if(badge) badge.textContent = usuarioActivo || "Invitado";
             
-            // 2. Tabla de Posiciones Globales
             const tabla = document.getElementById('tabla-posiciones');
             if(tabla) {
                 tabla.innerHTML = '';
@@ -318,7 +318,6 @@
                 });
             }
 
-            // 3. Renderizado de Partidos
             const contenedor = document.getElementById('lista-partidos-contenedor');
             if(!contenedor) return;
             contenedor.innerHTML = '';
