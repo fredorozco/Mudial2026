@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏆 Quiniela Mundialista Oficial 2026</title>
+    <!-- Cambiado a la CDN estable de Tailwind CSS para evitar bloqueos de script -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen pb-12">
@@ -16,6 +17,7 @@
 
     <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
         
+        <!-- COLUMNA IZQUIERDA: USUARIO Y POSICIONES -->
         <div class="lg:col-span-1 space-y-6">
             
             <div class="bg-slate-800 p-5 rounded-xl shadow-md border border-slate-700">
@@ -61,8 +63,10 @@
             </div>
         </div>
 
+        <!-- COLUMNA DERECHA: PARTIDOS Y PRONÓSTICOS -->
         <div class="lg:col-span-2 space-y-4">
             
+            <!-- SECCIÓN DESTACADA: PARTIDO PRÓXIMO A INICIAR -->
             <div id="contenedor-proximo-partido" class="bg-gradient-to-r from-slate-950 via-blue-900/40 to-slate-950 p-4 rounded-xl border border-blue-500/40 shadow-xl">
                 <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
                     <span class="bg-blue-600 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded tracking-wider animate-pulse flex items-center gap-1">
@@ -108,6 +112,7 @@
         </div>
     </main>
 
+    <!-- MODAL ADMINISTRADOR -->
     <div id="modal-admin" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50 overflow-y-auto">
         <div class="bg-slate-800 border border-slate-700 max-w-2xl w-full rounded-xl p-6 shadow-2xl my-8">
             <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-700">
@@ -118,6 +123,7 @@
                 <button onclick="cerrarModalAdmin()" class="text-slate-400 hover:text-white font-bold text-xl">✕</button>
             </div>
 
+            <!-- BOTÓN DE AUTOMATIZACIÓN POR API DE INTERNET -->
             <div class="mb-4">
                 <button onclick="sincronizarResultadosDesdeInternet()" class="w-full bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3 px-4 rounded-lg shadow transition text-sm flex items-center justify-center gap-2">
                     🤖 🔄 Sincronizar Resultados Reales desde Internet (API Abierta)
@@ -178,6 +184,7 @@
         </div>
     </div>
 
+    <!-- SECCIÓN JAVASCRIPT CORREGIDA -->
     <script>
         const API_URL = "https://api.jsonbin.io/v3/b/6a1c94a9ddf5aa59f77cd366";
         const API_KEY = "$2a$10$RHaekpDpS0pziQh6ES29xO2kxWSnOIoSzzuueTRxnrPr39KE6bCyi";
@@ -189,7 +196,7 @@
             { id: 3, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "Chequia 🇨🇿", equipoB: "Sudáfrica 🇿🇦", fechaStr: "18 de Junio", horaStr: "10:00 am", golesA: null, golesB: null },
             { id: 4, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "México 🇲🇽", equipoB: "Corea del Sur 🇰🇷", fechaStr: "18 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
             { id: 5, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 3", equipoA: "Chequia 🇨🇿", equipoB: "México 🇲🇽", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
-            { id: 6, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 3", equipoA: "Sudáfrica 🇿🇦", equipoB: "Corea del Sur 🇰🇷", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
+            { id: 6, fase: "Grupos", group: "Grupo A", jornada: "Jornada 3", equipoA: "Sudáfrica 🇿🇦", equipoB: "Corea del Sur 🇰🇷", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
             { id: 7, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Canadá 🇨🇦", equipoB: "Bosnia 🇧🇦", fechaStr: "12 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             { id: 8, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Qatar 🇶🇦", equipoB: "Suiza 🇨🇭", fechaStr: "13 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null }
         ];
@@ -257,17 +264,14 @@
                 return true;
             } catch (err) {
                 mostrarCarga(100);
-                actualizarPantallaQuiniela();
+                actualizarPantarmaQuiniela();
                 return false;
             }
         }
 
-        // 🤖 NUEVA FUNCIÓN: CONEXIÓN AUTOMÁTICA CON API DE INTERNET
         async function sincronizarResultadosDesdeInternet() {
             mostrarCarga(20);
             try {
-                // Consultamos una API deportiva abierta (TheSportsDB para la copa del mundo)
-                // Nota: Usamos este endpoint público estable como demo de estructura.
                 const respuesta = await fetch("https://www.thesportsdb.com/api/v1/json/3/eventsseason.php?id=4328&s=2026");
                 if(!respuesta.ok) throw new Error("Error de red de la API deportiva");
                 
@@ -282,7 +286,6 @@
 
                 let conteoActualizados = 0;
 
-                // Mapeamos los eventos de internet con los partidos de nuestra quiniela
                 datosDeportivos.events.forEach(eventoInternet => {
                     const localInternet = eventoInternet.strHomeTeam;
                     const visitaInternet = eventoInternet.strAwayTeam;
@@ -290,7 +293,6 @@
                     const golesVisita = eventoInternet.intAwayScore;
 
                     if(golesLocal !== null && golesVisita !== null) {
-                        // Buscamos coincidencia parcial o total en nuestro listado quitando banderas/emojis
                         let miPartido = estadoGlobal.partidos.find(p => {
                             const limpiarTexto = (t) => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                             return limpiarTexto(p.equipoA).includes(limpiarTexto(localInternet)) || 
@@ -307,11 +309,11 @@
 
                 mostrarCarga(80);
                 await guardarDatosNube();
-                alert(`🤖 ¡Sincronización Exitosa! Se detectaron y actualizaron (${conteoActualizados}) marcadores reales desde internet.`);
+                alert(`🤖 ¡Sincronización Exitosa! Marcadores reales actualizados.`);
                 renderizarListaPartidosAdmin();
             } catch (error) {
                 console.error(error);
-                alert("No se pudo conectar a la base de datos externa de deportes. Inténtalo de nuevo más tarde.");
+                alert("No se pudo conectar a la base de datos externa.");
             } finally {
                 mostrarCarga(100);
             }
@@ -422,4 +424,242 @@
 
                 llavesAgrupacion.forEach(grupoNombre => {
                     let bloqueHTML = `<div class="bg-slate-900/40 p-4 rounded-xl border border-slate-700/50">
-                        <h3 class="text-xs font-black text-blue-400 uppercase tracking-widest mb-4 border-b
+                        <h3 class="text-xs font-black text-blue-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-1">${grupoNombre}</h3>
+                        <div class="space-y-3">`;
+
+                    const partidosDelGrupo = partidosFiltrados.filter(p => (p.grupo === grupoNombre || p.jornada === grupoNombre));
+
+                    partidosDelGrupo.forEach(partido => {
+                        const prUser = (estadoGlobal.pronosticos[usuarioActivo] && estadoGlobal.pronosticos[usuarioActivo][partido.id]) ? estadoGlobal.pronosticos[usuarioActivo][partido.id] : { golesA: '', golesB: '' };
+                        
+                        const txtReal = (partido.golesA !== null && partido.golesB !== null) ? 
+                            `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">Real: ${partido.golesA} - ${partido.golesB}</span>` : 
+                            `<span class="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded">Real: ⚠️ Pendiente</span>`;
+
+                        let badgeAcertadoHTML = '';
+                        if (partido.golesA !== null && partido.golesB !== null) {
+                            if (prUser.golesA === '' || prUser.golesB === '') {
+                                badgeAcertadoHTML = `<span class="bg-slate-950 text-slate-500 text-[10px] px-2 py-1 rounded border border-slate-800 text-center block sm:inline-block">➖ Sin pronóstico</span>`;
+                            } else {
+                                const gRealA = parseInt(partido.golesA);
+                                const gRealB = parseInt(partido.golesB);
+                                const gPronA = parseInt(prUser.golesA);
+                                const gPronB = parseInt(prUser.golesB);
+
+                                const tendReal = gRealA > gRealB ? 'A' : (gRealA < gRealB ? 'B' : 'E');
+                                const tendPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
+
+                                if (gRealA === gPronA && gRealB === gPronB) {
+                                    badgeAcertadoHTML = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block sm:inline-block">🎯 Marcador Exacto (+3)</span>`;
+                                } else if (tendReal === tendPron) {
+                                    badgeAcertadoHTML = `<span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block sm:inline-block">✅ Ganador/Empate (+1)</span>`;
+                                } else {
+                                    badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium px-2 py-1 rounded text-center block sm:inline-block">❌ No acertado (+0)</span>`;
+                                }
+                            }
+                        }
+
+                        bloqueHTML += `
+                            <div class="flex flex-col sm:flex-row items-center justify-between p-3 bg-slate-800/80 rounded-lg gap-3 border border-slate-700/30">
+                                <div class="text-center sm:text-left min-w-[125px] space-y-1">
+                                    <p class="text-[11px] text-slate-400 font-medium">${partido.fechaStr} • ${partido.horaStr}</p>
+                                    <div class="flex flex-col gap-1 items-center sm:items-start">
+                                        ${txtReal}
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-center gap-2 flex-1 w-full sm:w-auto">
+                                    <div class="text-right flex-1 font-semibold text-sm truncate text-slate-200">${partido.equipoA}</div>
+                                    <input type="number" id="pron-A-${partido.id}" value="${prUser.golesA !== undefined ? prUser.golesA : ''}" min="0" placeholder="-" class="w-10 bg-slate-950 text-center text-white py-1 font-bold rounded border border-slate-700 focus:border-blue-500 focus:outline-none text-sm">
+                                    <span class="text-slate-600 text-xs font-bold">vs</span>
+                                    <input type="number" id="pron-B-${partido.id}" value="${prUser.golesB !== undefined ? prUser.golesB : ''}" min="0" placeholder="-" class="w-10 bg-slate-950 text-center text-white py-1 font-bold rounded border border-slate-700 focus:border-blue-500 focus:outline-none text-sm">
+                                    <div class="text-left flex-1 font-semibold text-sm truncate text-slate-200">${partido.equipoB}</div>
+                                </div>
+                                <div class="min-w-[130px] flex justify-center sm:justify-end">
+                                    ${badgeAcertadoHTML}
+                                </div>
+                            </div>`;
+                    });
+
+                    bloqueHTML += `</div></div>`;
+                    contenedor.innerHTML += bloqueHTML;
+                });
+            }
+        }
+
+        function cambiarUsuario() {
+            const selectUsr = document.getElementById('select-usuario');
+            if (selectUsr) {
+                usuarioActivo = selectUsr.value;
+                localStorage.setItem('q_pro_usuario', usuarioActivo);
+                actualizarPantallaQuiniela();
+            }
+        }
+
+        async function registrarUsuario() {
+            const input = document.getElementById('nuevo-usuario');
+            if (!input) return;
+            const nombre = input.value.trim();
+            
+            if (!nombre || estadoGlobal.usuarios.map(u => u.toLowerCase()).includes(nombre.toLowerCase())) {
+                alert("Nombre inválido o ya registrado.");
+                return;
+            }
+
+            estadoGlobal.usuarios.push(nombre);
+            estadoGlobal.pronosticos[nombre] = {};
+            usuarioActivo = nombre;
+            localStorage.setItem('q_pro_usuario', usuarioActivo);
+            input.value = '';
+            await guardarDatosNube();
+        }
+
+        async function eliminarUsuario(nombre) {
+            if (estadoGlobal.usuarios.length <= 1) return;
+            if (!confirm(`¿Borrar a ${nombre}?`)) return;
+
+            estadoGlobal.usuarios = estadoGlobal.usuarios.filter(u => u !== nombre);
+            if (estadoGlobal.pronosticos[nombre]) delete estadoGlobal.pronosticos[nombre];
+
+            if (usuarioActivo === nombre) {
+                usuarioActivo = estadoGlobal.usuarios[0];
+                localStorage.setItem('q_pro_usuario', usuarioActivo);
+            }
+            await guardarDatosNube();
+        }
+
+        async function guardarPronosticos() {
+            if (!estadoGlobal.pronosticos[usuarioActivo]) estadoGlobal.pronosticos[usuarioActivo] = {};
+            const partidosFiltrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
+            
+            partidosFiltrados.forEach(p => {
+                const inpA = document.getElementById(`pron-A-${p.id}`);
+                const inpB = document.getElementById(`pron-B-${p.id}`);
+                if (inpA && inpB && inpA.value !== "" && inpB.value !== "") {
+                    estadoGlobal.pronosticos[usuarioActivo][p.id] = {
+                        golesA: parseInt(inpA.value),
+                        golesB: parseInt(inpB.value)
+                    };
+                }
+            });
+            await guardarDatosNube();
+            alert("💾 ¡Pronósticos guardados correctamente!");
+        }
+
+        function verificarAccAccessAdmin() {
+            const pass = prompt("Clave de Administrador:");
+            if (pass === LLAVE_ADMIN) {
+                document.getElementById('modal-admin').classList.remove('hidden');
+                renderizarListaPartidosAdmin();
+            } else if (pass !== null) {
+                alert("Clave incorrecta.");
+            }
+        }
+
+        function cerrarModalAdmin() { document.getElementById('modal-admin').classList.add('hidden'); }
+        function toggleFormularioPartido() { document.getElementById('formulario-crear-partido').classList.toggle('hidden'); }
+
+        function renderizarListaPartidosAdmin() {
+            const contenedor = document.getElementById('admin-lista-partidos-render');
+            const filtroFase = document.getElementById('admin-filtro-fase-lista').value;
+            if(!contenedor) return;
+            contenedor.innerHTML = '';
+
+            estadoGlobal.partidos.filter(p => p.fase === filtroFase).forEach(p => {
+                contenedor.innerHTML += `
+                    <div class="flex items-center justify-between bg-slate-900 p-2 rounded border border-slate-700 text-xs gap-2">
+                        <div class="flex-1 text-left truncate font-semibold">${p.equipoA} vs ${p.equipoB}</div>
+                        <div class="flex items-center gap-1">
+                            <input type="number" id="admin-golesA-${p.id}" value="${p.golesA !== null ? p.golesA : ''}" class="w-8 bg-slate-800 text-center font-bold text-white py-0.5 rounded border border-slate-600">
+                            <input type="number" id="admin-golesB-${p.id}" value="${p.golesB !== null ? p.golesB : ''}" class="w-8 bg-slate-800 text-center font-bold text-white py-0.5 rounded border border-slate-600">
+                        </div>
+                    </div>`;
+            });
+        }
+
+        async function guardarResultadosAdminReales() {
+            const filtroFase = document.getElementById('admin-filtro-fase-lista').value;
+            estadoGlobal.partidos.filter(p => p.fase === filtroFase).forEach(p => {
+                const inpA = document.getElementById(`admin-golesA-${p.id}`);
+                const inpB = document.getElementById(`admin-golesB-${p.id}`);
+                
+                if (inpA && inpB) {
+                    if (inpA.value === "" || inpB.value === "") {
+                        p.golesA = null;
+                        p.golesB = null;
+                    } else {
+                        p.golesA = parseInt(inpA.value);
+                        p.golesB = parseInt(inpB.value);
+                    }
+                }
+            });
+            await guardarDatosNube();
+            cerrarModalAdmin();
+        }
+
+        function ejecutarCreacionPartido() {
+            const fase = document.getElementById('crear-partido-fase').value;
+            const grupo = document.getElementById('crear-partido-grupo-nombre').value.trim() || "Grupo Único";
+            const jornada = document.getElementById('crear-partido-jornada').value.trim() || "Jornada General";
+            const eqA = document.getElementById('crear-partido-equipoA').value.trim();
+            const eqB = document.getElementById('crear-partido-equipoB').value.trim();
+            const fecha = document.getElementById('crear-partido-fecha').value.trim() || "Por definir";
+            const hora = document.getElementById('crear-partido-hora').value.trim() || "Por definir";
+
+            if(!eqA || !eqB) {
+                alert("Debes escribir el nombre de ambos equipos.");
+                return;
+            }
+
+            const nuevoId = estadoGlobal.partidos.length > 0 ? Math.max(...estadoGlobal.partidos.map(p => p.id)) + 1 : 1;
+            
+            const nuevoPartido = {
+                id: nuevoId,
+                fase: fase,
+                grupo: grupo,
+                jornada: jornada,
+                equipoA: eqA,
+                equipoB: eqB,
+                fechaStr: fecha,
+                horaStr: hora,
+                golesA: null,
+                golesB: null
+            };
+
+            estadoGlobal.partidos.push(nuevoPartido);
+            document.getElementById('crear-partido-equipoA').value = '';
+            document.getElementById('crear-partido-equipoB').value = '';
+            
+            alert("⚽ Partido creado exitosamente.");
+            renderizarListaPartidosAdmin();
+            actualizarPantallaQuiniela();
+        }
+
+        async function resetearTodoElTorneo() {
+            const confirmacion1 = confirm("⚠️ ¿ESTÁS SEGURO? Esto borrará permanentemente todos los concursantes registrados y sus pronósticos.");
+            if (!confirmacion1) return;
+
+            const confirmacion2 = confirm("🛑 ¿También deseas reiniciar todos los resultados reales del administrador a 'Pendiente'?");
+            if (!confirmacion2) return;
+
+            estadoGlobal.usuarios = ["Admin"];
+            estadoGlobal.pronosticos = { "Admin": {} };
+
+            estadoGlobal.partidos.forEach(p => {
+                p.golesA = null;
+                p.golesB = null;
+            });
+
+            usuarioActivo = "Admin";
+            localStorage.setItem('q_pro_usuario', "Admin");
+
+            const exito = await guardarDatosNube();
+            if (exito) {
+                alert("💥 El torneo ha sido reseteado con éxito.");
+                cerrarModalAdmin();
+            } else {
+                alert("❌ Hubo un problema al guardar los cambios en la nube.");
+            }
+        }
+    </script>
+</body>
+</html>
