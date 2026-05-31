@@ -16,6 +16,7 @@
 
     <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
         
+        <!-- COLUMNA IZQUIERDA: USUARIO Y POSICIONES -->
         <div class="lg:col-span-1 space-y-6">
             
             <div class="bg-slate-800 p-5 rounded-xl shadow-md border border-slate-700">
@@ -61,8 +62,22 @@
             </div>
         </div>
 
+        <!-- COLUMNA DERECHA: PARTIDOS Y PRONÓSTICOS -->
         <div class="lg:col-span-2 space-y-4">
             
+            <!-- 🔥 SECCIÓN RESTAURADA: PARTIDO PRÓXIMO A INICIAR -->
+            <div id="contenedor-proximo-partido" class="bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 p-4 rounded-xl border border-blue-500/30 shadow-md hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="bg-blue-500 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded animate-pulse tracking-wider">🔥 Próximo Partido</span>
+                    <span id="proximo-meta" class="text-xs text-slate-400"></span>
+                </div>
+                <div class="flex items-center justify-center gap-4 py-2">
+                    <div id="proximo-equipoA" class="flex-1 text-right font-bold text-base text-white"></div>
+                    <div class="bg-slate-900 px-3 py-1 rounded border border-slate-700 text-xs font-mono font-bold text-blue-400">VS</div>
+                    <div id="proximo-equipoB" class="flex-1 text-left font-bold text-base text-white"></div>
+                </div>
+            </div>
+
             <div class="bg-slate-950/60 p-2 rounded-xl border border-slate-800 shadow-inner">
                 <div class="flex flex-wrap sm:flex-nowrap gap-1 w-full" id="barra-navegacion-fases">
                     <button onclick="cambiarFaseFiltro('Grupos')" id="tab-Grupos" class="w-full font-bold py-3 px-4 rounded-lg text-sm transition-all duration-200">Grupos</button>
@@ -92,6 +107,7 @@
         </div>
     </main>
 
+    <!-- MODAL ADMINISTRADOR -->
     <div id="modal-admin" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50 overflow-y-auto">
         <div class="bg-slate-800 border border-slate-700 max-w-2xl w-full rounded-xl p-6 shadow-2xl my-8">
             <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-700">
@@ -283,11 +299,32 @@
             return totalPuntos;
         }
 
+        // 🔥 FUNCIÓN ENCARGADA DE ACTUALIZAR EL BLOQUE DE "PARTIDO PRÓXIMO"
+        function actualizarProximoPartidoDestacado() {
+            const contenedor = document.getElementById('contenedor-proximo-partido');
+            if (!contenedor) return;
+
+            // Buscamos el primer partido de la lista completa que aún no tenga resultado asignado
+            const proximo = estadoGlobal.partidos.find(p => p.golesA === null || p.golesB === null);
+
+            if (proximo) {
+                document.getElementById('proximo-meta').textContent = `${proximo.fase} • ${proximo.grupo || proximo.jornada} • ${proximo.fechaStr} (${proximo.horaStr})`;
+                document.getElementById('proximo-equipoA').textContent = proximo.equipoA;
+                document.getElementById('proximo-equipoB').textContent = proximo.equipoB;
+                contenedor.classList.remove('hidden');
+            } else {
+                contenedor.classList.add('hidden'); // Ocultar si todos los partidos ya terminaron
+            }
+        }
+
         function actualizarPantallaQuiniela() {
             const contenedor = document.getElementById('lista-partidos-contenedor');
             const selectUsr = document.getElementById('select-usuario');
             const badgeUsr = document.getElementById('badge-usuario');
             const tablaPos = document.getElementById('tabla-posiciones');
+
+            // Ejecutamos la actualización del widget superior destacado
+            actualizarProximoPartidoDestacado();
 
             if (selectUsr) {
                 selectUsr.innerHTML = '';
