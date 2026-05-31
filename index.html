@@ -6,39 +6,39 @@
     <title>🏆 Quiniela Mundialista Oficial 2026</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans min-h-screen pb-12">
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen pb-12">
 
-    <header class="bg-gradient-to-r from-blue-950 via-blue-900 to-slate-950 text-white text-center py-6 shadow-lg mb-6 relative">
+    <header class="bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white text-center py-6 shadow-lg mb-6 relative">
         <h1 class="text-3xl font-extrabold tracking-wider">🏆 QUINIELA EN COMUNIDAD 2026 🏆</h1>
-        <p class="text-sm text-blue-200 mt-2">Fase de Grupos Expandida & Eliminatorias Directas</p>
-        <div id="loading-bar" class="absolute bottom-0 left-0 h-1 bg-blue-500 transition-all duration-500" style="width: 0%"></div>
+        <p class="text-sm text-purple-200 mt-2">Fase de Grupos Expandida & Eliminatorias Directas</p>
+        <div id="loading-bar" class="absolute bottom-0 left-0 h-1 bg-purple-500 transition-all duration-500" style="width: 0%"></div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         <div class="lg:col-span-1 space-y-6">
             
-            <div class="bg-slate-800 p-5 rounded-xl shadow-md border border-slate-700">
+            <div class="bg-gray-800 p-5 rounded-xl shadow-md border border-gray-700">
                 <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-lg font-bold text-blue-400">👤 Tu Usuario</h2>
-                    <button onclick="cargarDatosNube()" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded text-slate-300 transition">🔄 Sincronizar</button>
+                    <h2 class="text-lg font-bold text-purple-400">👤 Tu Usuario</h2>
+                    <button onclick="cargarDatosNube()" class="text-xs bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded text-gray-300 transition">🔄 Sincronizar</button>
                 </div>
                 <div class="mb-4">
-                    <select id="select-usuario" onchange="cambiarUsuario()" class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500"></select>
+                    <select id="select-usuario" onchange="cambiarUsuario()" class="w-full bg-gray-700 text-white p-2 rounded border border-gray-600 focus:outline-none focus:border-purple-500"></select>
                 </div>
-                <div class="border-t border-slate-700 pt-3">
+                <div class="border-t border-gray-700 pt-3">
                     <div class="flex gap-2">
-                        <input type="text" id="nuevo-usuario" placeholder="Tu Nombre..." class="flex-1 bg-slate-700 text-white p-2 text-sm rounded border border-slate-600 focus:outline-none">
-                        <button onclick="registrarUsuario()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 text-sm font-bold rounded transition">Unirse</button>
+                        <input type="text" id="nuevo-usuario" placeholder="Tu Nombre..." class="flex-1 bg-gray-700 text-white p-2 text-sm rounded border border-gray-600 focus:outline-none">
+                        <button onclick="registrarUsuario()" class="bg-purple-600 hover:bg-purple-500 text-white px-3 text-sm font-bold rounded transition">Unirse</button>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-slate-800 p-5 rounded-xl shadow-md border border-slate-700">
+            <div class="bg-gray-800 p-5 rounded-xl shadow-md border border-gray-700">
                 <h2 class="text-lg font-bold text-yellow-400 mb-3">📊 Posiciones Globales</h2>
-                <div class="overflow-hidden rounded-lg border border-slate-700">
+                <div class="overflow-hidden rounded-lg border border-gray-700">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-700 text-slate-300 font-bold">
+                        <thead class="bg-gray-700 text-gray-300 font-bold">
                             <tr>
                                 <th class="p-2 text-center">#</th>
                                 <th class="p-2">Jugador</th>
@@ -46,13 +46,523 @@
                                 <th class="p-2 text-center">🗑️</th>
                             </tr>
                         </thead>
-                        <tbody id="tabla-posiciones" class="divide-y divide-slate-700">
-                            <tr><td colspan="4" class="p-4 text-center text-slate-400">Cargando posiciones...</td></tr>
+                        <tbody id="tabla-posiciones" class="divide-y divide-gray-700">
+                            <tr><td colspan="4" class="p-4 text-center text-gray-400">Cargando posiciones...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="bg-slate-800 p-4 rounded-xl shadow-md border border-slate-700 border-dashed space-y-2">
+            <div class="bg-gray-800 p-4 rounded-xl shadow-md border border-gray-700 border-dashed space-y-2">
                 <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">🔒 Panel de Administrador</h3>
-                <button onclick="verificarAccAccessAdmin()"
+                <button onclick="verificarAccAccessAdmin()" class="w-full bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800 py-2 rounded text-xs font-semibold transition">
+                    ⚙️ Control de Torneo & Resultados
+                </button>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 space-y-4">
+            
+            <div class="bg-slate-950/60 p-2 rounded-xl border border-gray-800 shadow-inner">
+                <div class="flex flex-wrap sm:flex-nowrap gap-1 w-full" id="barra-navegacion-fases">
+                    <button onclick="cambiarFaseFiltro('Grupos')" id="tab-Grupos" class="w-full font-bold py-3 px-4 rounded-lg text-sm transition-all duration-200">Grupos</button>
+                    <button onclick="cambiarFaseFiltro('Octavos')" id="tab-Octavos" class="w-full font-bold py-3 px-4 rounded-lg text-sm transition-all duration-200">Octavos</button>
+                    <button onclick="cambiarFaseFiltro('Cuartos')" id="tab-Cuartos" class="w-full font-bold py-3 px-4 rounded-lg text-sm transition-all duration-200">Cuartos</button>
+                    <button onclick="cambiarFaseFiltro('Semifinales')" id="tab-Semifinales" class="w-full font-bold py-3 px-4 rounded-lg text-sm transition-all duration-200">Semifinales</button>
+                    <button onclick="cambiarFaseFiltro('Finales')" id="tab-Finales" class="w-full font-bold py-3 px-4 rounded-lg text-sm transition-all duration-200">Finales</button>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 p-6 rounded-xl shadow-md border border-gray-700">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        ⚽ Visualizando: <span id="nombre-fase-titulo" class="text-purple-400">Grupos</span>
+                    </h2>
+                    <span id="badge-usuario" class="bg-purple-950 text-purple-300 text-xs font-bold px-3 py-1 rounded-full border border-purple-700">Invitado</span>
+                </div>
+                
+                <div id="lista-partidos-contenedor" class="space-y-8"></div>
+
+                <div class="mt-8 pt-4 border-t border-gray-700 flex justify-end">
+                    <button onclick="guardarPronosticos()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-lg shadow-lg transition transform active:scale-95">
+                        💾 Guardar Pronósticos de esta Sección
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="modal-admin" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50 overflow-y-auto">
+        <div class="bg-gray-800 border border-gray-700 max-w-2xl w-full rounded-xl p-6 shadow-2xl my-8">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
+                <div>
+                    <h3 class="text-xl font-bold text-red-400">Panel de Control de Torneo</h3>
+                    <p class="text-xs text-gray-400">Introduce marcadores reales o gestiona el catálogo de partidos.</p>
+                </div>
+                <button onclick="cerrarModalAdmin()" class="text-gray-400 hover:text-white font-bold text-xl">✕</button>
+            </div>
+
+            <div class="bg-slate-900/90 p-4 rounded-xl border border-blue-900/60 mb-6 space-y-3">
+                <button onclick="toggleFormularioPartido()" class="w-full bg-blue-950/40 hover:bg-blue-900/40 text-blue-400 border border-blue-800/80 py-2.5 rounded-lg text-sm font-bold transition flex items-center justify-center gap-2">
+                    <span>➕</span> Crear Partido (Cualquier Fase/Jornada)
+                </button>
+                
+                <div id="formulario-crear-partido" class="hidden space-y-3 pt-2 border-t border-gray-800">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <select id="crear-partido-fase" class="bg-gray-800 text-xs p-2 rounded text-white border border-gray-700">
+                            <option value="Grupos">Fase de Grupos</option>
+                            <option value="Octavos">Octavos de Final</option>
+                            <option value="Cuartos">Cuartos de Final</option>
+                            <option value="Semifinales">Semifinales</option>
+                            <option value="Finales">Finales / Tercer Puesto</option>
+                        </select>
+                        <input type="text" id="crear-partido-grupo-nombre" placeholder="Grupo o Sub-fase (Ej: Grupo A)" class="bg-gray-800 text-xs p-2 rounded text-white border border-gray-700">
+                        <input type="text" id="crear-partido-jornada" placeholder="Jornada (Ej: Jornada 1)" class="bg-gray-800 text-xs p-2 rounded text-white border border-gray-700">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <input type="text" id="crear-partido-equipoA" placeholder="Equipo Local 🏠" class="bg-gray-800 text-xs p-2 rounded text-white border border-gray-700">
+                        <input type="text" id="crear-partido-equipoB" placeholder="Equipo Visitante 🚀" class="bg-gray-800 text-xs p-2 rounded text-white border border-gray-700">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <input type="text" id="crear-partido-fecha" placeholder="Fecha (Ej: 30 de Junio)" class="bg-gray-800 text-xs p-2 rounded text-white border border-gray-700">
+                        <input type="text" id="crear-partido-hora" placeholder="Hora (Ej: 4:00 pm)" class="bg-gray-800 text-xs p-2 rounded text-white border border-gray-700">
+                        <button onclick="ejecutarCreacionPartido()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs p-2 rounded transition shadow">Confirmar e Insertar</button>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Ingreso de Resultados Oficiales</h4>
+            <div class="mb-3">
+                <select id="admin-filtro-fase-lista" onchange="renderizarListaPartidosAdmin()" class="w-full bg-gray-700 text-xs text-white p-2 rounded border border-gray-600 focus:outline-none">
+                    <option value="Grupos">Ver Fase de Grupos</option>
+                    <option value="Octavos">Ver Octavos de Final</option>
+                    <option value="Cuartos">Ver Cuartos de Final</option>
+                    <option value="Semifinales">Ver Semifinales</option>
+                    <option value="Finales">Ver Finales</option>
+                </select>
+            </div>
+            
+            <div id="admin-lista-partidos-render" class="space-y-2 mb-6 max-h-64 overflow-y-auto pr-1"></div>
+            
+            <div class="flex flex-col sm:flex-row justify-between gap-4 border-t border-gray-700 pt-4">
+                <button onclick="resetearTodoElTorneo()" class="bg-red-950 hover:bg-red-900 text-red-400 border border-red-700 px-4 py-2 rounded text-xs font-bold transition text-center">
+                    🚨 Resetear Todo el Torneo
+                </button>
+                <div class="flex justify-end gap-3">
+                    <button onclick="cerrarModalAdmin()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm transition">Cerrar</button>
+                    <button onclick="guardarResultadosAdminReales()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded text-sm font-bold transition">Guardar Marcadores Oficiales</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://api.jsonbin.io/v3/b/6a1c94a9ddf5aa59f77cd366";
+        const API_KEY = "$2a$10$RHaekpDpS0pziQh6ES29xO2kxWSnOIoSzzuueTRxnrPr39KE6bCyi";
+        const LLAVE_ADMIN = "Mundial2026";
+
+        const partidosBase = [
+            { id: 1, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "México 🇲🇽", equipoB: "Sudáfrica 🇿🇦", fechaStr: "11 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
+            { id: 2, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "Corea del Sur 🇰🇷", equipoB: "Chequia 🇨🇿", fechaStr: "11 de Junio", horaStr: "8:00 pm", golesA: null, golesB: null },
+            { id: 3, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "Chequia 🇨🇿", equipoB: "Sudáfrica 🇿🇦", fechaStr: "18 de Junio", horaStr: "10:00 am", golesA: null, golesB: null },
+            { id: 4, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "México 🇲🇽", equipoB: "Corea del Sur 🇰🇷", fechaStr: "18 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
+            { id: 5, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 3", equipoA: "Chequia 🇨🇿", equipoB: "México 🇲🇽", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
+            { id: 6, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 3", equipoA: "Sudáfrica 🇿🇦", equipoB: "Corea del Sur 🇰🇷", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
+            { id: 7, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Canadá 🇨🇦", equipoB: "Bosnia 🇧🇦", fechaStr: "12 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
+            { id: 8, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Qatar 🇶🇦", equipoB: "Suiza 🇨🇭", fechaStr: "13 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null }
+        ];
+
+        let estadoGlobal = {
+            usuarios: ["Ron", "Harry Potter", "Hermione"],
+            partidos: partidosBase,
+            pronosticos: {
+                "Ron": { "1": {golesA: 2, golesB: 1}, "2": {golesA: 1, golesB: 1} },
+                "Harry Potter": { "1": {golesA: 0, golesB: 0} }
+            }
+        };
+        
+        let usuarioActivo = localStorage.getItem('q_pro_usuario') || "Ron";
+        let faseActiva = "Grupos"; 
+
+        window.onload = function() {
+            cambiarFaseFiltro(faseActiva);
+            cargarDatosNube();
+        };
+
+        function mostrarCarga(porcentaje) {
+            const bar = document.getElementById('loading-bar');
+            if (bar) bar.style.width = `${porcentaje}%`;
+        }
+
+        async function cargarDatosNube() {
+            mostrarCarga(30);
+            try {
+                const res = await fetch(`${API_URL}/latest`, { 
+                    method: 'GET',
+                    headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" } 
+                });
+                if (!res.ok) throw new Error(`Fallo del servidor`);
+                const data = await res.json();
+                let recordRemoto = data.record ? data.record : data;
+
+                if (recordRemoto && recordRemoto.usuarios && recordRemoto.partidos) {
+                    estadoGlobal = recordRemoto;
+                } else {
+                    await guardarDatosNube();
+                }
+                mostrarCarga(100);
+            } catch (err) {
+                console.warn("⚠️ Usando base de datos interna local.");
+                mostrarCarga(100);
+            } finally {
+                if(!estadoGlobal.usuarios.includes(usuarioActivo)) {
+                    usuarioActivo = estadoGlobal.usuarios[0] || "Admin";
+                }
+                actualizarPantallaQuiniela();
+            }
+        }
+
+        async function guardarDatosNube() {
+            mostrarCarga(50);
+            try {
+                await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                    body: JSON.stringify(estadoGlobal)
+                });
+                mostrarCarga(100);
+                actualizarPantallaQuiniela();
+                return true;
+            } catch (err) {
+                mostrarCarga(100);
+                actualizarPantallaQuiniela();
+                return false;
+            }
+        }
+
+        function cambiarFaseFiltro(faseSeleccionada) {
+            faseActiva = faseSeleccionada;
+            ["Grupos", "Octavos", "Cuartos", "Semifinales", "Finales"].forEach(f => {
+                const btn = document.getElementById(`tab-${f}`);
+                if (btn) {
+                    btn.className = f === faseSeleccionada ? 
+                        "w-full font-bold py-3 px-4 rounded-lg text-sm bg-purple-600 text-white shadow-md border border-purple-500" : 
+                        "w-full font-bold py-3 px-4 rounded-lg text-sm bg-gray-800 text-gray-400 hover:text-gray-200 transition border border-transparent";
+                }
+            });
+            const titulo = document.getElementById('nombre-fase-titulo');
+            if(titulo) titulo.textContent = faseSeleccionada;
+            actualizarPantallaQuiniela();
+        }
+
+        function calcularPuntosUsuario(nombreUsuario) {
+            let totalPuntos = 0;
+            const pronosticosUsuario = estadoGlobal.pronosticos[nombreUsuario] || {};
+            
+            estadoGlobal.partidos.forEach(partido => {
+                if (partido.golesA === null || partido.golesB === null) return;
+
+                const pronostico = pronosticosUsuario[partido.id];
+                if (!pronostico || pronostico.golesA === null || pronostico.golesB === null) return;
+
+                const gRealA = parseInt(partido.golesA);
+                const gRealB = parseInt(partido.golesB);
+                const gPronA = parseInt(pronostico.golesA);
+                const gPronB = parseInt(pronostico.golesB);
+
+                const tendenciaReal = gRealA > gRealB ? 'A' : (gRealA < gRealB ? 'B' : 'E');
+                const tendenciaPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
+
+                if (gRealA === gPronA && gRealB === gPronB) {
+                    totalPuntos += 3; 
+                } else if (tendenciaReal === tendenciaPron) {
+                    totalPuntos += 1; 
+                }
+            });
+
+            return totalPuntos;
+        }
+
+        // 🎨 NUEVA ADICIÓN DE RETROALIMENTACIÓN DE ACIERTOS EN LA VISTA GLOBAL
+        function actualizarPantallaQuiniela() {
+            const contenedor = document.getElementById('lista-partidos-contenedor');
+            const selectUsr = document.getElementById('select-usuario');
+            const badgeUsr = document.getElementById('badge-usuario');
+            const tablaPos = document.getElementById('tabla-posiciones');
+
+            if (selectUsr) {
+                selectUsr.innerHTML = '';
+                estadoGlobal.usuarios.forEach(u => {
+                    const opt = document.createElement('option');
+                    opt.value = u; opt.textContent = u;
+                    if(u === usuarioActivo) opt.selected = true;
+                    selectUsr.appendChild(opt);
+                });
+            }
+
+            if (badgeUsr) badgeUsr.textContent = usuarioActivo;
+
+            if (tablaPos) {
+                tablaPos.innerHTML = '';
+                let posiciones = estadoGlobal.usuarios.map(u => {
+                    return { nombre: u, puntos: calcularPuntosUsuario(u) };
+                }).sort((a, b) => b.puntos - a.puntos);
+
+                posiciones.forEach((p, idx) => {
+                    const esActivo = p.nombre === usuarioActivo ? 'bg-purple-950/40 font-bold text-purple-300' : '';
+                    tablaPos.innerHTML += `<tr class="${esActivo} hover:bg-gray-700/30 transition">
+                        <td class="p-2 text-center text-gray-400">${idx + 1}</td>
+                        <td class="p-2">${p.nombre}</td>
+                        <td class="p-2 text-center text-emerald-400 font-bold">${p.puntos}</td>
+                        <td class="p-2 text-center">
+                            <button onclick="eliminarUsuario('${p.nombre}')" class="text-xs text-gray-500 hover:text-red-400 px-1 py-0.5 rounded transition">✕</button>
+                        </td>
+                    </tr>`;
+                });
+            }
+
+            if (contenedor) {
+                contenedor.innerHTML = '';
+                const partidosFiltrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
+                let llavesAgrupacion = [...new Set(partidosFiltrados.map(p => p.grupo || p.jornada || "Encuentros"))];
+
+                llavesAgrupacion.forEach(grupoNombre => {
+                    let bloqueHTML = `<div class="bg-gray-900/40 p-4 rounded-xl border border-gray-700/50">
+                        <h3 class="text-xs font-black text-purple-400 uppercase tracking-widest mb-4 border-b border-gray-800 pb-1">${grupoNombre}</h3>
+                        <div class="space-y-3">`;
+
+                    const partidosDelGrupo = partidosFiltrados.filter(p => (p.grupo === grupoNombre || p.jornada === grupoNombre));
+
+                    partidosDelGrupo.forEach(partido => {
+                        const prUser = (estadoGlobal.pronosticos[usuarioActivo] && estadoGlobal.pronosticos[usuarioActivo][partido.id]) ? estadoGlobal.pronosticos[usuarioActivo][partido.id] : { golesA: '', golesB: '' };
+                        
+                        const txtReal = (partido.golesA !== null && partido.golesB !== null) ? 
+                            `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">Real: ${partido.golesA} - ${partido.golesB}</span>` : 
+                            `<span class="bg-gray-800 text-gray-400 text-[10px] px-2 py-0.5 rounded">Real: ⚠️ Pendiente</span>`;
+
+                        // --- CÁLCULO DE ETIQUETA DE ACIERTO/FALLO ---
+                        let badgeAcertadoHTML = '';
+                        if (partido.golesA !== null && partido.golesB !== null) {
+                            if (prUser.golesA === '' || prUser.golesB === '') {
+                                badgeAcertadoHTML = `<span class="bg-gray-950 text-gray-500 text-[10px] px-2 py-1 rounded border border-gray-800 text-center block sm:inline-block">➖ Sin pronóstico</span>`;
+                            } else {
+                                const gRealA = parseInt(partido.golesA);
+                                const gRealB = parseInt(partido.golesB);
+                                const gPronA = parseInt(prUser.golesA);
+                                const gPronB = parseInt(prUser.golesB);
+
+                                const tendReal = gRealA > gRealB ? 'A' : (gRealA < gRealB ? 'B' : 'E');
+                                const tendPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
+
+                                if (gRealA === gPronA && gRealB === gPronB) {
+                                    badgeAcertadoHTML = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block sm:inline-block">🎯 Marcador Exacto (+3)</span>`;
+                                bags} else if (tendReal === tendPron) {
+                                    badgeAcertadoHTML = `<span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block sm:inline-block">✅ Ganador/Empate (+1)</span>`;
+                                } else {
+                                    badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium px-2 py-1 rounded text-center block sm:inline-block">❌ No acertado (+0)</span>`;
+                                }
+                            }
+                        }
+
+                        bloqueHTML += `
+                            <div class="flex flex-col sm:flex-row items-center justify-between p-3 bg-gray-800/80 rounded-lg gap-3 border border-gray-700/30">
+                                <div class="text-center sm:text-left min-w-[125px] space-y-1">
+                                    <p class="text-[11px] text-gray-400 font-medium">${partido.fechaStr} • ${partido.horaStr}</p>
+                                    <div class="flex flex-col gap-1 items-center sm:items-start">
+                                        ${txtReal}
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-center gap-2 flex-1 w-full sm:w-auto">
+                                    <div class="text-right flex-1 font-semibold text-sm truncate text-gray-200">${partido.equipoA}</div>
+                                    <input type="number" id="pron-A-${partido.id}" value="${prUser.golesA !== undefined ? prUser.golesA : ''}" min="0" placeholder="-" class="w-10 bg-gray-950 text-center text-white py-1 font-bold rounded border border-gray-700 focus:border-purple-500 focus:outline-none text-sm">
+                                    <span class="text-gray-600 text-xs font-bold">vs</span>
+                                    <input type="number" id="pron-B-${partido.id}" value="${prUser.golesB !== undefined ? prUser.golesB : ''}" min="0" placeholder="-" class="w-10 bg-gray-950 text-center text-white py-1 font-bold rounded border border-gray-700 focus:border-purple-500 focus:outline-none text-sm">
+                                    <div class="text-left flex-1 font-semibold text-sm truncate text-gray-200">${partido.equipoB}</div>
+                                </div>
+                                <div class="min-w-[130px] flex justify-center sm:justify-end">
+                                    ${badgeAcertadoHTML}
+                                </div>
+                            </div>`;
+                    });
+
+                    bloqueHTML += `</div></div>`;
+                    contenedor.innerHTML += bloqueHTML;
+                });
+            }
+        }
+
+        function cambiarUsuario() {
+            const selectUsr = document.getElementById('select-usuario');
+            if (selectUsr) {
+                usuarioActivo = selectUsr.value;
+                localStorage.setItem('q_pro_usuario', usuarioActivo);
+                actualizarPantallaQuiniela();
+            }
+        }
+
+        async function registrarUsuario() {
+            const input = document.getElementById('nuevo-usuario');
+            if (!input) return;
+            const nombre = input.value.trim();
+            
+            if (!nombre || estadoGlobal.usuarios.map(u => u.toLowerCase()).includes(nombre.toLowerCase())) {
+                alert("Nombre inválido o ya registrado.");
+                return;
+            }
+
+            estadoGlobal.usuarios.push(nombre);
+            estadoGlobal.pronosticos[nombre] = {};
+            usuarioActivo = nombre;
+            localStorage.setItem('q_pro_usuario', usuarioActivo);
+            input.value = '';
+            await guardarDatosNube();
+        }
+
+        async function eliminarUsuario(nombre) {
+            if (estadoGlobal.usuarios.length <= 1) return;
+            if (!confirm(`¿Borrar a ${nombre}?`)) return;
+
+            estadoGlobal.usuarios = estadoGlobal.usuarios.filter(u => u !== nombre);
+            if (estadoGlobal.pronosticos[nombre]) delete estadoGlobal.pronosticos[nombre];
+
+            if (usuarioActivo === nombre) {
+                usuarioActivo = estadoGlobal.usuarios[0];
+                localStorage.setItem('q_pro_usuario', usuarioActivo);
+            }
+            await guardarDatosNube();
+        }
+
+        async function guardarPronosticos() {
+            if (!estadoGlobal.pronosticos[usuarioActivo]) estadoGlobal.pronosticos[usuarioActivo] = {};
+            const partidosFiltrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
+            
+            partidosFiltrados.forEach(p => {
+                const inpA = document.getElementById(`pron-A-${p.id}`);
+                const inpB = document.getElementById(`pron-B-${p.id}`);
+                if (inpA && inpB && inpA.value !== "" && inpB.value !== "") {
+                    estadoGlobal.pronosticos[usuarioActivo][p.id] = {
+                        golesA: parseInt(inpA.value),
+                        golesB: parseInt(inpB.value)
+                    };
+                }
+            });
+            await guardarDatosNube();
+            alert("💾 ¡Pronósticos guardados correctamente!");
+        }
+
+        function verificarAccAccessAdmin() {
+            const pass = prompt("Clave de Administrador:");
+            if (pass === LLAVE_ADMIN) {
+                document.getElementById('modal-admin').classList.remove('hidden');
+                renderizarListaPartidosAdmin();
+            }
+        }
+
+        function cerrarModalAdmin() { document.getElementById('modal-admin').classList.add('hidden'); }
+        function toggleFormularioPartido() { document.getElementById('formulario-crear-partido').classList.toggle('hidden'); }
+
+        function renderizarListaPartidosAdmin() {
+            const contenedor = document.getElementById('admin-lista-partidos-render');
+            const filtroFase = document.getElementById('admin-filtro-fase-lista').value;
+            if(!contenedor) return;
+            contenedor.innerHTML = '';
+
+            estadoGlobal.partidos.filter(p => p.fase === filtroFase).forEach(p => {
+                contenedor.innerHTML += `
+                    <div class="flex items-center justify-between bg-gray-900 p-2 rounded border border-gray-700 text-xs gap-2">
+                        <div class="flex-1 text-left truncate font-semibold">${p.equipoA} vs ${p.equipoB}</div>
+                        <div class="flex items-center gap-1">
+                            <input type="number" id="admin-golesA-${p.id}" value="${p.golesA !== null ? p.golesA : ''}" class="w-8 bg-gray-800 text-center font-bold text-white py-0.5 rounded border border-gray-600">
+                            <input type="number" id="admin-golesB-${p.id}" value="${p.golesB !== null ? p.golesB : ''}" class="w-8 bg-gray-800 text-center font-bold text-white py-0.5 rounded border border-gray-600">
+                        </div>
+                    </div>`;
+            });
+        }
+
+        async function guardarResultadosAdminReales() {
+            const filtroFase = document.getElementById('admin-filtro-fase-lista').value;
+            estadoGlobal.partidos.filter(p => p.fase === filtroFase).forEach(p => {
+                const inpA = document.getElementById(`admin-golesA-${p.id}`);
+                const inpB = document.getElementById(`admin-golesB-${p.id}`);
+                
+                if (inpA && inpB) {
+                    if (inpA.value === "" || inpB.value === "") {
+                        p.golesA = null;
+                        p.golesB = null;
+                    } else {
+                        p.golesA = parseInt(inpA.value);
+                        p.golesB = parseInt(inpB.value);
+                    }
+                }
+            });
+            await guardarDatosNube();
+            cerrarModalAdmin();
+        }
+
+        function ejecutarCreacionPartido() {
+            const fase = document.getElementById('crear-partido-fase').value;
+            const grupo = document.getElementById('crear-partido-grupo-nombre').value.trim() || "Grupo Único";
+            const jornada = document.getElementById('crear-partido-jornada').value.trim() || "Jornada General";
+            const eqA = document.getElementById('crear-partido-equipoA').value.trim();
+            const eqB = document.getElementById('crear-partido-equipoB').value.trim();
+            const fecha = document.getElementById('crear-partido-fecha').value.trim() || "Por definir";
+            const hora = document.getElementById('crear-partido-hora').value.trim() || "Por definir";
+
+            if(!eqA || !eqB) {
+                alert("Debes escribir el nombre de ambos equipos.");
+                return;
+            }
+
+            const nuevoId = estadoGlobal.partidos.length > 0 ? Math.max(...estadoGlobal.partidos.map(p => p.id)) + 1 : 1;
+            
+            const nuevoPartido = {
+                id: nuevoId,
+                fase: fase,
+                grupo: grupo,
+                jornada: jornada,
+                equipoA: eqA,
+                equipoB: eqB,
+                fechaStr: fecha,
+                horaStr: hora,
+                golesA: null,
+                golesB: null
+            };
+
+            estadoGlobal.partidos.push(nuevoPartido);
+            document.getElementById('crear-partido-equipoA').value = '';
+            document.getElementById('crear-partido-equipoB').value = '';
+            
+            alert("⚽ Partido creado exitosamente.");
+            renderizarListaPartidosAdmin();
+            actualizarPantallaQuiniela();
+        }
+
+        async function resetearTodoElTorneo() {
+            const confirmacion1 = confirm("⚠️ ¿ESTÁS SEGURO? Esto borrará permanentemente todos los concursantes registrados y sus pronósticos.");
+            if (!confirmacion1) return;
+
+            const confirmacion2 = confirm("🛑 ¿También deseas reiniciar todos los resultados reales del administrador a 'Pendiente'?");
+            if (!confirmacion2) return;
+
+            estadoGlobal.usuarios = ["Admin"];
+            estadoGlobal.pronosticos = { "Admin": {} };
+
+            estadoGlobal.partidos.forEach(p => {
+                p.golesA = null;
+                p.golesB = null;
+            });
+
+            usuarioActivo = "Admin";
+            localStorage.setItem('q_pro_usuario', "Admin");
+
+            const exito = await guardarDatosNube();
+            if (exito) {
+                alert("💥 El torneo ha sido reseteado con éxito. Todo ha vuelto a 0 puntos.");
+                cerrarModalAdmin();
+            } else {
+                alert("❌ Hubo un problema al guardar los cambios en la nube. Inténtalo de nuevo.");
+            }
+        }
+    </script>
+</body>
+</html>
