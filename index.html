@@ -167,12 +167,10 @@
     </div>
 
     <script>
-        // TUS CREDENCIALES NUEVAS Y PRIVADAS INTEGRADAS (URL LIMPIA CORREGIDA)
         const API_URL = "https://api.jsonbin.io/v3/b/6a1c94a9ddf5aa59f77cd366";
         const API_KEY = "$2a$10$RHaekpDpS0pziQh6ES29xO2kxWSnOIoSzzuueTRxnrPr39KE6bCyi";
         const LLAVE_ADMIN = "Mundial2026";
 
-        // BANCO ORIGINAL INTACTO (72 ENCUENTROS COMPLETOS)
         const partidosBase = [
             // GRUPO A
             { id: 1, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "México 🇲🇽", equipoB: "Sudáfrica 🇿🇦", fechaStr: "11 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
@@ -185,15 +183,15 @@
             { id: 7, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Canadá 🇨🇦", equipoB: "Bosnia 🇧🇦", fechaStr: "12 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             { id: 8, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Qatar 🇶🇦", equipoB: "Suiza 🇨🇭", fechaStr: "13 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             { id: 9, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 2", equipoA: "Suiza 🇨🇭", equipoB: "Bosnia 🇧🇦", fechaStr: "18 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
-            { id: 10, fase: "Grupos", group: "Grupo B", jornada: "Jornada 2", equipoA: "Canadá 🇨🇦", equipoB: "Qatar 🇶🇦", fechaStr: "18 de Junio", horaStr: "4:00 pm", golesA: null, golesB: null },
+            { id: 10, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 2", equipoA: "Canadá 🇨🇦", equipoB: "Qatar 🇶🇦", fechaStr: "18 de Junio", horaStr: "4:00 pm", golesA: null, golesB: null },
             { id: 11, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 3", equipoA: "Suiza 🇨🇭", equipoB: "Canadá 🇨🇦", fechaStr: "24 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             { id: 12, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 3", equipoA: "Bosnia 🇧🇦", equipoB: "Qatar 🇶🇦", fechaStr: "24 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             // GRUPO C
             { id: 13, fase: "Grupos", grupo: "Grupo C", jornada: "Jornada 1", equipoA: "Brasil 🇧🇷", equipoB: "Marruecos 🇲🇦", fechaStr: "13 de Junio", horaStr: "4:00 pm", golesA: null, golesB: null },
-            { id: 14, fase: "Grupos", grupo: "Grupo C", jornada: "Jornada 1", equipoA: "Haití 🇭🇹", equipoB: "Escocia 🏴 \u200d 󠁢󠁳󠁣󠁴󠁿", fechaStr: "13 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
-            { id: 15, fase: "Grupos", grupo: "Grupo C", jornada: "Jornada 2", equipoA: "Escocia 🏴 \u200d 󠁢󠁳󠁣󠁴󠁿", equipoB: "Marruecos 🇲🇦", fechaStr: "19 de Junio", horaStr: "4:00 pm", golesA: null, golesB: null },
+            { id: 14, fase: "Grupos", grupo: "Grupo C", jornada: "Jornada 1", equipoA: "Haití 🇭🇹", equipoB: "Escocia 🏴", fechaStr: "13 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
+            { id: 15, fase: "Grupos", grupo: "Grupo C", jornada: "Jornada 2", equipoA: "Escocia 🏴", equipoB: "Marruecos 🇲🇦", fechaStr: "19 de Junio", horaStr: "4:00 pm", golesA: null, golesB: null },
             { id: 16, fase: "Grupos", grupo: "Grupo C", jornada: "Jornada 2", equipoA: "Brasil 🇧🇷", equipoB: "Haití 🇭🇹", fechaStr: "19 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
-            { id: 17, fase: "Grupos", grupo: "Grupo C", jornada: "Jornada 3", equipoA: "Escocia 🏴 \u200d 󠁢󠁳󠁣󠁴󠁿", equipoB: "Brasil 🇧🇷", fechaStr: "24 de Junio", horaStr: "4:00 pm", golesA: null, golesB: null },
+            { id: 17, fase: "Grupos", grupo: "Grupo C", jornada: "Jornada 3", equipoA: "Escocia 🏴", equipoB: "Brasil 🇧🇷", fechaStr: "24 de Junio", horaStr: "4:00 pm", golesA: null, golesB: null },
             { id: 18, fase: "Grupos", grupo: "Grupo C", jornada: "Jornada 3", equipoA: "Marruecos 🇲🇦", equipoB: "Haití 🇭🇹", fechaStr: "24 de Junio", horaStr: "4:00 pm", golesA: null, golesB: null },
             // GRUPO D
             { id: 19, fase: "Grupos", grupo: "Grupo D", jornada: "Jornada 1", equipoA: "Estados Unidos 🇺🇸", equipoB: "Paraguay 🇵🇾", fechaStr: "12 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
@@ -252,7 +250,7 @@
             { id: 65, fase: "Grupos", grupo: "Grupo K", jornada: "Jornada 3", equipoA: "Colombia 🇨🇴", equipoB: "Portugal 🇵🇹", fechaStr: "27 de Junio", horaStr: "5:30 pm", golesA: null, golesB: null },
             { id: 66, fase: "Grupos", grupo: "Grupo K", jornada: "Jornada 3", equipoA: "R.D. Congo 🇨🇩", equipoB: "Uzbekistán 🇺🇿", fechaStr: "27 de Junio", horaStr: "5:30 pm", golesA: null, golesB: null },
             // GRUPO L
-            { id: 71, fase: "Grupos", grupo: "Grupo L", jornada: "Jornada 3", equipoA: "Panamá 🇵🇦", equipoB: "Inglaterra 🏴 \u200d 󠁢󠁥󠁮󠁧󠁿", fechaStr: "27 de Junio", horaStr: "3:00 pm", golesA: null, golesB: null },
+            { id: 71, fase: "Grupos", grupo: "Grupo L", jornada: "Jornada 3", equipoA: "Panamá 🇵🇦", equipoB: "Inglaterra 🏴", fechaStr: "27 de Junio", horaStr: "3:00 pm", golesA: null, golesB: null },
             { id: 72, fase: "Grupos", grupo: "Grupo L", jornada: "Jornada 3", equipoA: "Croacia 🇭🇷", equipoB: "Ghana 🇬🇭", fechaStr: "27 de Junio", horaStr: "3:00 pm", golesA: null, golesB: null }
         ];
 
@@ -270,17 +268,14 @@
             cargarDatosNube();
         };
 
-        // FUNCIÓN AUXILIAR DE BARRA DE CARGA REEMPLAZADA PARA EVITAR ERRORES VISUALES
         function mostrarCarga(porcentaje) {
             const bar = document.getElementById('loading-bar');
             if (bar) bar.style.width = `${porcentaje}%`;
         }
 
-        // CORRECCIÓN COMPLETA DE LECTURA NUBE
         async function cargarDatosNube() {
             mostrarCarga(30);
             try {
-                // Aquí concatenamos de forma controlada el /latest al final de la URL base limpia
                 const res = await fetch(`${API_URL}/latest`, { 
                     method: 'GET',
                     headers: { 
@@ -319,7 +314,6 @@
             }
         }
 
-        // CORRECCIÓN COMPLETA DE ESCRITURA EN NUBE (PUT DIRECTO SIN LATEST)
         async function guardarDatosNube() {
             mostrarCarga(50);
             try {
@@ -365,6 +359,46 @@
             actualizarPantallaQuiniela();
         }
 
+        // 🚀 MEJORA SUSTANCIAL: MOTOR DE CÁLCULO DE PUNTOS DINÁMICO Y CORRECCIÓN DEL BUG DE EMPATES VACÍOS
+        function calcularPuntosUsuario(nombreUsuario) {
+            let totalPuntos = 0;
+            const pronosticosUsuario = estadoGlobal.pronosticos[nombreUsuario] || {};
+
+            estadoGlobal.partidos.forEach(partido => {
+                // REGLA DE ORO: Si el administrador no ha puesto resultado real, saltar partido (0 puntos)
+                if (partido.golesA === null || partido.golesB === null || partido.golesA === "" || partido.golesB === "") {
+                    return; 
+                }
+
+                const pronostico = pronosticosUsuario[partido.id];
+                // Si el usuario no ingresó pronóstico para este partido, saltar
+                if (!pronostico || pronostico.golesA === null || pronostico.golesB === null || pronostico.golesA === "" || pronostico.golesB === "") {
+                    return;
+                }
+
+                const gRealA = parseInt(partido.golesA);
+                const gRealB = parseInt(partido.golesB);
+                const gPronA = parseInt(pronostico.golesA);
+                const gPronB = parseInt(pronostico.golesB);
+
+                // Determinar tendencias reales
+                const tendenciaReal = gRealA > gRealB ? 'A' : (gRealA < gRealB ? 'B' : 'E');
+                // Determinar tendencias del jugador
+                const tendenciaPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
+
+                // 1. Acierto de marcador exacto (Ej: 3 Puntos)
+                if (gRealA === gPronA && gRealB === gPronB) {
+                    totalPuntos += 3;
+                } 
+                // 2. Acierto de tendencia pero no marcador exacto (Ej: 1 Punto)
+                else if (tendenciaReal === tendenciaPron) {
+                    totalPuntos += 1;
+                }
+            });
+
+            return totalPuntos;
+        }
+
         function actualizarPantallaQuiniela() {
             const contenedor = document.getElementById('lista-partidos-contenedor');
             const selectUsr = document.getElementById('select-usuario');
@@ -384,66 +418,82 @@
 
             if (badgeUsr) badgeUsr.textContent = usuarioActivo;
 
-            // RENDER DE POSICIONES
+            // RENDER DE POSICIONES REALES ASOCIADO AL NUEVO MOTOR DE PUNTOS
             if (tablaPos) {
                 tablaPos.innerHTML = '';
-                // Calcular puntos rápidos de demostración
-                let posiciones = estadoGlobal.usuarios.map((u, i) => {
-                    return { nombre: u, puntos: (i * 3) + 5 }; // Lógica base temporal simulada
-                }).sort((a,b) => b.puntos - a.puntos);
+                
+                let posiciones = estadoGlobal.usuarios.map(u => {
+                    return { nombre: u, puntos: calcularPuntosUsuario(u) };
+                }).sort((a, b) => b.puntos - a.puntos);
 
                 posiciones.forEach((p, idx) => {
-                    const row = `<tr>
-                        <td class="p-2 text-center font-bold">${idx+1}</td>
-                        <td class="p-2 font-semibold">${p.nombre}</td>
-                        <td class="p-2 text-center text-emerald-400 font-bold">${p.puntos}</td>
+                    const esActivo = p.nombre === usuarioActivo ? 'bg-purple-950/40 font-bold text-purple-300' : '';
+                    const row = `<tr class="${esActivo} hover:bg-gray-700/30 transition">
+                        <td class="p-2 text-center text-gray-400">${idx + 1}</td>
+                        <td class="p-2">${p.nombre}</td>
+                        <td class="p-2 text-center text-yellow-400 font-bold">${p.puntos}</td>
                         <td class="p-2 text-center">
-                            <button onclick="eliminarUsuario('${p.nombre}')" class="text-red-400 hover:text-red-500 text-xs">🗑️</button>
+                            <button onclick="eliminarUsuario('${p.nombre}')" class="text-xs text-gray-500 hover:text-red-400 px-1 py-0.5 rounded transition">✕</button>
                         </td>
                     </tr>`;
                     tablaPos.innerHTML += row;
                 });
             }
 
-            // RENDER DE PARTIDOS FILTRADOS
+            // RENDER DEL FORMULARIO DE PARTIDOS SEGÚN LA FASE SELECCIONADA
             if (contenedor) {
                 contenedor.innerHTML = '';
-                const filtrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
-
-                if(filtrados.length === 0) {
-                    contenedor.innerHTML = `<p class="text-gray-400 text-center py-8 text-sm">No hay partidos cargados para esta fase en este momento.</p>`;
+                const partidosFiltrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
+                
+                if(partidosFiltrados.length === 0) {
+                    contenedor.innerHTML = `<div class="text-center py-8 text-gray-500 text-sm">No hay partidos registrados en esta fase todavía.</div>`;
                     return;
                 }
 
-                filtrados.forEach(p => {
-                    let pKey = `${usuarioActivo}_${p.id}`;
-                    let userPronostico = estadoGlobal.pronosticos[pKey] || { golA: '', golB: '' };
+                // Agrupación estética por Jornada o Grupo
+                let llavesAgrupacion = [...new Set(partidosFiltrados.map(p => p.grupo || p.jornada || "Encuentros"))];
 
-                    const card = `<div class="bg-gray-900/50 p-4 rounded-xl border border-gray-700/60 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div class="text-center sm:text-left">
-                            <span class="text-xs bg-gray-800 text-purple-300 px-2.5 py-0.5 rounded-full font-semibold border border-purple-900/40">${p.grupo}</span>
-                            <p class="text-xs text-gray-400 mt-1 font-medium">${p.fechaStr} - ${p.horaStr}</p>
-                        </div>
-                        <div class="flex items-center gap-3 w-full sm:w-auto justify-center">
-                            <span class="font-bold text-sm text-right flex-1 sm:flex-initial min-w-[100px]">${p.equipoA}</span>
-                            <input type="number" id="pron-A-${p.id}" value="${userPronostico.golA}" min="0" placeholder="-" class="w-12 bg-gray-800 text-white text-center font-bold p-1.5 rounded border border-gray-600 focus:outline-none focus:border-purple-500">
-                            <span class="text-gray-500 font-bold text-xs">vs</span>
-                            <input type="number" id="pron-B-${p.id}" value="${userPronostico.golB}" min="0" placeholder="-" class="w-12 bg-gray-800 text-white text-center font-bold p-1.5 rounded border border-gray-600 focus:outline-none focus:border-purple-500">
-                            <span class="font-bold text-sm text-left flex-1 sm:flex-initial min-w-[100px]">${p.equipoB}</span>
-                        </div>
-                        <div class="text-xs text-gray-400 font-semibold bg-gray-800/40 px-3 py-1 rounded border border-gray-700">
-                            Real: ${p.golesA !== null ? `${p.golesA} - ${p.golesB}` : '⚠️ Pendiente'}
-                        </div>
-                    </div>`;
-                    contenedor.innerHTML += card;
+                llavesAgrupacion.forEach(grupoNombre => {
+                    let bloqueHTML = `<div class="bg-gray-900/40 p-4 rounded-xl border border-gray-700/50">
+                        <h3 class="text-xs font-black text-purple-400 uppercase tracking-widest mb-4 border-b border-gray-800 pb-1">${grupoNombre}</h3>
+                        <div class="space-y-3">`;
+
+                    const partidosDelGrupo = partidosFiltrados.filter(p => (p.grupo === grupoNombre || p.jornada === grupoNombre));
+
+                    partidosDelGrupo.forEach(partido => {
+                        const prUser = (estadoGlobal.pronosticos[usuarioActivo] && estadoGlobal.pronosticos[usuarioActivo][partido.id]) ? estadoGlobal.pronosticos[usuarioActivo][partido.id] : { golesA: '', golesB: '' };
+                        
+                        const txtReal = (partido.golesA !== null && partido.golesB !== null) ? 
+                            `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">Real: ${partido.golesA} - ${partido.golesB}</span>` : 
+                            `<span class="bg-gray-800 text-gray-400 text-[10px] px-2 py-0.5 rounded">Real: ⚠️ Pendiente</span>`;
+
+                        bloqueHTML += `
+                            <div class="flex flex-col sm:flex-row items-center justify-between p-3 bg-gray-800/80 rounded-lg gap-3 border border-gray-700/30">
+                                <div class="text-center sm:text-left min-w-[120px]">
+                                    <p class="text-[11px] text-gray-400 font-medium">${partido.fechaStr} • ${partido.horaStr}</p>
+                                    ${txtReal}
+                                </div>
+                                
+                                <div class="flex items-center justify-center gap-2 flex-1 w-full sm:w-auto">
+                                    <div class="text-right flex-1 font-semibold text-sm truncate text-gray-200">${partido.equipoA}</div>
+                                    <input type="number" id="pron-A-${partido.id}" value="${prUser.golesA !== undefined ? prUser.golesA : ''}" min="0" placeholder="-" class="w-10 bg-gray-950 text-center text-white py-1 font-bold rounded border border-gray-700 focus:border-purple-500 focus:outline-none text-sm">
+                                    <span class="text-gray-600 text-xs font-bold">vs</span>
+                                    <input type="number" id="pron-B-${partido.id}" value="${prUser.golesB !== undefined ? prUser.golesB : ''}" min="0" placeholder="-" class="w-10 bg-gray-950 text-center text-white py-1 font-bold rounded border border-gray-700 focus:border-purple-500 focus:outline-none text-sm">
+                                    <div class="text-left flex-1 font-semibold text-sm truncate text-gray-200">${partido.equipoB}</div>
+                                </div>
+                            </div>`;
+                    });
+
+                    bloqueHTML += `</div></div>`;
+                    contenedor.innerHTML += bloqueHTML;
                 });
             }
         }
 
         function cambiarUsuario() {
-            const select = document.getElementById('select-usuario');
-            if (select) {
-                usuarioActivo = select.value;
+            const selectUsr = document.getElementById('select-usuario');
+            if (selectUsr) {
+                usuarioActivo = selectUsr.value;
                 localStorage.setItem('q_pro_usuario', usuarioActivo);
                 actualizarPantallaQuiniela();
             }
@@ -451,52 +501,81 @@
 
         async function registrarUsuario() {
             const input = document.getElementById('nuevo-usuario');
-            if (!input || !input.value.trim()) return;
-            const nuevo = input.value.trim();
-
-            if (!estadoGlobal.usuarios.includes(nuevo)) {
-                estadoGlobal.usuarios.push(nuevo);
-                usuarioActivo = nuevo;
-                localStorage.setItem('q_pro_usuario', usuarioActivo);
-                input.value = '';
-                await guardarDatosNube();
+            if (!input) return;
+            const nombre = input.value.trim();
+            
+            if (!nombre) {
+                alert("Por favor introduce un nombre válido.");
+                return;
             }
+            if (estadoGlobal.usuarios.map(u => u.toLowerCase()).includes(nombre.toLowerCase())) {
+                alert("Este usuario ya existe en la comunidad.");
+                return;
+            }
+
+            estadoGlobal.usuarios.push(nombre);
+            if (!estadoGlobal.pronosticos[nombre]) {
+                estadoGlobal.pronosticos[nombre] = {};
+            }
+            
+            usuarioActivo = nombre;
+            localStorage.setItem('q_pro_usuario', usuarioActivo);
+            input.value = '';
+            
+            await guardarDatosNube();
         }
 
         async function eliminarUsuario(nombre) {
-            if(confirm(`¿Estás seguro de que deseas eliminar a ${nombre}? Esto borrará sus registros.`)) {
-                estadoGlobal.usuarios = estadoGlobal.usuarios.filter(u => u !== nombre);
-                if(usuarioActivo === nombre) {
-                    usuarioActivo = estadoGlobal.usuarios[0] || "Invitado";
-                }
-                await guardarDatosNube();
+            if (estadoGlobal.usuarios.length <= 1) {
+                alert("No puedes eliminar a todos los miembros del torneo.");
+                return;
             }
+            if (!confirm(`¿Estás completamente seguro de borrar a "${nombre}" del torneo? Perderá todos sus puntajes.`)) {
+                return;
+            }
+
+            estadoGlobal.usuarios = estadoGlobal.usuarios.filter(u => u !== nombre);
+            if (estadoGlobal.pronosticos[nombre]) delete estadoGlobal.pronosticos[nombre];
+
+            if (usuarioActivo === nombre) {
+                usuarioActivo = estadoGlobal.usuarios[0];
+                localStorage.setItem('q_pro_usuario', usuarioActivo);
+            }
+
+            await guardarDatosNube();
         }
 
         async function guardarPronosticos() {
-            const filtrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
-            filtrados.forEach(p => {
-                const inputA = document.getElementById(`pron-A-${p.id}`);
-                const inputB = document.getElementById(`pron-B-${p.id}`);
-                if (inputA && inputB && inputA.value !== '' && inputB.value !== '') {
-                    let pKey = `${usuarioActivo}_${p.id}`;
-                    estadoGlobal.pronosticos[pKey] = {
-                        golA: parseInt(inputA.value),
-                        golB: parseInt(inputB.value)
+            if (!estadoGlobal.pronosticos[usuarioActivo]) {
+                estadoGlobal.pronosticos[usuarioActivo] = {};
+            }
+
+            const partidosFiltrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
+            
+            partidosFiltrados.forEach(p => {
+                const inpA = document.getElementById(`pron-A-${p.id}`);
+                const inpB = document.getElementById(`pron-B-${p.id}`);
+                
+                if (inpA && inpB && inpA.value !== "" && inpB.value !== "") {
+                    estadoGlobal.pronosticos[usuarioActivo][p.id] = {
+                        golesA: parseInt(inpA.value),
+                        golesB: parseInt(inpB.value)
                     };
                 }
             });
+
             const exito = await guardarDatosNube();
-            if(exito) alert("🎉 Pronósticos guardados correctamente en internet.");
+            if (exito) alert("💾 Tus pronósticos de esta sección se han guardado con éxito.");
         }
 
+        // CONTROL DEL PANEL DE ADMINISTRACIÓN
         function verificarAccesoAdmin() {
-            const pass = prompt("Introduce la clave de Administrador:");
-            if(pass === LLAVE_ADMIN) {
+            const pass = prompt("Clave de Acceso del Administrador:");
+            if (pass === LLAVE_ADMIN) {
                 document.getElementById('modal-admin').classList.remove('hidden');
                 renderizarListaPartidosAdmin();
-            } else {
-                alert("❌ Clave incorrecta.");
+            } else if (pass !== null) {
+                alert("❌ Código Incorrecto. Acceso denegado.");
             }
         }
 
@@ -505,64 +584,104 @@
         }
 
         function toggleFormularioPartido() {
-            const form = document.getElementById('formulario-crear-partido');
-            form.classList.toggle('hidden');
-        }
-
-        function renderizarListaPartidosAdmin() {
-            const filtro = document.getElementById('admin-filtro-fase-lista').value;
-            const renderCont = document.getElementById('admin-lista-partidos-render');
-            if(!renderCont) return;
-
-            renderCont.innerHTML = '';
-            const partidosFase = estadoGlobal.partidos.filter(p => p.fase === filtro);
-
-            partidosFase.forEach(p => {
-                const item = `<div class="bg-gray-800 p-2 rounded flex items-center justify-between gap-2 border border-gray-700 text-xs">
-                    <span class="font-semibold text-gray-300 w-1/3 truncate">${p.equipoA} vs ${p.equipoB}</span>
-                    <div class="flex items-center gap-1">
-                        <input type="number" id="admin-golesA-${p.id}" value="${p.golesA !== null ? p.golesA : ''}" placeholder="L" class="w-10 bg-gray-900 border border-gray-600 text-center text-white rounded p-1 font-bold">
-                        <span class="text-gray-500 font-bold">-</span>
-                        <input type="number" id="admin-golesB-${p.id}" value="${p.golesB !== null ? p.golesB : ''}" placeholder="V" class="w-10 bg-gray-900 border border-gray-600 text-center text-white rounded p-1 font-bold">
-                    </div>
-                </div>`;
-                renderCont.innerHTML += item;
-            });
-        }
-
-        async function guardarResultadosAdminReales() {
-            estadoGlobal.partidos.forEach(p => {
-                const inputA = document.getElementById(`admin-golesA-${p.id}`);
-                const inputB = document.getElementById(`admin-golesB-${p.id}`);
-                if(inputA && inputB && inputA.value !== '' && inputB.value !== '') {
-                    p.golesA = parseInt(inputA.value);
-                    p.golesB = parseInt(inputB.value);
-                }
-            });
-            await guardarDatosNube();
-            alert("⚽ Resultados oficiales actualizados en toda la red.");
-            cerrarModalAdmin();
+            const f = document.getElementById('formulario-crear-partido');
+            f.classList.toggle('hidden');
         }
 
         async function ejecutarCreacionPartido() {
             const fase = document.getElementById('crear-partido-fase').value;
-            const grupo = document.getElementById('crear-partido-grupo-nombre').value || "Fase Final";
-            const jornada = document.getElementById('crear-partido-jornada').value || "Única";
-            const eqA = document.getElementById('crear-partido-equipoA').value;
-            const eqB = document.getElementById('crear-partido-equipoB').value;
-            const fecha = document.getElementById('crear-partido-fecha').value || "Por definir";
-            const hora = document.getElementById('crear-partido-hora').value || "Por definir";
+            const grupo = document.getElementById('crear-partido-grupo-nombre').value.trim();
+            const jornada = document.getElementById('crear-partido-jornada').value.trim();
+            const eqA = document.getElementById('crear-partido-equipoA').value.trim();
+            const eqB = document.getElementById('crear-partido-equipoB').value.trim();
+            const fecha = document.getElementById('crear-partido-fecha').value.trim();
+            const hora = document.getElementById('crear-partido-hora').value.trim();
 
-            if(!eqA || !eqB) { alert("Completa los nombres de los equipos."); return; }
+            if (!eqA || !eqB || !fecha || !hora) {
+                alert("Por favor llena los campos obligatorios del partido.");
+                return;
+            }
 
-            const nuevoId = estadoGlobal.partidos.length > 0 ? Math.max(...estadoGlobal.partidos.map(p => p.id)) + 1 : 1;
-            const nuevoPartido = { id: nuevoId, fase, grupo, jornada, equipoA: eqA, equipoB: eqB, fechaStr: fecha, horaStr: hora, golesA: null, golesB: null };
+            const nuevoId = estadoGlobal.partidos.reduce((max, p) => p.id > max ? p.id : max, 0) + 1;
+            
+            const nuevoPartido = {
+                id: nuevoId,
+                fase: fase,
+                grupo: grupo || null,
+                jornada: jornada || null,
+                equipoA: eqA,
+                equipoB: eqB,
+                fechaStr: fecha,
+                horaStr: hora,
+                golesA: null,
+                golesB: null
+            };
 
             estadoGlobal.partidos.push(nuevoPartido);
-            await guardarDatosNube();
-            alert("Partido creado exitosamente.");
-            toggleFormularioPartido();
+            alert("⚽ Partido insertado exitosamente de forma interna.");
+            
+            document.getElementById('crear-partido-equipoA').value = '';
+            document.getElementById('crear-partido-equipoB').value = '';
+            
             renderizarListaPartidosAdmin();
+        }
+
+        function renderizarListaPartidosAdmin() {
+            const contenedor = document.getElementById('admin-lista-partidos-render');
+            const filtroFase = document.getElementById('admin-filtro-fase-lista').value;
+            
+            if(!contenedor) return;
+            contenedor.innerHTML = '';
+
+            const partidosFiltro = estadoGlobal.partidos.filter(p => p.fase === filtroFase);
+
+            if(partidosFiltro.length === 0) {
+                contenedor.innerHTML = '<p class="text-center text-xs text-gray-500 py-4">No hay partidos en esta fase.</p>';
+                return;
+            }
+
+            partidosFiltro.forEach(p => {
+                const valA = p.golesA !== null ? p.golesA : '';
+                const valB = p.golesB !== null ? p.golesB : '';
+
+                const row = `
+                    <div class="flex items-center justify-between bg-gray-900 p-2 rounded border border-gray-700 text-xs gap-2">
+                        <span class="text-gray-400 font-mono w-6 text-center">${p.id}</span>
+                        <div class="flex-1 text-left truncate font-semibold">${p.equipoA} vs ${p.equipoB}</div>
+                        <div class="flex items-center gap-1">
+                            <input type="number" id="admin-golesA-${p.id}" value="${valA}" placeholder="-" class="w-8 bg-gray-800 text-center font-bold text-white py-0.5 rounded border border-gray-600">
+                            <span class="text-gray-500 text-[10px]">x</span>
+                            <input type="number" id="admin-golesB-${p.id}" value="${valB}" placeholder="-" class="w-8 bg-gray-800 text-center font-bold text-white py-0.5 rounded border border-gray-600">
+                        </div>
+                    </div>`;
+                contenedor.innerHTML += row;
+            });
+        }
+
+        async function guardarResultadosAdminReales() {
+            const filtroFase = document.getElementById('admin-filtro-fase-lista').value;
+            const partidosFiltro = estadoGlobal.partidos.filter(p => p.fase === filtroFase);
+
+            partidosFiltro.forEach(p => {
+                const inpA = document.getElementById(`admin-golesA-${p.id}`);
+                const inpB = document.getElementById(`admin-golesB-${p.id}`);
+
+                if (inpA && inpB) {
+                    if (inpA.value === "" || inpB.value === "") {
+                        p.golesA = null;
+                        p.golesB = null;
+                    } else {
+                        p.golesA = parseInt(inpA.value);
+                        p.golesB = parseInt(inpB.value);
+                    }
+                }
+            });
+
+            const exito = await guardarDatosNube();
+            if (exito) {
+                alert("✨ Resultados Oficiales guardados. ¡Tabla de posiciones re-calculada en tiempo real!");
+                cerrarModalAdmin();
+            }
         }
     </script>
 </body>
