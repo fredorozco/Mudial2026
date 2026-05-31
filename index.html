@@ -92,7 +92,6 @@
         </div>
     </main>
 
-    <!-- MODAL DE ADMINISTRADOR (CON FUNCIÓN DE RESET) -->
     <div id="modal-admin" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50 overflow-y-auto">
         <div class="bg-gray-800 border border-gray-700 max-w-2xl w-full rounded-xl p-6 shadow-2xl my-8">
             <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
@@ -145,14 +144,10 @@
             
             <div id="admin-lista-partidos-render" class="space-y-2 mb-6 max-h-64 overflow-y-auto pr-1"></div>
             
-            <!-- SECCIÓN DE BOTONES DE ACCIÓN DEL MODAL -->
             <div class="flex flex-col sm:flex-row justify-between gap-4 border-t border-gray-700 pt-4">
-                <!-- Botón de Reset Peligroso (Izquierda) -->
                 <button onclick="resetearTodoElTorneo()" class="bg-red-950 hover:bg-red-900 text-red-400 border border-red-700 px-4 py-2 rounded text-xs font-bold transition text-center">
                     🚨 Resetear Todo el Torneo
                 </button>
-                
-                <!-- Botones de Gestión de Cambios (Derecha) -->
                 <div class="flex justify-end gap-3">
                     <button onclick="cerrarModalAdmin()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm transition">Cerrar</button>
                     <button onclick="guardarResultadosAdminReales()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded text-sm font-bold transition">Guardar Marcadores Oficiales</button>
@@ -288,6 +283,7 @@
             return totalPuntos;
         }
 
+        // 🎨 NUEVA ADICIÓN DE RETROALIMENTACIÓN DE ACIERTOS EN LA VISTA GLOBAL
         function actualizarPantallaQuiniela() {
             const contenedor = document.getElementById('lista-partidos-contenedor');
             const selectUsr = document.getElementById('select-usuario');
@@ -339,15 +335,42 @@
 
                     partidosDelGrupo.forEach(partido => {
                         const prUser = (estadoGlobal.pronosticos[usuarioActivo] && estadoGlobal.pronosticos[usuarioActivo][partido.id]) ? estadoGlobal.pronosticos[usuarioActivo][partido.id] : { golesA: '', golesB: '' };
+                        
                         const txtReal = (partido.golesA !== null && partido.golesB !== null) ? 
                             `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">Real: ${partido.golesA} - ${partido.golesB}</span>` : 
                             `<span class="bg-gray-800 text-gray-400 text-[10px] px-2 py-0.5 rounded">Real: ⚠️ Pendiente</span>`;
 
+                        // --- CÁLCULO DE ETIQUETA DE ACIERTO/FALLO ---
+                        let badgeAcertadoHTML = '';
+                        if (partido.golesA !== null && partido.golesB !== null) {
+                            if (prUser.golesA === '' || prUser.golesB === '') {
+                                badgeAcertadoHTML = `<span class="bg-gray-950 text-gray-500 text-[10px] px-2 py-1 rounded border border-gray-800 text-center block sm:inline-block">➖ Sin pronóstico</span>`;
+                            } else {
+                                const gRealA = parseInt(partido.golesA);
+                                const gRealB = parseInt(partido.golesB);
+                                const gPronA = parseInt(prUser.golesA);
+                                const gPronB = parseInt(prUser.golesB);
+
+                                const tendReal = gRealA > gRealB ? 'A' : (gRealA < gRealB ? 'B' : 'E');
+                                const tendPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
+
+                                if (gRealA === gPronA && gRealB === gPronB) {
+                                    badgeAcertadoHTML = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block sm:inline-block">🎯 Marcador Exacto (+3)</span>`;
+                                bags} else if (tendReal === tendPron) {
+                                    badgeAcertadoHTML = `<span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block sm:inline-block">✅ Ganador/Empate (+1)</span>`;
+                                } else {
+                                    badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium px-2 py-1 rounded text-center block sm:inline-block">❌ No acertado (+0)</span>`;
+                                }
+                            }
+                        }
+
                         bloqueHTML += `
                             <div class="flex flex-col sm:flex-row items-center justify-between p-3 bg-gray-800/80 rounded-lg gap-3 border border-gray-700/30">
-                                <div class="text-center sm:text-left min-w-[120px]">
+                                <div class="text-center sm:text-left min-w-[125px] space-y-1">
                                     <p class="text-[11px] text-gray-400 font-medium">${partido.fechaStr} • ${partido.horaStr}</p>
-                                    ${txtReal}
+                                    <div class="flex flex-col gap-1 items-center sm:items-start">
+                                        ${txtReal}
+                                    </div>
                                 </div>
                                 <div class="flex items-center justify-center gap-2 flex-1 w-full sm:w-auto">
                                     <div class="text-right flex-1 font-semibold text-sm truncate text-gray-200">${partido.equipoA}</div>
@@ -355,6 +378,9 @@
                                     <span class="text-gray-600 text-xs font-bold">vs</span>
                                     <input type="number" id="pron-B-${partido.id}" value="${prUser.golesB !== undefined ? prUser.golesB : ''}" min="0" placeholder="-" class="w-10 bg-gray-950 text-center text-white py-1 font-bold rounded border border-gray-700 focus:border-purple-500 focus:outline-none text-sm">
                                     <div class="text-left flex-1 font-semibold text-sm truncate text-gray-200">${partido.equipoB}</div>
+                                </div>
+                                <div class="min-w-[130px] flex justify-center sm:justify-end">
+                                    ${badgeAcertadoHTML}
                                 </div>
                             </div>`;
                     });
@@ -511,7 +537,6 @@
             actualizarPantallaQuiniela();
         }
 
-        // 🚨 NUEVA FUNCIÓN: Resetea por completo los datos del torneo de forma segura
         async function resetearTodoElTorneo() {
             const confirmacion1 = confirm("⚠️ ¿ESTÁS SEGURO? Esto borrará permanentemente todos los concursantes registrados y sus pronósticos.");
             if (!confirmacion1) return;
@@ -519,23 +544,17 @@
             const confirmacion2 = confirm("🛑 ¿También deseas reiniciar todos los resultados reales del administrador a 'Pendiente'?");
             if (!confirmacion2) return;
 
-            // 1. Reestablecemos a un único usuario inicial por defecto para evitar errores de interfaz
             estadoGlobal.usuarios = ["Admin"];
-            
-            // 2. Limpiamos todos los historiales de pronósticos
             estadoGlobal.pronosticos = { "Admin": {} };
 
-            // 3. Devolvemos los marcadores reales de todos los partidos a null (Pendiente)
             estadoGlobal.partidos.forEach(p => {
                 p.golesA = null;
                 p.golesB = null;
             });
 
-            // 4. Cambiamos el entorno local al usuario inicial temporal
             usuarioActivo = "Admin";
             localStorage.setItem('q_pro_usuario', "Admin");
 
-            // 5. Guardamos en el servidor en la nube y cerramos el modal
             const exito = await guardarDatosNube();
             if (exito) {
                 alert("💥 El torneo ha sido reseteado con éxito. Todo ha vuelto a 0 puntos.");
