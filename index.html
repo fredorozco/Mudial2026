@@ -16,7 +16,6 @@
 
     <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <!-- COLUMNA IZQUIERDA -->
         <div class="lg:col-span-1 space-y-6">
             <div class="bg-gray-800 p-5 rounded-xl shadow-md border border-gray-700">
                 <div class="flex justify-between items-center mb-3">
@@ -61,7 +60,6 @@
             </div>
         </div>
 
-        <!-- COLUMNA DERECHA -->
         <div class="lg:col-span-2 space-y-4">
             <div class="bg-slate-950/60 p-2 rounded-xl border border-gray-800 shadow-inner">
                 <div class="flex flex-wrap sm:flex-nowrap gap-1 w-full" id="barra-navegacion-fases">
@@ -92,7 +90,6 @@
         </div>
     </main>
 
-    <!-- MODAL ADMINISTRADOR -->
     <div id="modal-admin" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50 overflow-y-auto">
         <div class="bg-gray-800 border border-gray-700 max-w-2xl w-full rounded-xl p-6 shadow-2xl my-8">
             <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
@@ -120,6 +117,7 @@
     </div>
 
     <script>
+        // URL Base corregida con formato estricto v3
         const API_URL = "https://api.jsonbin.io/v3/b/6a1c6830ddf5aa59f77c55cb";
         const API_KEY = "$2a$10$XyUj2CMHZ25Z0GcI28exwuGl4bCJSIB0cE2cO2aWl5LNVA8Bief4y"; 
         const LLAVE_ADMIN = "Mundial2026";
@@ -133,7 +131,7 @@
             { id: 6, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 3", equipoA: "Sudáfrica 🇿🇦", equipoB: "Corea del Sur 🇰🇷", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
             { id: 7, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Canadá 🇨🇦", equipoB: "Bosnia 🇧🇦", fechaStr: "12 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             { id: 8, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 1", equipoA: "Qatar 🇶🇦", equipoB: "Suiza 🇨🇭", fechaStr: "13 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
-            { id: 9, fase: "Grupos", group: "Grupo B", jornada: "Jornada 2", equipoA: "Suiza 🇨🇭", equipoB: "Bosnia 🇧🇦", fechaStr: "18 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
+            { id: 9, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 2", equipoA: "Suiza 🇨🇭", equipoB: "Bosnia 🇧🇦", fechaStr: "18 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             { id: 10, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 2", equipoA: "Canadá 🇨🇦", equipoB: "Qatar 🇶🇦", fechaStr: "18 de Junio", horaStr: "4:00 pm", golesA: null, golesB: null },
             { id: 11, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 3", equipoA: "Suiza 🇨🇭", equipoB: "Canadá 🇨🇦", fechaStr: "24 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
             { id: 12, fase: "Grupos", grupo: "Grupo B", jornada: "Jornada 3", equipoA: "Bosnia 🇧🇦", equipoB: "Qatar 🇶🇦", fechaStr: "24 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
@@ -165,32 +163,37 @@
         }
 
         async function cargarDatosNube() {
+            // Se fuerza la ruta /latest para jalar siempre los datos más nuevos de JSONBin v3
             mostrarCarga(30);
             try {
                 const res = await fetch(`${API_URL}/latest`, { 
                     method: 'GET',
-                    headers: { "X-Master-Key": API_KEY } 
+                    headers: { 
+                        "X-Master-Key": API_KEY,
+                        "X-Bin-Meta": "false" // Esto simplifica la respuesta eliminando metadatos innecesarios
+                    } 
                 });
                 
                 if (!res.ok) {
-                    throw new Error("Respuesta inválida de JSONBin");
+                    throw new Error(`Error de servidor JSONBin: Código ${res.status}`);
                 }
                 
                 const data = await res.json();
                 
-                if (data && data.record) {
-                    if (data.record.partidos && data.record.partidos.length > 0) {
-                        estadoGlobal = data.record;
-                    } else {
-                        estadoGlobal.usuarios = data.record.usuarios || ["fedy", "Carlos"];
-                        estadoGlobal.partidos = partidosBase;
-                        estadoGlobal.pronosticos = data.record.pronosticos || {};
-                        await guardarDatosNube();
-                    }
+                // Validación estricta v3: JSONBin puede devolver la data directa o envuelta en .record
+                let recordObtenido = data.record ? data.record : data;
+
+                if (recordObtenido && recordObtenido.usuarios && Array.isArray(recordObtenido.usuarios)) {
+                    estadoGlobal = recordObtenido;
+                    console.log("✅ Datos cargados con éxito desde la nube:", estadoGlobal);
+                } else {
+                    console.warn("⚠️ El Bin está vacío o tiene formato incorrecto. Formateando estructura básica...");
+                    await guardarDatosNube();
                 }
                 mostrarCarga(100);
             } catch (err) {
-                console.warn("⚠️ JSONBin no responde. Usando base de datos local a prueba de fallos.");
+                console.error("❌ Error crítico al conectar con la nube:", err);
+                alert(`No se pudo sincronizar: ${err.message}\nSe usarán datos locales temporales.`);
                 mostrarCarga(100);
             } finally {
                 if(!estadoGlobal.usuarios.includes(usuarioActivo)) {
@@ -207,18 +210,21 @@
                     method: 'PUT',
                     headers: { 
                         'Content-Type': 'application/json', 
-                        'X-Master-Key': API_KEY 
+                        'X-Master-Key': API_KEY
                     },
                     body: JSON.stringify(estadoGlobal)
                 });
                 
+                if (!respuesta.ok) {
+                    throw new Error(`Error al guardar: Código ${respuesta.status}`);
+                }
+                
                 mostrarCarga(100);
                 actualizarPantallaQuiniela();
-                return respuesta.ok;
+                return true;
             } catch (err) {
-                console.error("Error al guardar en la nube:", err);
+                console.error("❌ Error al guardar en la nube:", err);
                 mostrarCarga(100);
-                actualizarPantallaQuiniela();
                 return false;
             }
         }
@@ -234,12 +240,14 @@
             document.getElementById('nuevo-usuario').value = '';
 
             actualizarPantallaQuiniela();
-            await guardarDatosNube();
+            const exito = await guardarDatosNube();
+            if(exito) alert(`👤 ¡Bienvenido ${nombreNuevo}! Guardado en la nube.`);
         }
 
         function cambiarUsuario() {
             usuarioActivo = document.getElementById('select-usuario').value;
             localStorage.setItem('q_pro_usuario', usuarioActivo);
+            actualizarPantancy();
             actualizarPantallaQuiniela();
         }
 
