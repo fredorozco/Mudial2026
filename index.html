@@ -1,12 +1,4 @@
-¡Excelente observación! Con el formato expandido del Mundial de 48 equipos (que se estrena precisamente en este 2026), clasifican los mejores de la Fase de Grupos a una ronda extra eliminatoria: los **16avos de Final** (o ronda de 32 equipos), justo antes de los Octavos.
 
-Para integrarlo limpiamente sin romper la base de datos ni desordenar la interfaz, he realizado las siguientes optimizaciones estructurales en tu código:
-
-1. **Añadida la Fase "16avos":** Se insertó el botón correspondiente en la barra de navegación de fases de la interfaz de usuario.
-2. **Soporte en Administración:** El panel de administrador ahora incluye la opción de filtrar y crear partidos manualmente bajo la etiqueta de **16avos de Final**.
-3. **Escalabilidad del Script:** Se mapeó el ciclo de vida de navegación (`["Grupos", "16avos", "Octavos", "Cuartos", "Semifinales", "Finales"]`) de extremo a extremo para asegurar que el cálculo de puntos, renderizado de marcadores exactos y persistencia en la nube funcionen a la perfección con la nueva etapa.
-
-Aquí tienes el código completo y mejorado listo para producción:
 
 ```html
 <!DOCTYPE html>
