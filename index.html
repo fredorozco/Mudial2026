@@ -369,36 +369,35 @@
             }
         }
 
-       async function alternarBloqueoTorneo() {
-    const nuevoEstado = !estadoGlobal.torneoIniciado;
+      async function alternarBloqueoTorneo() {
+    // 1. Determinar el nuevo estado opuesto al actual
+    const nuevoEstadoCandado = !estadoGlobal.torneoIniciado;
     
-    // Capturamos el botón para dar feedback visual inmediato
     const btn = document.getElementById('btn-toggle-torneo');
     if(btn) {
         btn.disabled = true;
-        btn.textContent = "⏳ Sincronizando candado...";
+        btn.textContent = "⏳ Sincronizando candado con la nube...";
     }
 
     mostrarCarga(40);
-    // Enviamos el nuevo estado de bloqueo a la celda B2 de la pestaña 'Usuarios'
-    const exito = await enviarComandoNube({
-        action: "toggle_lock",
-        bloqueado: nuevoEstado
-    });
 
-    if (exito) {
-        estadoGlobal.torneoIniciado = nuevoEstado;
-        alert(estadoGlobal.torneoIniciado ? "🚫 Pronósticos CERRADOS y bloqueados permanentemente." : "🔓 Pronósticos ABIERTOS para edición.");
-    } else {
-        alert("❌ Error de red: No se pudo actualizar el estado de bloqueo en la base de datos.");
-    }
-
-    if(btn) btn.disabled = false;
-    mostrarCarga(100);
+    // 2. CAMBIO INMEDIATO LOCAL: Forzamos el bloqueo en la página web sin esperar a la red
+    estadoGlobal.torneoIniciado = nuevoEstadoCandado;
     actualizarBotonAdminTorneo();
     actualizarPantallaQuiniela();
-}
 
+    // 3. ENVIAR A GOOGLE SHEETS: Mandamos la orden en segundo plano
+    await enviarComandoNube({
+        action: "toggle_lock",
+        bloqueado: nuevoEstadoCandado
+    });
+
+    if (btn) btn.disabled = false;
+    mostrarCarga(100);
+    
+    // 4. Mensaje de confirmación al Administrador
+    alert(nuevoEstadoCandado ? "🚫 Pronósticos bloqueados con éxito en la nube." : "🔓 Pronósticos abiertos para edición.");
+}
         function renderizarListaPartidosAdmin() {
             const renderCont = document.getElementById('admin-lista-partidos-render');
             const faseFiltro = document.getElementById('admin-filtro-fase-lista').value;
