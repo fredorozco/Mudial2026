@@ -369,13 +369,35 @@
             }
         }
 
-        async function alternarBloqueoTorneo() {
-            estadoGlobal.torneoIniciado = !estadoGlobal.torneoIniciado;
-            actualizarBotonAdminTorneo();
-            // Guardado opcional en caché o estado local si deseas persistir la traba entre recargas
-            alert(estadoGlobal.torneoIniciado ? "🚫 Pronósticos cerrados en esta sesión." : "🔓 Pronósticos abiertos.");
-            actualizarPantallaQuiniela();
-        }
+       async function alternarBloqueoTorneo() {
+    const nuevoEstado = !estadoGlobal.torneoIniciado;
+    
+    // Capturamos el botón para dar feedback visual inmediato
+    const btn = document.getElementById('btn-toggle-torneo');
+    if(btn) {
+        btn.disabled = true;
+        btn.textContent = "⏳ Sincronizando candado...";
+    }
+
+    mostrarCarga(40);
+    // Enviamos el nuevo estado de bloqueo a la celda B2 de la pestaña 'Usuarios'
+    const exito = await enviarComandoNube({
+        action: "toggle_lock",
+        bloqueado: nuevoEstado
+    });
+
+    if (exito) {
+        estadoGlobal.torneoIniciado = nuevoEstado;
+        alert(estadoGlobal.torneoIniciado ? "🚫 Pronósticos CERRADOS y bloqueados permanentemente." : "🔓 Pronósticos ABIERTOS para edición.");
+    } else {
+        alert("❌ Error de red: No se pudo actualizar el estado de bloqueo en la base de datos.");
+    }
+
+    if(btn) btn.disabled = false;
+    mostrarCarga(100);
+    actualizarBotonAdminTorneo();
+    actualizarPantallaQuiniela();
+}
 
         function renderizarListaPartidosAdmin() {
             const renderCont = document.getElementById('admin-lista-partidos-render');
