@@ -120,10 +120,10 @@
             </div>
 
             <div class="mb-6 p-4 bg-slate-900 rounded-xl border border-dashed border-slate-700">
-                <h4 class="text-xs font-bold text-yellow-500 uppercase tracking-wider mb-2">🔒 Seguridad de Pronósticos</h4>
+                <h4 class="text-xs font-bold text-yellow-500 uppercase tracking-wider mb-2">🔒 Seguridad de Pronósticos (Celda C2 - Usuarios)</h4>
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
                     <p class="text-xs text-slate-300 text-center sm:text-left">
-                        Activa el bloqueo cuando empiece el primer partido para congelar los marcadores de todos los usuarios.
+                        Muestra el estado actual leído desde Google Sheets. También puedes cambiarlo desde aquí.
                     </p>
                     <button id="btn-toggle-torneo" onclick="alternarBloqueoTorneo()" class="w-full sm:w-auto px-4 py-2 rounded text-xs font-bold transition shadow-md">
                         Cargando estado...
@@ -153,13 +153,9 @@
     </div>
 
     <script>
-        // ==========================================
-        // CONFIGURACIÓN DE LA API (GOOGLE SHEETS)
-        // ==========================================
         const API_KEY = "https://script.google.com/macros/s/AKfycbzaQD1eNCSLJbpjixksoC4tEmvh4kZD1U_IdlzXXIl0mz1SwTZsUFfkftAqy7lOBx5qqA/exec";
         const LLAVE_ADMIN = "Mundial2026";
 
-        // Mapeo defensivo local por si la hoja de cálculo estuviera vacía en el primer arranque
         const partidosBase = [
             { id: 1, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "México 🇲🇽", equipoB: "Sudáfrica 🇿🇦", fecha: "11 de Junio", hora: "1:00 pm", golesA: null, golesB: null },
             { id: 2, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "Corea del Sur 🇰🇷", equipoB: "Chequia 🇨🇿", fecha: "11 de Junio", hora: "8:00 pm", golesA: null, golesB: null },
@@ -190,7 +186,6 @@
         // OPERACIONES CON LA NUBE (FETCH API)
         // ==========================================
 
-        // 1. CARGAR TODOS LOS DATOS DESDE LAS PESTAÑAS (Lectura)
         async function cargarDatosNube() {
             mostrarCarga(30);
             try {
@@ -201,14 +196,22 @@
                     datos.partidos = partidosBase;
                 }
                 
-                estadoGlobal = datos;
+                // EVALUACIÓN DE LA CELDA C2 (Usuarios) ENVIADA DESDE LA NUBE
+                if (datos.torneoIniciado === true || datos.torneoIniciado === "VERDADERO" || datos.torneoIniciado === "true") {
+                    estadoGlobal.torneoIniciado = true;
+                } else {
+                    estadoGlobal.torneoIniciado = false;
+                }
                 
-                // Si el usuario en memoria ya no existe o está vacío, tomamos el primero disponible
+                estadoGlobal.usuarios = datos.usuarios || [];
+                estadoGlobal.partidos = datos.partidos || [];
+                estadoGlobal.pronosticos = datos.pronosticos || {};
+                
                 if (!usuarioActivo || !estadoGlobal.usuarios.includes(usuarioActivo)) {
                     usuarioActivo = estadoGlobal.usuarios.length > 0 ? estadoGlobal.usuarios[0] : "Invitado";
                 }
                 
-                console.log("¡Sincronizado con con éxito!");
+                console.log("¡Sincronizado con éxito! Estado de bloqueo (C2):", estadoGlobal.torneoIniciado);
                 mostrarCarga(100);
                 actualizarPantallaQuiniela();
             } catch (error) {
@@ -219,7 +222,6 @@
             }
         }
 
-        // POST Generico Auxiliar para evitar código repetido y manejar el no-cors de Apps Script
         async function enviarComandoNube(payload) {
             try {
                 await fetch(API_KEY, {
@@ -260,7 +262,6 @@
                 usuarioActivo = nombre;
                 localStorage.setItem('q_pro_usuario', usuarioActivo);
                 input.value = "";
-                console.log("Usuario añadido en la pestaña 'Usuarios'");
                 mostrarCarga(100);
                 actualizarPantallaQuiniela();
             }
@@ -290,8 +291,9 @@
         }
 
         async function guardarPronosticos() {
+            // DOBLE VERIFICACIÓN DE SEGURIDAD ANTES DE GUARDAR
             if(estadoGlobal.torneoIniciado) {
-                alert("🚫 El torneo ya ha comenzado. No se permiten modificaciones.");
+                alert("🚫 El torneo ya ha comenzado (Bloqueado desde celda C2). No se permiten modificaciones.");
                 return;
             }
 
@@ -304,7 +306,7 @@
 
                 if(inpA && inpB && inpA.value !== "" && inpB.value !== "") {
                     pronosticosLote.push({
-                        partidoId: partido.id,
+                        partidoId: p.partidoId || partido.id,
                         golesA: parseInt(inpA.value),
                         golesB: parseInt(inpB.value)
                     });
@@ -361,43 +363,40 @@
             const btn = document.getElementById('btn-toggle-torneo');
             if(!btn) return;
             if(estadoGlobal.torneoIniciado) {
-                btn.textContent = "🔒 Torneo Iniciado (Bloqueado)";
+                btn.textContent = "🔒 C2: VERDADERO (Bloqueado)";
                 btn.className = "w-full sm:w-auto px-4 py-2 rounded text-xs font-bold bg-red-700 hover:bg-red-600 text-white transition shadow-md";
             } else {
-                btn.textContent = "🔓 Torneo No Iniciado (Abierto)";
+                btn.textContent = "🔓 C2: FALSO (Abierto)";
                 btn.className = "w-full sm:w-auto px-4 py-2 rounded text-xs font-bold bg-emerald-700 hover:bg-emerald-600 text-white transition shadow-md";
             }
         }
 
-      async function alternarBloqueoTorneo() {
-    // 1. Determinar el nuevo estado opuesto al actual
-    const nuevoEstadoCandado = !estadoGlobal.torneoIniciado;
-    
-    const btn = document.getElementById('btn-toggle-torneo');
-    if(btn) {
-        btn.disabled = true;
-        btn.textContent = "⏳ Sincronizando candado con la nube...";
-    }
+        async function alternarBloqueoTorneo() {
+            const nuevoEstadoCandado = !estadoGlobal.torneoIniciado;
+            
+            const btn = document.getElementById('btn-toggle-torneo');
+            if(btn) {
+                btn.disabled = true;
+                btn.textContent = "⏳ Cambiando celda C2 en la nube...";
+            }
 
-    mostrarCarga(40);
+            mostrarCarga(40);
 
-    // 2. CAMBIO INMEDIATO LOCAL: Forzamos el bloqueo en la página web sin esperar a la red
-    estadoGlobal.torneoIniciado = nuevoEstadoCandado;
-    actualizarBotonAdminTorneo();
-    actualizarPantallaQuiniela();
+            estadoGlobal.torneoIniciado = nuevoEstadoCandado;
+            actualizarBotonAdminTorneo();
+            actualizarPantallaQuiniela();
 
-    // 3. ENVIAR A GOOGLE SHEETS: Mandamos la orden en segundo plano
-    await enviarComandoNube({
-        action: "toggle_lock",
-        bloqueado: nuevoEstadoCandado
-    });
+            await enviarComandoNube({
+                action: "toggle_lock",
+                bloqueado: nuevoEstadoCandado
+            });
 
-    if (btn) btn.disabled = false;
-    mostrarCarga(100);
-    
-    // 4. Mensaje de confirmación al Administrador
-    alert(nuevoEstadoCandado ? "🚫 Pronósticos bloqueados con éxito en la nube." : "🔓 Pronósticos abiertos para edición.");
-}
+            if (btn) btn.disabled = false;
+            mostrarCarga(100);
+            
+            alert(nuevoEstadoCandado ? "🚫 Celda C2 cambiada a VERDADERO. Pronósticos bloqueados." : "🔓 Celda C2 cambiada a FALSO. Pronósticos abiertos.");
+        }
+
         function renderizarListaPartidosAdmin() {
             const renderCont = document.getElementById('admin-lista-partidos-render');
             const faseFiltro = document.getElementById('admin-filtro-fase-lista').value;
@@ -428,7 +427,6 @@
             
             mostrarCarga(40);
             
-            // Recorremos los inputs y enviamos uno por uno los cambios modificados a la pestaña 'Partidos'
             for (const p of partidos) {
                 const inpA = document.getElementById(`admin-golesA-${p.id}`);
                 const inpB = document.getElementById(`admin-golesB-${p.id}`);
@@ -449,7 +447,7 @@
                 }
             }
 
-            alert("Marcadores oficiales actualizados en la pestaña 'Partidos'.");
+            alert("Marcadores oficiales actualizados.");
             mostrarCarga(100);
             cerrarModalAdmin();
             actualizarPantallaQuiniela();
@@ -519,145 +517,137 @@
         }
 
         function actualizarPantallaQuiniela() {
-    const contenedor = document.getElementById('lista-partidos-contenedor');
-    const selectUsr = document.getElementById('select-usuario');
-    const badgeUsr = document.getElementById('badge-usuario');
-    const tablaPos = document.getElementById('tabla-posiciones');
-    const btnGuardar = document.getElementById('btn-guardar-pronosticos');
+            const contenedor = document.getElementById('lista-partidos-contenedor');
+            const selectUsr = document.getElementById('select-usuario');
+            const badgeUsr = document.getElementById('badge-usuario');
+            const tablaPos = document.getElementById('tabla-posiciones');
+            const btnGuardar = document.getElementById('btn-guardar-pronosticos');
 
-    actualizarProximoPartidoDestacado();
+            actualizarProximoPartidoDestacado();
 
-    // 1. Bloquear o desbloquear el botón grande de guardar pronósticos
-    if (btnGuardar) {
-        if(estadoGlobal.torneoIniciado) {
-            btnGuardar.disabled = true;
-            btnGuardar.textContent = "🔒 Pronósticos Bloqueados (Torneo en Curso)";
-            btnGuardar.className = "bg-slate-700 text-slate-400 font-bold px-6 py-3 rounded-lg shadow-lg cursor-not-allowed";
-        } else {
-            btnGuardar.disabled = false;
-            btnGuardar.textContent = "💾 Guardar Pronósticos de esta Sección";
-            btnGuardar.className = "bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-lg shadow-lg transition transform active:scale-95";
-        }
-    }
+            // DESACTIVACIÓN DEL BOTÓN DE GUARDAR SI ESTADO GLOBAL ES VERDADERO
+            if (btnGuardar) {
+                if(estadoGlobal.torneoIniciado) {
+                    btnGuardar.disabled = true;
+                    btnGuardar.textContent = "🔒 Pronósticos Bloqueados (Celda C2: VERDADERO)";
+                } else {
+                    btnGuardar.disabled = false;
+                    btnGuardar.textContent = "💾 Guardar Pronósticos de esta Sección";
+                }
+            }
 
-    if (selectUsr) {
-        selectUsr.innerHTML = '';
-        estadoGlobal.usuarios.forEach(u => {
-            const opt = document.createElement('option');
-            const pts = calcularPuntosUsuario(u);
-            opt.value = u; opt.textContent = `${u} (${pts} pts)`;
-            if(u === usuarioActivo) opt.selected = true;
-            selectUsr.appendChild(opt);
-        });
-    }
+            if (selectUsr) {
+                selectUsr.innerHTML = '';
+                estadoGlobal.usuarios.forEach(u => {
+                    const opt = document.createElement('option');
+                    const pts = calcularPuntosUsuario(u);
+                    opt.value = u; opt.textContent = `${u} (${pts} pts)`;
+                    if(u === usuarioActivo) opt.selected = true;
+                    selectUsr.appendChild(opt);
+                });
+            }
 
-    if (badgeUsr) badgeUsr.textContent = usuarioActivo || "Invitado";
+            if (badgeUsr) badgeUsr.textContent = usuarioActivo || "Invitado";
 
-    if (tablaPos) {
-        tablaPos.innerHTML = '';
-        let posiciones = estadoGlobal.usuarios.map(u => {
-            return { nombre: u, puntos: calcularPuntosUsuario(u) };
-        }).sort((a, b) => b.puntos - a.puntos);
+            if (tablaPos) {
+                tablaPos.innerHTML = '';
+                let posiciones = estadoGlobal.usuarios.map(u => {
+                    return { nombre: u, puntos: calcularPuntosUsuario(u) };
+                }).sort((a, b) => b.puntos - a.puntos);
 
-        if(posiciones.length === 0) {
-            tablaPos.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Ningún jugador se ha unido.</td></tr>`;
-        }
-
-        posiciones.forEach((p, idx) => {
-            const esActivo = p.nombre === usuarioActivo ? 'bg-blue-950/40 font-bold text-blue-300' : '';
-            tablaPos.innerHTML += `<tr class="${esActivo} hover:bg-slate-700/30 transition">
-                <td class="p-2 text-center text-slate-400">${idx + 1}</td>
-                <td class="p-2">${p.nombre}</td>
-                <td class="p-2 text-center text-emerald-400 font-bold">${p.puntos}</td>
-                <td class="p-2 text-center">
-                    <button onclick="eliminarUsuario('${p.nombre}')" class="text-xs text-slate-500 hover:text-red-400 px-1 py-0.5 rounded transition">✕</button>
-                </td>
-            </tr>`;
-        });
-    }
-
-    if (contenedor) {
-        contenedor.innerHTML = '';
-        const partidosFiltrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
-        let llavesAgrupacion = [...new Set(partidosFiltrados.map(p => p.grupo || p.jornada || "Encuentros"))];
-
-        if (partidosFiltrados.length === 0) {
-            contenedor.innerHTML = `<p class="text-center text-slate-500 text-sm py-8">No hay partidos registrados en esta fase todavía.</p>`;
-            return;
-        }
-
-        llavesAgrupacion.forEach(grupoNombre => {
-            let bloqueHTML = `<div class="bg-slate-900/40 p-4 rounded-xl border border-slate-700/50">
-                <h3 class="text-xs font-black text-blue-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-1">${grupoNombre}</h3>
-                <div class="space-y-3">`;
-
-            const partidosDelGrupo = partidosFiltrados.filter(p => (p.grupo === grupoNombre || p.jornada === grupoNombre));
-
-            partidosDelGrupo.forEach(partido => {
-                const prUser = (estadoGlobal.pronosticos[usuarioActivo] && estadoGlobal.pronosticos[usuarioActivo][partido.id]) ? estadoGlobal.pronosticos[usuarioActivo][partido.id] : { golesA: '', golesB: '' };
-                
-                const txtReal = (partido.golesA !== null && partido.golesB !== null) ? 
-                    `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">Real: ${partido.golesA} - ${partido.golesB}</span>` : 
-                    `<span class="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded">Real: ⚠️ Pendiente</span>`;
-
-                let badgeAcertadoHTML = '';
-                if (partido.golesA !== null && partido.golesB !== null) {
-                    if (prUser.golesA === '' || prUser.golesB === '') {
-                        badgeAcertadoHTML = `<span class="bg-slate-950 text-slate-500 text-[10px] px-2 py-1 rounded border border-slate-800 text-center block sm:inline-block">➖ Sin pronóstico</span>`;
-                    } else {
-                        const gRealA = parseInt(partido.golesA);
-                        const gRealB = parseInt(partido.golesB);
-                        const gPronA = parseInt(prUser.golesA);
-                        const gPronB = parseInt(prUser.golesB);
-
-                        const tendReal = gRealA > gRealB ? 'A' : (gRealA < gRealB ? 'B' : 'E');
-                        const tendPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
-
-                        if (gRealA === gPronA && gRealB === gPronB) {
-                            badgeAcertadoHTML = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block sm:inline-block">🎯 Marcador Exacto (+3)</span>`;
-                        } else if (tendReal === tendPron) {
-                            badgeAcertadoHTML = `<span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block sm:inline-block">✅ Ganador/Empate (+1)</span>`;
-                        } else {
-                            badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium px-2 py-1 rounded text-center block sm:inline-block">❌ No acertado (+0)</span>`;
-                        }
-                    }
+                if(posiciones.length === 0) {
+                    tablaPos.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Ningún jugador se ha unido.</td></tr>`;
                 }
 
-                // ==========================================================
-                // AQUÍ ESTÁ LA LÍNEA DETECTA-BLOQUEOS QUE TE HACÍA FALTA:
-                // ==========================================================
-                const estaDeshabilitado = estadoGlobal.torneoIniciado ? 
-                    'disabled class="w-10 bg-slate-950 text-center text-slate-500 py-1 font-bold rounded border border-slate-800 cursor-not-allowed text-sm"' : 
-                    'class="w-10 bg-slate-950 text-center text-white py-1 font-bold rounded border border-slate-700 focus:border-blue-500 focus:outline-none text-sm"';
+                posiciones.forEach((p, idx) => {
+                    const esActivo = p.nombre === usuarioActivo ? 'bg-blue-950/40 font-bold text-blue-300' : '';
+                    tablaPos.innerHTML += `<tr class="${esActivo} hover:bg-slate-700/30 transition">
+                        <td class="p-2 text-center text-slate-400">${idx + 1}</td>
+                        <td class="p-2">${p.nombre}</td>
+                        <td class="p-2 text-center text-emerald-400 font-bold">${p.puntos}</td>
+                        <td class="p-2 text-center">
+                            <button onclick="eliminarUsuario('${p.nombre}')" class="text-xs text-slate-500 hover:text-red-400 px-1 py-0.5 rounded transition">✕</button>
+                        </td>
+                    </tr>`;
+                });
+            }
 
-                bloqueHTML += `
-                    <div class="flex flex-col sm:flex-row items-center justify-between p-3 bg-slate-800/80 rounded-lg gap-3 border border-slate-700/30">
-                        <div class="text-center sm:text-left min-w-[125px] space-y-1">
-                            <p class="text-[11px] text-slate-400 font-medium">${partido.fecha} • ${partido.hora}</p>
-                            <div class="flex flex-col gap-1 items-center sm:items-start">
-                                ${txtReal}
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-center gap-2 flex-1 w-full sm:w-auto">
-                            <div class="text-right flex-1 font-semibold text-sm truncate text-slate-200">${partido.equipoA}</div>
-                            
-                            <input type="number" id="pron-A-${partido.id}" value="${prUser.golesA !== undefined ? prUser.golesA : ''}" min="0" placeholder="-" ${estaDeshabilitado}>
-                            <span class="text-slate-600 text-xs font-bold">vs</span>
-                            <input type="number" id="pron-B-${partido.id}" value="${prUser.golesB !== undefined ? prUser.golesB : ''}" min="0" placeholder="-" ${estaDeshabilitado}>
-                            
-                            <div class="text-left flex-1 font-semibold text-sm truncate text-slate-200">${partido.equipoB}</div>
-                        </div>
-                        <div class="min-w-[130px] flex justify-center sm:justify-end">
-                            ${badgeAcertadoHTML}
-                        </div>
-                    </div>`;
-            });
+            if (contenedor) {
+                contenedor.innerHTML = '';
+                const partidosFiltrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
+                let llavesAgrupacion = [...new Set(partidosFiltrados.map(p => p.grupo || p.jornada || "Encuentros"))];
 
-            bloqueHTML += `</div></div>`;
-            contenedor.innerHTML += bloqueHTML;
-        });
-    }
-}
+                if (partidosFiltrados.length === 0) {
+                    contenedor.innerHTML = `<p class="text-center text-slate-500 text-sm py-8">No hay partidos registrados en esta fase todavía.</p>`;
+                    return;
+                }
+
+                llavesAgrupacion.forEach(grupoNombre => {
+                    let bloqueHTML = `<div class="bg-slate-900/40 p-4 rounded-xl border border-slate-700/50">
+                        <h3 class="text-xs font-black text-blue-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-1">${grupoNombre}</h3>
+                        <div class="space-y-3">`;
+
+                    const partidosDelGrupo = partidosFiltrados.filter(p => (p.grupo === grupoNombre || p.jornada === grupoNombre));
+
+                    partidosDelGrupo.forEach(partido => {
+                        const prUser = (estadoGlobal.pronosticos[usuarioActivo] && estadoGlobal.pronosticos[usuarioActivo][partido.id]) ? estadoGlobal.pronosticos[usuarioActivo][partido.id] : { golesA: '', golesB: '' };
+                        
+                        const txtReal = (partido.golesA !== null && partido.golesB !== null) ? 
+                            `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">Real: ${partido.golesA} - ${partido.golesB}</span>` : 
+                            `<span class="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded">Real: ⚠️ Pendiente</span>`;
+
+                        let badgeAcertadoHTML = '';
+                        if (partido.golesA !== null && partido.golesB !== null) {
+                            if (prUser.golesA === '' || prUser.golesB === '') {
+                                badgeAcertadoHTML = `<span class="bg-slate-950 text-slate-500 text-[10px] px-2 py-1 rounded border border-slate-800 text-center block sm:inline-block">➖ Sin pronóstico</span>`;
+                            } else {
+                                const gRealA = parseInt(partido.golesA);
+                                const gRealB = parseInt(partido.golesB);
+                                const gPronA = parseInt(prUser.golesA);
+                                const gPronB = parseInt(prUser.golesB);
+
+                                const tendReal = gRealA > gRealB ? 'A' : (gRealA < gRealB ? 'B' : 'E');
+                                const tendPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
+
+                                if (gRealA === gPronA && gRealB === gPronB) {
+                                    badgeAcertadoHTML = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block sm:inline-block">🎯 Marcador Exacto (+3)</span>`;
+                                } else if (tendReal === tendPron) {
+                                    badgeAcertadoHTML = `<span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block sm:inline-block">✅ Ganador/Empate (+1)</span>`;
+                                } else {
+                                    badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium px-2 py-1 rounded text-center block sm:inline-block">❌ No acertado (+0)</span>`;
+                                }
+                            }
+                        }
+
+                        // DESACTIVACIÓN DE LOS INPUTS COMPLETA SI ESTADO GLOBAL ES VERDADERO
+                        const estaDeshabilitado = estadoGlobal.torneoIniciado ? 'disabled class="w-10 bg-slate-950 text-center text-slate-500 py-1 font-bold rounded border border-slate-850 cursor-not-allowed text-sm opacity-60"' : 'class="w-10 bg-slate-950 text-center text-white py-1 font-bold rounded border border-slate-700 focus:border-blue-500 focus:outline-none text-sm"';
+
+                        bloqueHTML += `
+                            <div class="flex flex-col sm:flex-row items-center justify-between p-3 bg-slate-800/80 rounded-lg gap-3 border border-slate-700/30">
+                                <div class="text-center sm:text-left min-w-[125px] space-y-1">
+                                    <p class="text-[11px] text-slate-400 font-medium">${partido.fecha} • ${partido.hora}</p>
+                                    <div class="flex flex-col gap-1 items-center sm:items-start">
+                                        ${txtReal}
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-center gap-2 flex-1 w-full sm:w-auto">
+                                    <div class="text-right flex-1 font-semibold text-sm truncate text-slate-200">${partido.equipoA}</div>
+                                    <input type="number" id="pron-A-${partido.id}" value="${prUser.golesA !== undefined ? prUser.golesA : ''}" min="0" placeholder="-" ${estaDeshabilitado}>
+                                    <span class="text-slate-600 text-xs font-bold">vs</span>
+                                    <input type="number" id="pron-B-${partido.id}" value="${prUser.golesB !== undefined ? prUser.golesB : ''}" min="0" placeholder="-" ${estaDeshabilitado}>
+                                    <div class="text-left flex-1 font-semibold text-sm truncate text-slate-200">${partido.equipoB}</div>
+                                </div>
+                                <div class="min-w-[130px] flex justify-center sm:justify-end">
+                                    ${badgeAcertadoHTML}
+                                </div>
+                            </div>`;
+                    });
+
+                    bloqueHTML += `</div></div>`;
+                    contenedor.innerHTML += bloqueHTML;
+                });
+            }
+        }
 
         function cambiarUsuario() {
             const selectUsr = document.getElementById('select-usuario');
