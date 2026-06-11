@@ -232,56 +232,33 @@
             if (bar) bar.style.width = `${porcentaje}%`;
         }
 
-        async function cargarDatosNube() {
-            mostrarCarga(30);
-            try {
-                const res = await fetch(`${API_URL}/latest`, { 
-                    method: 'GET',
-                    headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" } 
-                });
-                if (!res.ok) throw new Error(`Fallo del servidor`);
-                const data = await res.json();
-                let recordRemoto = data.record ? data.record : data;
+       // Función para descargar los datos reales desde Google al abrir la quiniela
+async function cargarDatosNube() {
+    try {
+        const respuesta = await fetch(URL_API);
+        const datos = await respuesta.json();
+        // Sincroniza el estado de tu aplicación con el JSON de Google
+        estadoGlobal = datos; 
+        console.log("¡Sincronizado con Google Cloud con éxito!");
+    } catch (error) {
+        console.error("Error al leer la base de datos de Google:", error);
+    }
+}
 
-                if (recordRemoto && recordRemoto.usuarios && recordRemoto.partidos) {
-                    estadoGlobal = recordRemoto;
-                    // Asegurar que exista la variable si el JSON remoto es viejo
-                    if (estadoGlobal.torneoIniciado === undefined) {
-                        estadoGlobal.torneoIniciado = false;
-                    }
-                } else {
-                    await guardarDatosNube();
-                }
-                mostrarCarga(100);
-            } catch (err) {
-                console.warn("⚠️ Usando base de datos interna local.");
-                mostrarCarga(100);
-            } finally {
-                if(!estadoGlobal.usuarios.includes(usuarioActivo)) {
-                    usuarioActivo = estadoGlobal.usuarios[0] || "Admin";
-                }
-                actualizarPantallaQuiniela();
-                actualizarBotonAdminTorneo();
-            }
-        }
-
-        async function guardarDatosNube() {
-            mostrarCarga(50);
-            try {
-                await fetch(API_URL, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-                    body: JSON.stringify(estadoGlobal)
-                });
-                mostrarCarga(100);
-                actualizarPantallaQuiniela();
-                return true;
-            } catch (err) {
-                mostrarCarga(100);
-                actualizarPantallaQuiniela();
-                return false;
-            }
-        }
+// Función para enviar los nuevos marcadores que guarde el administrador a la nube
+async function guardarDatosNube() {
+    try {
+        await fetch(URL_API, {
+            method: "POST",
+            mode: "no-cors", // Requerido por Apps Script para peticiones cruzadas sencillas
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(estadoGlobal)
+        });
+        console.log("Datos de la quiniela actualizados en Google.");
+    } catch (error) {
+        console.error("Error al actualizar datos en Google:", error);
+    }
+}
 
         // --- Funciones del Administrador ---
 
