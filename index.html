@@ -208,7 +208,7 @@
                     usuarioActivo = estadoGlobal.usuarios.length > 0 ? estadoGlobal.usuarios[0] : "Invitado";
                 }
                 
-                console.log("¡Sincronizado con Google Sheets con éxito!");
+                console.log("¡Sincronizado con con éxito!");
                 mostrarCarga(100);
                 actualizarPantallaQuiniela();
             } catch (error) {
@@ -230,7 +230,7 @@
                 });
                 return true;
             } catch (error) {
-                console.error("Error en la transmisión hacia Google Sheets:", error);
+                console.error("Error en la transmisión hacia la base de datos:", error);
                 return false;
             }
         }
@@ -332,7 +332,7 @@
                 pronosticosLote.forEach(p => {
                     estadoGlobal.pronosticos[usuarioActivo][p.partidoId] = { golesA: p.golesA, golesB: p.golesB };
                 });
-                alert("💾 ¡Pronósticos guardados en tu Google Sheet!");
+                alert("💾 ¡Pronósticos guardados con éxito!");
                 mostrarCarga(100);
                 actualizarPantallaQuiniela();
             }
