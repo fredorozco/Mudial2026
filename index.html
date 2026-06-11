@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -194,13 +195,13 @@
     </div>
 
     <script>
-        const API_URL = "https://api.jsonbin.io/v3/b/6a1c94a9ddf5aa59f77cd366";
-        const API_KEY = "https://script.google.com/macros/s/AKfycbzCrSsom-NuJpnzApRxwJm8CNTrgbchOfpbAoQRZqwHzZiu0e61bED_a1XvKqy7k9o7/exec";
+        // Declaración unificada de la API (Apunta a Google Apps Script)
+        const URL_API = "https://script.google.com/macros/s/AKfycbzCrSsom-NuJpnzApRxwJm8CNTrgbchOfpbAoQRZqwHzZiu0e61bED_a1XvKqy7k9o7/exec";
         const LLAVE_ADMIN = "Mundial2026";
 
         const partidosBase = [
             { id: 1, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "México 🇲🇽", equipoB: "Sudáfrica 🇿🇦", fechaStr: "11 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
-            { id: 2, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "Corea del Sur 🇰🇷", equipoB: "Chequia 🇨🇿", fechaStr: "11 de Junio", horaStr: "8:00 pm", golesA: null, golesB: null },
+            { id: 2, fase: "Grupos", group: "Grupo A", jornada: "Jornada 1", equipoA: "Corea del Sur 🇰🇷", equipoB: "Chequia 🇨🇿", fechaStr: "11 de Junio", horaStr: "8:00 pm", golesA: null, golesB: null },
             { id: 3, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "Chequia 🇨🇿", equipoB: "Sudáfrica 🇿🇦", fechaStr: "18 de Junio", horaStr: "10:00 am", golesA: null, golesB: null },
             { id: 4, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "México 🇲🇽", equipoB: "Corea del Sur 🇰🇷", fechaStr: "18 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
             { id: 5, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 3", equipoA: "Chequia 🇨🇿", equipoB: "México 🇲🇽", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
@@ -210,7 +211,7 @@
         ];
 
         let estadoGlobal = {
-            torneoIniciado: false, // Variable agregada para controlar el candado global
+            torneoIniciado: false, 
             usuarios: ["Ron", "Harry Potter", "Hermione"],
             partidos: partidosBase,
             pronosticos: {
@@ -232,33 +233,47 @@
             if (bar) bar.style.width = `${porcentaje}%`;
         }
 
-       // Función para descargar los datos reales desde Google al abrir la quiniela
-async function cargarDatosNube() {
-    try {
-        const respuesta = await fetch(URL_API);
-        const datos = await respuesta.json();
-        // Sincroniza el estado de tu aplicación con el JSON de Google
-        estadoGlobal = datos; 
-        console.log("¡Sincronizado con Google Cloud con éxito!");
-    } catch (error) {
-        console.error("Error al leer la base de datos de Google:", error);
-    }
-}
+        // Descargar datos desde Google
+        async function cargarDatosNube() {
+            try {
+                mostrarCarga(30);
+                const respuesta = await fetch(URL_API);
+                if(!respuesta.ok) throw new Error("Error de respuesta del servidor remoto.");
+                
+                const datos = await respuesta.json();
+                estadoGlobal = datos; 
+                console.log("¡Sincronizado con Google Cloud con éxito!", estadoGlobal);
+                
+                mostrarCarga(70);
+                actualizarPantallaQuiniela();
+                mostrarCarga(100);
+            } catch (error) {
+                console.error("Error al leer la base de datos de Google:", error);
+                mostrarCarga(100);
+            }
+        }
 
-// Función para enviar los nuevos marcadores que guarde el administrador a la nube
-async function guardarDatosNube() {
-    try {
-        await fetch(URL_API, {
-            method: "POST",
-            mode: "no-cors", // Requerido por Apps Script para peticiones cruzadas sencillas
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(estadoGlobal)
-        });
-        console.log("Datos de la quiniela actualizados en Google.");
-    } catch (error) {
-        console.error("Error al actualizar datos en Google:", error);
-    }
-}
+        // Enviar datos modificados a Google
+        async function guardarDatosNube() {
+            try {
+                mostrarCarga(40);
+                await fetch(URL_API, {
+                    method: "POST",
+                    mode: "no-cors", 
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(estadoGlobal)
+                });
+                console.log("Datos de la quiniela enviados a Google.");
+                mostrarCarga(80);
+                actualizarPantallaQuiniela();
+                mostrarCarga(100);
+                return true; 
+            } catch (error) {
+                console.error("Error al actualizar datos en Google:", error);
+                mostrarCarga(100);
+                return false;
+            }
+        }
 
         // --- Funciones del Administrador ---
 
@@ -370,7 +385,6 @@ async function guardarDatosNube() {
 
             actualizarProximoPartidoDestacado();
 
-            // Deshabilitar botón de guardar si el torneo inició
             if (btnGuardar) {
                 if(estadoGlobal.torneoIniciado) {
                     btnGuardar.disabled = true;
@@ -460,7 +474,6 @@ async function guardarDatosNube() {
                             }
                         }
 
-                        // CONDICIONAL DISABLED: Si el torneo inició, añadimos 'disabled' y clases visuales de bloqueo
                         const estaDeshabilitado = estadoGlobal.torneoIniciado ? 'disabled class="w-10 bg-slate-950 text-center text-slate-500 py-1 font-bold rounded border border-slate-850 cursor-not-allowed text-sm"' : 'class="w-10 bg-slate-950 text-center text-white py-1 font-bold rounded border border-slate-700 focus:border-blue-500 focus:outline-none text-sm"';
 
                         bloqueHTML += `
@@ -530,7 +543,6 @@ async function guardarDatosNube() {
         }
 
         async function guardarPronosticos() {
-            // Validación de backend local: Impedir la ejecución si el torneo ya empezó
             if(estadoGlobal.torneoIniciado) {
                 alert("🚫 El torneo ya ha comenzado. No se permiten más modificaciones en los pronósticos.");
                 return;
@@ -556,10 +568,10 @@ async function guardarDatosNube() {
 
             const guardado = await guardarDatosNube();
             if(guardado) alert("💾 ¡Pronósticos guardados y sincronizados con éxito!");
-            else alert("⚠️ Guardado en caché local. No hay conexión con el servidor remoto.");
+            else alert("⚠️ Guardado fallido. Verifica tu conexión o configuración del servidor.");
         }
 
-        // --- Funciones Restantes de Administración Manual ---
+        // --- Funciones de Administración Manual ---
 
         function toggleFormularioPartido() {
             const f = document.getElementById('formulario-crear-partido');
@@ -664,7 +676,7 @@ async function guardarDatosNube() {
                 mostrarCarga(60);
 
                 if (!datosDeportivos || !datosDeportivos.events) {
-                    alert("No se encontraron partidos en vivo reportados en internet en este momento.");
+                    alert("No se encontraron partidos reportados en internet en este momento.");
                     mostrarCarga(100);
                     return;
                 }
@@ -706,3 +718,4 @@ async function guardarDatosNube() {
     </script>
 </body>
 </html>
+
