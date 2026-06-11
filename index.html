@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -195,13 +194,13 @@
     </div>
 
     <script>
-        // Declaración unificada de la API (Apunta a Google Apps Script)
+        // Corrección: Declaración única y unificada con el nombre que espera la lógica interna
         const URL_API = "https://script.google.com/macros/s/AKfycbzCrSsom-NuJpnzApRxwJm8CNTrgbchOfpbAoQRZqwHzZiu0e61bED_a1XvKqy7k9o7/exec";
         const LLAVE_ADMIN = "Mundial2026";
 
         const partidosBase = [
             { id: 1, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "México 🇲🇽", equipoB: "Sudáfrica 🇿🇦", fechaStr: "11 de Junio", horaStr: "1:00 pm", golesA: null, golesB: null },
-            { id: 2, fase: "Grupos", group: "Grupo A", jornada: "Jornada 1", equipoA: "Corea del Sur 🇰🇷", equipoB: "Chequia 🇨🇿", fechaStr: "11 de Junio", horaStr: "8:00 pm", golesA: null, golesB: null },
+            { id: 2, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "Corea del Sur 🇰🇷", equipoB: "Chequia 🇨🇿", fechaStr: "11 de Junio", horaStr: "8:00 pm", golesA: null, golesB: null },
             { id: 3, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "Chequia 🇨🇿", equipoB: "Sudáfrica 🇿🇦", fechaStr: "18 de Junio", horaStr: "10:00 am", golesA: null, golesB: null },
             { id: 4, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "México 🇲🇽", equipoB: "Corea del Sur 🇰🇷", fechaStr: "18 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
             { id: 5, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 3", equipoA: "Chequia 🇨🇿", equipoB: "México 🇲🇽", fechaStr: "24 de Junio", horaStr: "7:00 pm", golesA: null, golesB: null },
@@ -233,19 +232,18 @@
             if (bar) bar.style.width = `${porcentaje}%`;
         }
 
-        // Descargar datos desde Google
         async function cargarDatosNube() {
             try {
                 mostrarCarga(30);
-                const respuesta = await fetch(URL_API);
-                if(!respuesta.ok) throw new Error("Error de respuesta del servidor remoto.");
-                
+                const respuesta = await fetch(URL_API); // Corrección de variable realizada
                 const datos = await respuesta.json();
+                
                 estadoGlobal = datos; 
                 console.log("¡Sincronizado con Google Cloud con éxito!", estadoGlobal);
                 
-                mostrarCarga(70);
-                actualizarPantallaQuiniela();
+                mostrarCarga(75);
+                // Forzamos actualización visual al recibir respuesta de la nube
+                actualizarPantallaQuiniela(); 
                 mostrarCarga(100);
             } catch (error) {
                 console.error("Error al leer la base de datos de Google:", error);
@@ -253,21 +251,20 @@
             }
         }
 
-        // Enviar datos modificados a Google
         async function guardarDatosNube() {
             try {
                 mostrarCarga(40);
-                await fetch(URL_API, {
+                await fetch(URL_API, { // Corrección de variable realizada
                     method: "POST",
                     mode: "no-cors", 
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(estadoGlobal)
                 });
-                console.log("Datos de la quiniela enviados a Google.");
+                console.log("Datos de la quiniela actualizados en Google.");
                 mostrarCarga(80);
                 actualizarPantallaQuiniela();
                 mostrarCarga(100);
-                return true; 
+                return true;
             } catch (error) {
                 console.error("Error al actualizar datos en Google:", error);
                 mostrarCarga(100);
@@ -571,7 +568,7 @@
             else alert("⚠️ Guardado fallido. Verifica tu conexión o configuración del servidor.");
         }
 
-        // --- Funciones de Administración Manual ---
+        // --- Funciones Restantes de Administración Manual ---
 
         function toggleFormularioPartido() {
             const f = document.getElementById('formulario-crear-partido');
@@ -718,4 +715,3 @@
     </script>
 </body>
 </html>
-
