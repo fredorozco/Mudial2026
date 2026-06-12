@@ -205,7 +205,7 @@
 
             <div id="admin-lista-partidos-render" class="space-y-2 mb-6 max-h-60 overflow-y-auto pr-1 divide-y divide-slate-800/40"></div>
 
-            <div class="flex flex-col sm:flex-row justify-end gap-3 border-t border-slate-800 pt-4">
+            <div class="flex flex-col sm:flex-row justify-end gap-3 border-t border-slate-700 pt-4">
                 <button onclick="cerrarModalAdmin()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-5 py-2 rounded text-xs transition font-medium cursor-pointer uppercase tracking-wider">Cerrar</button>
                 <button onclick="guardarResultadosAdminReales()" class="bg-emerald-700 hover:bg-emerald-600 text-white px-5 py-2 rounded text-xs font-medium transition cursor-pointer shadow-sm uppercase tracking-wider">Guardar Resultados</button>
             </div>
@@ -256,13 +256,13 @@
                 const fragmentos = fechaStr.toLowerCase().split(" de ");
                 const dia = parseInt(fragmentos[0]);
                 const mes = meses[fragmentos[1].trim()];
-                
+
                 let horas = parseInt(horaStr.split(":")[0]);
-                const minutes = parseInt(horaStr.split(":")[1].split(" ")[0]);
+                const minutos = parseInt(horaStr.split(":")[1].split(" ")[0]);
                 const ampm = horaStr.toLowerCase().includes("pm");
                 if (ampm && horas < 12) horas += 12;
                 if (!ampm && horas === 12) horas = 0;
-                return new Date(2026, mes, dia, horas, minutes);
+                return new Date(2026, mes, dia, horas, minutos);
             } catch(e) { return new Date(2026, 11, 31); }
         }
 
@@ -284,7 +284,7 @@
                 else tarjeta.classList.add('hidden');
             });
             document.querySelectorAll('.bloque-grupo-contenedor').forEach(bloque => {
-                const visibles = block = bloque.querySelectorAll('.tarjeta-partido-item:not(.hidden)').length;
+                const visibles = bloque.querySelectorAll('.tarjeta-partido-item:not(.hidden)').length;
                 if(visibles === 0 && texto !== "") bloque.classList.add('hidden');
                 else bloque.classList.remove('hidden');
             });
@@ -343,13 +343,13 @@
         async function registrarUsuario() {
             const input = document.getElementById('nuevo-usuario');
             if (!input) return;
-            const nombre = input.value.trim();
-            if (!nombre || estadoGlobal.usuarios.map(u => u.toLowerCase()).includes(nombre.toLowerCase())) {
+            const fontNombre = input.value.trim();
+            if (!fontNombre || estadoGlobal.usuarios.map(u => u.toLowerCase()).includes(fontNombre.toLowerCase())) {
                 alert("Nombre no disponible o ya registrado."); return;
             }
             mostrarCarga(40);
-            if (await enviarComandoNube({ action: "create_user", nombreUsuario: nombre })) {
-                estadoGlobal.usuarios.push(nombre); usuarioActivo = nombre;
+            if (await enviarComandoNube({ action: "create_user", nombreUsuario: fontNombre })) {
+                estadoGlobal.usuarios.push(fontNombre); usuarioActivo = fontNombre;
                 localStorage.setItem('q_pro_usuario', usuarioActivo);
                 input.value = ""; mostrarCarga(100); cargarDatosNube();
             }
@@ -444,7 +444,7 @@
         async function guardarResultadosAdminReales() {
             const faseFiltro = document.getElementById('admin-filtro-fase-lista').value;
             for (const p of estadoGlobal.partidos.filter(p => p.fase === faseFiltro)) {
-                const iA = document.getElementById(`admin-golesA-${p.id}`); const iB = document.getElementById(`admin-golesB-${p.id}`);
+                const iA = document.getElementById('admin-golesA-' + p.id); const iB = document.getElementById('admin-golesB-' + p.id);
                 if(iA && iB && iA.value !== "" && iB.value !== "") {
                     p.golesA = parseInt(iA.value); p.golesB = parseInt(iB.value);
                     await enviarComandoNube({ action: "update_results", id: p.id, golesA: p.golesA, golesB: p.golesB });
@@ -477,7 +477,7 @@
 
             estadoGlobal.partidos.forEach(p => {
                 if (p.golesA === null || p.golesB === null) return;
-                const pr = pronosticos[p.id]; 
+                const pr = pronosticos[p.id];
                 if (!pr || pr.golesA === null || pr.golesB === null || pr.golesA === '' || pr.golesB === '') {
                     marcadoresNoAcertados++;
                     return;
@@ -535,21 +535,18 @@
             document.getElementById('espiar-icono-titulo').textContent = esUsuarioPropio ? "▪" : "🔍";
             document.getElementById('espiar-tipo-titulo').textContent = esUsuarioPropio ? "Historial General" : "Auditoría de Pronósticos";
             document.getElementById('espiar-nombre-usuario').textContent = nombre;
-            
+
             const descMeta = document.getElementById('espiar-descripcion-meta');
             const contenedorLista = document.getElementById('espiar-lista-contenido');
             contenedorLista.innerHTML = '';
 
             const prUser = estadoGlobal.pronosticos[nombre] || {};
-            
-            // Separar partidos de la fase activa en jugados y futuros
             const partidosFase = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
             const partidosJugados = partidosFase.filter(p => p.golesA !== null && p.golesB !== null);
             const partidosFuturos = partidosFase.filter(p => p.golesA === null || p.golesB === null);
-            
+
             const metricas = desglosarMetricasTorneoCompleto(nombre);
 
-            // 1. Renderizar Métricas de Resumen
             descMeta.innerHTML = `
                 <div class="flex flex-col gap-1 text-slate-300 font-sans text-xs">
                     <div><b>Acertados:</b> <span class="text-slate-200">${metricas.marcadoresAcertados}</span></div>
@@ -560,12 +557,12 @@
             `;
 
             if (partidosFase.length === 0) {
-                contenedorLista.innerHTML = `<p class="text-center text-slate-500 py-6 text-xs italic">No hay partidos registrados en esta fase.</p>`;
+                contenedorLista.innerHTML = `<p class="text-center text-slate-500 py-6 text-xs italic">Aún no se computan resultados oficiales en el sistema.</p>`;
                 document.getElementById('modal-espiar').classList.remove('hidden');
                 return;
             }
 
-            // 2. Renderizar Partidos Ya Jugados (Con auditoría de colores)
+            // Partidos Jugados
             if (partidosJugados.length > 0) {
                 contenedorLista.innerHTML += `<div class="text-[10px] uppercase font-bold tracking-wider text-slate-500 mt-2 mb-1">Resultados Evaluados</div>`;
                 partidosJugados.forEach(p => {
@@ -575,7 +572,7 @@
                     let estiloBordeCard = 'border-slate-800 bg-slate-950/40';
 
                     if (!marca || marca.golesA === null || marca.golesB === null || marca.golesA === '' || marca.golesB === '') {
-                        estiloBordeCard = 'border-red-900/40 bg-gradient-to-r from-slate-900 to-red-950/10';
+                        estiloBordeCard = 'border-red-900/40 bg-gradient-to-r from-slate-950 to-red-950/10';
                         badgePuntosHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium px-2 py-1 rounded">No acertado (+0)</span>`;
                         textoMarcadores = `<p class="text-xs text-slate-500">Oficial: ${p.golesA}-${p.golesB} | Pronóstico: --</p>`;
                     } else {
@@ -587,10 +584,10 @@
                         textoMarcadores = `<p class="text-xs text-slate-400">Oficial: <span class="text-slate-200 font-medium">${gRealA}-${gRealB}</span> | Pronóstico: <span class="text-slate-200 font-medium">${gPronA}-${gPronB}</span></p>`;
 
                         if (gRealA === gPronA && gRealB === gPronB) {
-                            estiloBordeCard = 'border-emerald-900/40 bg-gradient-to-r from-slate-900 to-emerald-950/20';
+                            estiloBordeCard = 'border-emerald-900/40 bg-gradient-to-r from-slate-950 to-emerald-950/20';
                             badgePuntosHTML = `<span class="bg-emerald-950 text-emerald-400 border border-emerald-900 text-[10px] font-medium px-2 py-1 rounded">Acertado (+3)</span>`;
                         } else if (tReal === tPron) {
-                            estiloBordeCard = 'border-emerald-900/40 bg-gradient-to-r from-slate-900 to-emerald-950/20';
+                            estiloBordeCard = 'border-emerald-900/40 bg-gradient-to-r from-slate-950 to-emerald-950/20';
                             if (tReal === 'E') {
                                 badgePuntosHTML = `<span class="bg-emerald-950 text-emerald-400 border border-emerald-900 text-[10px] font-medium px-2 py-1 rounded">Empate Acertado (+1)</span>`;
                             } else {
@@ -614,7 +611,7 @@
                 });
             }
 
-            // 3. Renderizar Partidos Futuros (Visibilidad protegida o revelada según el candado del torneo)
+            // Partidos Futuros
             if (partidosFuturos.length > 0) {
                 contenedorLista.innerHTML += `<div class="text-[10px] uppercase font-bold tracking-wider text-slate-500 mt-4 mb-1">Próximos Encuentros</div>`;
                 partidosFuturos.forEach(p => {
@@ -625,11 +622,9 @@
                     const tieneProno = (marca && marca.golesA !== '' && marca.golesB !== '' && marca.golesA !== null && marca.golesB !== null);
 
                     if (esUsuarioPropio) {
-                        // El usuario siempre puede ver sus propias predicciones futuras
                         textoPrediccion = tieneProno ? `<span class="text-slate-200 font-mono text-xs bg-slate-950 px-2 py-0.5 rounded border border-slate-800">${marca.golesA} - ${marca.golesB}</span>` : `<span class="text-slate-600 text-xs italic">Sin registrar</span>`;
                         badgeEstadoFuturo = `<span class="text-[10px] text-slate-400 font-mono">Tus datos</span>`;
                     } else {
-                        // Para los rivales, depende de si la fase está cerrada/iniciada
                         if (estadoGlobal.torneoIniciado) {
                             textoPrediccion = tieneProno ? `<span class="text-slate-200 font-mono text-xs bg-slate-950 px-2 py-0.5 rounded border border-slate-800">${marca.golesA} - ${marca.golesB}</span>` : `<span class="text-slate-600 text-xs italic">Sin registro</span>`;
                             badgeEstadoFuturo = `<span class="text-[10px] text-emerald-500 font-mono">Revelado</span>`;
@@ -656,7 +651,26 @@
             document.getElementById('modal-espiar').classList.remove('hidden');
         }
 
+        function cambiarUsuario() {
+            if (!verificarBloqueoNavegacion()) {
+                const selectUsr = document.getElementById('select-usuario');
+                if (selectUsr) selectUsr.value = usuarioActivo;
+                return;
+            }
+            const selectUsr = document.getElementById('select-usuario');
+            if (selectUsr) {
+                usuarioActivo = selectUsr.value;
+                localStorage.setItem('q_pro_usuario', usuarioActivo);
+                tieneCambiosSinGuardar = false;
+                actualizarPantallaQuiniela();
+            }
+        }
+
         function cerrarModalEspiar() { document.getElementById('modal-espiar').classList.add('hidden'); }
+
+        function administrarTorneo() {
+            verificarAccAccessAdmin();
+        }
 
         function calcularTendenciaComunidad(partidoId) {
             let totalLocal = 0, totalEmpate = 0, totalVisita = 0, totalPronos = 0;
@@ -793,12 +807,12 @@
                 llavesAgrupacion.sort((a, b) => {
                     const partidosA = partidosFiltrados.filter(p => (p.grupo === a || p.jornada === a));
                     const partidosB = partidosFiltrados.filter(p => (p.grupo === b || p.jornada === b));
-                    
+
                     const tienePartidoHoyA = partidosA.some(p => {
                         const fechaP = normalizarFechaHora(p.fecha, p.hora);
                         return fechaP.getFullYear() === hoyAño && fechaP.getMonth() === hoyMes && fechaP.getDate() === hoyDia;
                     });
-                    
+
                     const tienePartidoHoyB = partidosB.some(p => {
                         const fechaP = normalizarFechaHora(p.fecha, p.hora);
                         return fechaP.getFullYear() === hoyAño && fechaP.getMonth() === hoyMes && fechaP.getDate() === hoyDia;
@@ -806,13 +820,13 @@
 
                     if (tienePartidoHoyA && !tienePartidoHoyB) return -1;
                     if (!tienePartidoHoyA && tienePartidoHoyB) return 1;
-                    
+
                     return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
                 });
 
                 llavesAgrupacion.forEach((grupoNombre, indiceGrupo) => {
                     const partidosDelGrupo = partidosFiltrados.filter(p => (p.grupo === grupoNombre || p.jornada === grupoNombre)).sort((a,b)=>normalizarFechaHora(a.fecha,a.hora)-normalizarFechaHora(b.fecha,b.hora));
-                    
+
                     const tieneAccionHoy = partidosDelGrupo.some(p => {
                         const fechaP = normalizarFechaHora(p.fecha, p.hora);
                         return fechaP.getFullYear() === hoyAño && fechaP.getMonth() === hoyMes && fechaP.getDate() === hoyDia;
@@ -835,7 +849,7 @@
                         if (partido.golesA !== null && partido.golesB !== null) {
                             if (prUser.golesA === '' || prUser.golesB === '' || prUser.golesA === null || prUser.golesB === null) {
                                 estiloFilaPartido = 'border-red-900/40 bg-gradient-to-r from-slate-950 to-red-950/10';
-                                badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium block w-full sm:w-auto sm:text-right shadow-sm rounded px-1.5 py-0.5">Sin Acierto</span>`;
+                                badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium block w-full sm:w-auto sm:text-right shadow-sm rounded px-1.5 py-0.5">No acertado</span>`;
                             } else {
                                 const gRealA = parseInt(partido.golesA); const gRealB = parseInt(partido.golesB);
                                 const gPronA = parseInt(prUser.golesA); const gPronB = parseInt(prUser.golesB);
@@ -862,7 +876,7 @@
                         const tendencia = calcularTendenciaComunidad(partido.id);
                         const barraTendenciaHTML = `<div class="w-full mt-2 bg-slate-950 rounded-full h-[3px] flex overflow-hidden"><div class="bg-emerald-600 transition-all duration-300" style="width: ${tendencia.local}%"></div><div class="bg-slate-700 transition-all duration-300" style="width: ${tendencia.empate}%"></div><div class="bg-slate-800 transition-all duration-300" style="width: ${tendencia.visita}%"></div></div>`;
                         const esSiguiente = (partidoProximoAbsoluto && partidoProximoAbsoluto.id === partido.id);
-                        
+
                         const claseFila = esSiguiente ? `flex flex-col sm:flex-row items-center justify-between p-3.5 bg-slate-900 border border-slate-700 rounded-lg gap-3` : `flex flex-col sm:flex-row items-center justify-between p-3.5 rounded-lg gap-3 border ${estiloFilaPartido} transition`;
                         const inputEstilo = estadoGlobal.torneoIniciado ? 'disabled class="w-10 bg-slate-900 text-center text-slate-400 py-1 font-mono text-xs rounded border border-slate-800 cursor-not-allowed"' : 'class="w-10 bg-slate-950 text-center text-slate-200 py-1 font-mono text-xs rounded border border-slate-800 focus:border-emerald-600 transition duration-150 focus:outline-none"';
 
