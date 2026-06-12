@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏆 Quiniela Mundialista Oficial 2026</title>
+    <title>Quiniela Mundialista Oficial 2026</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         /* Eliminar las flechas nativas de los inputs numéricos */
@@ -18,110 +18,112 @@
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans min-h-screen pb-12 selection:bg-emerald-600 selection:text-white">
+<body class="bg-slate-950 text-slate-200 font-sans min-h-screen pb-12 selection:bg-emerald-700 selection:text-white">
 
-    <header class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white text-center py-6 shadow-xl mb-6 relative border-b border-emerald-500/20">
-        <h1 class="text-3xl font-extrabold tracking-wider drop-shadow-md">🏆 QUINIELA EN COMUNIDAD 2026 🏆</h1>
-        <p class="text-sm text-emerald-400 mt-2 font-medium tracking-wide">Fase de Grupos Expandida & Eliminatorias Directas</p>
-        <div id="loading-bar" class="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-500 shadow-[0_0_8px_#10b981]" style="width: 0%"></div>
+    <header class="bg-slate-900 text-white text-center py-8 shadow-sm mb-6 relative border-b border-slate-800">
+        <h1 class="text-2xl font-light tracking-widest text-slate-100 uppercase">Quiniela en Comunidad 2026</h1>
+        <p class="text-xs text-emerald-500 mt-2 font-medium tracking-wider uppercase">Fase de Grupos Expandida & Eliminatorias Directas</p>
+        <div id="loading-bar" class="absolute bottom-0 left-0 h-[2px] bg-emerald-500 transition-all duration-500" style="width: 0%"></div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
         <div class="lg:col-span-1 space-y-6">
 
-            <div class="bg-slate-800/90 backdrop-blur p-5 rounded-xl shadow-md border border-slate-700/60 transition hover:border-slate-600">
+            <div class="bg-slate-900 p-5 rounded-xl shadow-sm border border-slate-800 transition">
                 <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">👤 Tu Usuario</h2>
-                    <button onclick="cargarDatosNube()" class="text-xs bg-slate-700 hover:bg-slate-600 active:scale-95 px-3 py-1.5 rounded-lg text-slate-300 font-medium border border-slate-600 transition cursor-pointer flex items-center gap-1">
-                        🔄 Sincronizar
+                    <h2 class="text-[11px] font-bold tracking-wider text-slate-400 uppercase">👤 Perfil de Usuario</h2>
+                    <button onclick="cargarDatosNube()" class="text-[11px] bg-slate-800 hover:bg-slate-700 active:scale-95 px-3 py-1.5 rounded text-slate-300 font-medium border border-slate-700 transition cursor-pointer">
+                        Sincronizar
                     </button>
                 </div>
                 <div class="mb-4">
-                    <select id="select-usuario" onchange="cambiarUsuario()" class="w-full bg-slate-900 text-white p-2.5 rounded-lg border border-slate-700 focus:outline-none focus:border-emerald-500 transition text-sm font-medium cursor-pointer"></select>
+                    <select id="select-usuario" onchange="cambiarUsuario()" class="w-full bg-slate-950 text-slate-200 p-2.5 rounded border border-slate-800 focus:outline-none focus:border-emerald-600 transition text-sm font-medium cursor-pointer"></select>
                 </div>
-                <div class="border-t border-slate-700/60 pt-3">
+                <div class="border-t border-slate-800 pt-3">
                     <div class="flex gap-2">
-                        <input type="text" id="nuevo-usuario" placeholder="Registrar nuevo jugador..." class="flex-1 bg-slate-900 text-white px-3 py-2 text-sm rounded-lg border border-slate-700 focus:outline-none focus:border-emerald-500 transition">
-                        <button onclick="registrarUsuario()" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white px-4 text-sm font-bold rounded-lg transition cursor-pointer shadow-md shadow-emerald-950">Unirse</button>
+                        <input type="text" id="nuevo-usuario" placeholder="Registrar nuevo jugador..." class="flex-1 bg-slate-950 text-slate-200 px-3 py-2 text-sm rounded border border-slate-800 focus:outline-none focus:border-emerald-600 transition">
+                        <button onclick="registrarUsuario()" class="bg-emerald-700 hover:bg-emerald-600 active:scale-95 text-white px-4 text-sm font-medium rounded transition cursor-pointer">Unirse</button>
                     </div>
                 </div>
             </div>
 
-            <div id="widget-perfil-tarjeta" class="bg-gradient-to-br from-slate-800 via-slate-800 to-emerald-950/40 p-5 rounded-xl shadow-lg border border-emerald-500/30 shadow-emerald-950/20 relative overflow-hidden hidden">
-                <div class="absolute -right-6 -bottom-6 text-emerald-500/10 text-7xl font-black select-none pointer-events-none">MY RANK</div>
+            <div id="widget-perfil-tarjeta" onclick="verMiHistorial()" class="bg-gradient-to-br from-slate-900 to-slate-900/60 p-5 rounded-xl shadow-sm border border-slate-800 relative overflow-hidden hidden cursor-pointer hover:border-slate-700 transition-all duration-200 group" title="Haz clic para ver tu historial detallado">
+                <div class="absolute -right-4 -bottom-4 text-slate-800/15 text-6xl font-black select-none pointer-events-none tracking-wider">STATS</div>
                 <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-emerald-600/20 border-2 border-emerald-500 rounded-full flex items-center justify-center text-2xl font-bold text-emerald-400 shadow-md shadow-emerald-950">
-                        ⭐
+                    <div class="w-12 h-12 bg-slate-800 border border-slate-700/80 rounded-full flex items-center justify-center text-slate-300 font-bold text-sm shadow-sm">
+                        MY
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-xs font-black tracking-wider text-emerald-400 uppercase">Estado Actual</p>
-                        <h3 id="widget-nombre-usuario" class="text-xl font-black text-white truncate">Cargando...</h3>
+                        <p class="text-[10px] font-bold tracking-wider text-slate-400 uppercase flex items-center gap-1">
+                            Tu Rendimiento <span class="text-[10px] text-emerald-500 font-normal italic border-l border-slate-800 pl-2 lowercase">ver desglose 📊</span>
+                        </p>
+                        <h3 id="widget-nombre-usuario" class="text-lg font-medium text-slate-200 truncate">Cargando...</h3>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-slate-700/60 text-center">
-                    <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/40">
-                        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Posición</p>
-                        <p id="widget-ranking-puesto" class="text-2xl font-black text-yellow-400">--</p>
+                <div class="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-slate-800 text-center">
+                    <div class="bg-slate-950 p-2.5 rounded border border-slate-800/60">
+                        <p class="text-[10px] font-medium uppercase tracking-wider text-slate-400">Posición</p>
+                        <p id="widget-ranking-puesto" class="text-xl font-semibold text-slate-200">--</p>
                     </div>
-                    <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/40">
-                        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Puntos Totales</p>
-                        <p id="widget-puntos-puesto" class="text-2xl font-black text-emerald-400">--</p>
+                    <div class="bg-slate-950 p-2.5 rounded border border-slate-800/60">
+                        <p class="text-[10px] font-medium uppercase tracking-wider text-slate-400">Puntos Totales</p>
+                        <p id="widget-puntos-puesto" class="text-xl font-semibold text-emerald-500">--</p>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-slate-800/90 backdrop-blur p-5 rounded-xl shadow-md border border-slate-700/60">
-                <div class="flex justify-between items-center mb-2">
-                    <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">📊 Tabla General</h2>
-                    <span class="text-[10px] text-slate-400 italic">Clic para ver pronósticos</span>
+            <div class="bg-slate-900 p-5 rounded-xl shadow-sm border border-slate-800">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xs font-bold tracking-wider text-slate-400 uppercase">📋 Tabla de Posiciones</h2>
+                    <span class="text-[10px] text-slate-500">Clic para auditar</span>
                 </div>
-                <div class="overflow-y-auto max-h-[380px] rounded-xl border border-slate-700 shadow-inner scrollbar-thin">
+                <div class="overflow-y-auto max-h-[380px] rounded border border-slate-800 shadow-inner scrollbar-thin">
                     <table class="w-full text-left text-sm relative border-collapse">
-                        <thead class="bg-slate-700 text-slate-200 font-bold sticky top-0 z-10 shadow">
+                        <thead class="bg-slate-700 text-slate-300 text-xs font-medium tracking-wider uppercase border-b border-slate-700 sticky top-0 z-10 shadow-sm">
                             <tr>
-                                <th class="p-3 text-center w-12">#</th>
+                                <th class="p-3 text-center w-12">Nº</th>
                                 <th class="p-3">Jugador</th>
                                 <th class="p-3 text-center w-16">Pts</th>
-                                <th id="th-acciones-admin" class="p-3 text-center hidden w-10">🗑️</th>
+                                <th id="th-acciones-admin" class="p-3 text-center hidden w-10">Mantenimiento</th>
                             </tr>
                         </thead>
-                        <tbody id="tabla-posiciones" class="divide-y divide-slate-700/50 bg-slate-900/20">
-                            <tr><td colspan="4" class="p-4 text-center text-slate-400">Cargando posiciones...</td></tr>
+                        <tbody id="tabla-posiciones" class="divide-y divide-slate-800 bg-slate-950/20">
+                            <tr><td colspan="4" class="p-4 text-center text-slate-500 text-xs">Cargando posiciones...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700 border-dashed space-y-2">
-                <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">🔒 Panel de Administrador</h3>
-                <button onclick="verificarAccAccessAdmin()" class="w-full bg-red-950/30 hover:bg-red-900/50 text-red-300 border border-red-900/60 py-2.5 rounded-lg text-xs font-bold transition shadow-sm cursor-pointer tracking-wide">
-                    ⚙️ Control de Torneo & Resultados
+            <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800 border-dashed space-y-2">
+                <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">🔒 Administración</h3>
+                <button onclick="verificarAccAccessAdmin()" class="w-full bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 py-2.5 rounded text-xs font-medium transition cursor-pointer tracking-wide uppercase">
+                    Cargar Resultados Reales
                 </button>
             </div>
         </div>
 
         <div class="lg:col-span-2 space-y-4">
 
-            <div id="contenedor-proximo-partido" class="bg-gradient-to-r from-slate-950 via-emerald-950/30 to-slate-950 p-4 rounded-xl border border-emerald-500/30 shadow-xl hidden">
-                <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
-                    <span class="bg-emerald-600/20 text-emerald-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md border border-emerald-500/30 tracking-wider animate-pulse flex items-center gap-1.5">
-                        <span class="text-emerald-500">⚡</span> PRÓXIMO PARTIDO DEL TORNEO
+            <div id="contenedor-proximo-partido" class="bg-gradient-to-r from-slate-900 via-slate-900/70 to-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm hidden">
+                <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
+                    <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1.5">
+                        ▪ Próximo Encuentro
                     </span>
-                    <span id="proximo-meta" class="text-xs font-semibold text-slate-400">Cargando...</span>
+                    <span id="proximo-meta" class="text-[11px] text-slate-400">Cargando...</span>
                 </div>
                 <div class="grid grid-cols-3 items-center justify-center py-2 text-center">
-                    <div id="proximo-equipoA" class="font-extrabold text-sm sm:text-lg text-white text-right truncate"></div>
+                    <div id="proximo-equipoA" class="font-medium text-sm sm:text-base text-slate-200 text-right truncate"></div>
                     <div class="flex flex-col items-center justify-center">
-                        <span class="bg-slate-900 px-3 py-1 rounded-full border border-slate-700 text-xs font-mono font-bold text-emerald-400 tracking-widest shadow-md">VS</span>
+                        <span class="bg-slate-950 px-3 py-1 rounded border border-slate-800 text-[10px] tracking-widest text-slate-500 font-mono">VS</span>
                     </div>
-                    <div id="proximo-equipoB" class="font-extrabold text-sm sm:text-lg text-white text-left truncate"></div>
+                    <div id="proximo-equipoB" class="font-medium text-sm sm:text-base text-slate-200 text-left truncate"></div>
                 </div>
             </div>
 
-            <div class="bg-slate-800 p-1.5 rounded-xl border border-slate-700 shadow-inner">
+            <div class="bg-slate-900 p-1.5 rounded-xl border border-slate-800 shadow-inner">
                 <div class="flex flex-wrap md:flex-nowrap gap-1 w-full" id="barra-navegacion-fases">
-                    <button onclick="cambiarFaseFiltro('Grupos')" id="tab-Grupos" class="flex-1 font-bold py-2.5 px-2 rounded-lg text-xs md:text-sm transition-all duration-200 cursor-pointer">⚽ Grupos</button>
+                    <button onclick="cambiarFaseFiltro('Grupos')" id="tab-Grupos" class="flex-1 py-2 rounded text-xs transition-all duration-200 cursor-pointer uppercase tracking-wider font-medium">Grupos</button>
                     <button onclick="cambiarFaseFiltro('16avos')" id="tab-16avos" class="flex-1 font-bold py-2.5 px-2 rounded-lg text-xs md:text-sm transition-all duration-200 cursor-pointer">⚔️ 16avos</button>
                     <button onclick="cambiarFaseFiltro('Octavos')" id="tab-Octavos" class="flex-1 font-bold py-2.5 px-2 rounded-lg text-xs md:text-sm transition-all duration-200 cursor-pointer">🛡️ Octavos</button>
                     <button onclick="cambiarFaseFiltro('Cuartos')" id="tab-Cuartos" class="flex-1 font-bold py-2.5 px-2 rounded-lg text-xs md:text-sm transition-all duration-200 cursor-pointer">📊 Cuartos</button>
@@ -130,68 +132,68 @@
                 </div>
             </div>
 
-            <div class="bg-slate-800 p-6 rounded-xl shadow-md border border-slate-700">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-700/50">
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                        📅 Fase: <span id="nombre-fase-titulo" class="text-emerald-400">Grupos</span>
+            <div class="bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-800">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-800">
+                    <h2 class="text-base font-light uppercase tracking-wider text-slate-100 flex items-center gap-2">
+                        📅 Fase: <span id="nombre-fase-titulo" class="text-emerald-500 font-normal">Grupos</span>
                     </h2>
 
                     <div class="w-full sm:w-auto flex items-center gap-2">
-                        <input type="text" id="buscador-partidos" oninput="filtrarPartidosPorTexto()" placeholder="🔍 Buscar selección..." class="bg-slate-900 text-xs px-3 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-emerald-500 w-full sm:w-44 transition">
+                        <input type="text" id="buscador-partidos" oninput="filtrarPartidosPorTexto()" placeholder="Filtrar por selección..." class="bg-slate-950 text-xs px-3 py-1.5 rounded border border-slate-800 focus:outline-none focus:border-emerald-600 w-full sm:w-44 transition text-slate-300">
                         <div class="flex flex-col items-end shrink-0">
-                            <span id="badge-usuario" class="bg-emerald-950 text-emerald-300 text-xs font-bold px-3 py-1 rounded-full border border-emerald-700">Invitado</span>
-                            <span id="aviso-bloqueo-vista" class="text-[10px] text-yellow-500 font-bold mt-1 hidden">⚠️ Modo Lectura</span>
+                            <span id="badge-usuario" class="bg-slate-950 text-slate-300 text-[11px] font-medium px-3 py-1 rounded border border-slate-800 tracking-wide">Invitado</span>
+                            <span id="aviso-bloqueo-vista" class="text-[10px] text-amber-500 font-medium mt-1 hidden">Modo Lectura</span>
                         </div>
                     </div>
                 </div>
 
                 <div id="lista-partidos-contenedor" class="space-y-6"></div>
 
-                <div class="mt-8 pt-4 border-t border-slate-700 flex flex-col sm:flex-row justify-between items-center gap-3">
-                    <span id="contador-pendientes" class="text-xs font-semibold text-slate-300"></span>
-                    <button id="btn-guardar-pronosticos" onclick="guardarPronosticos()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition transform active:scale-95 disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2">
-                        💾 Guardar Pronósticos de esta Sección
+                <div class="mt-8 pt-4 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3">
+                    <span id="contador-pendientes" class="text-xs text-slate-400"></span>
+                    <button id="btn-guardar-pronosticos" onclick="guardarPronosticos()" class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-600 text-white font-medium px-6 py-2.5 rounded transition transform active:scale-95 disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed cursor-pointer text-xs uppercase tracking-wider shadow-sm">
+                        Guardar Sección Activa
                     </button>
                 </div>
             </div>
         </div>
     </main>
 
-    <div id="modal-espiar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50 backdrop-blur-sm">
-        <div class="bg-slate-800 border border-slate-700 max-w-xl w-full rounded-2xl p-6 shadow-2xl">
-            <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-700">
-                <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">🕵️‍♂️ Pronósticos de <span id="espiar-nombre-usuario" class="text-white"></span></h3>
-                <button onclick="cerrarModalEspiar()" class="text-slate-400 hover:text-white text-xl p-1 cursor-pointer">✕</button>
+    <div id="modal-espiar" class="fixed inset-0 bg-slate-950/90 flex items-center justify-center hidden p-4 z-50 backdrop-blur-sm">
+        <div class="bg-slate-900 border border-slate-800 max-w-xl w-full rounded-xl p-6 shadow-xl">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-800">
+                <h3 class="text-base font-medium tracking-wide text-slate-200"><span id="espiar-icono-titulo">🔍</span> <span id="espiar-tipo-titulo">Pronósticos</span> de <span id="espiar-nombre-usuario" class="text-emerald-500"></span></h3>
+                <button onclick="cerrarModalEspiar()" class="text-slate-400 hover:text-white text-base p-1 cursor-pointer">✕</button>
             </div>
-            <p class="text-xs text-slate-400 mb-4">Elecciones registradas en la fase activa (<span id="espiar-fase-nombre" class="text-yellow-400 font-bold"></span>):</p>
-            <div id="espiar-lista-contenido" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
-            <div class="flex justify-end pt-4 border-t border-slate-700 mt-4">
-                <button onclick="cerrarModalEspiar()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-xs font-bold transition cursor-pointer">Cerrar</button>
+            <div id="espiar-descripcion-meta" class="text-xs text-slate-400 mb-4 tracking-wide space-y-1 bg-slate-950/40 p-3 rounded border border-slate-800/60"></div>
+            <div id="espiar-lista-contenido" class="space-y-2 max-h-64 overflow-y-auto pr-1"></div>
+            <div class="flex justify-end pt-4 border-t border-slate-800 mt-4">
+                <button onclick="cerrarModalEspiar()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded text-xs font-medium transition cursor-pointer uppercase tracking-wider">Cerrar</button>
             </div>
         </div>
     </div>
 
-    <div id="modal-admin" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50 backdrop-blur-sm">
-        <div class="bg-slate-800 border border-slate-700 max-w-2xl w-full rounded-2xl p-6 shadow-2xl my-8 transform transition-all scale-100">
-            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-700">
+    <div id="modal-admin" class="fixed inset-0 bg-slate-950/90 flex items-center justify-center hidden p-4 z-50 backdrop-blur-sm">
+        <div class="bg-slate-900 border border-slate-800 max-w-2xl w-full rounded-xl p-6 shadow-xl my-8 transform transition-all scale-100">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-800">
                 <div>
-                    <h3 class="text-xl font-bold text-red-400">Panel de Control de Torneo</h3>
-                    <p class="text-xs text-slate-400">Introduce marcadores reales manualmente.</p>
+                    <h3 class="text-base font-medium text-slate-200 uppercase tracking-wider">Resultados Oficiales</h3>
+                    <p class="text-xs text-slate-400">Introduce los marcadores reales del torneo.</p>
                 </div>
-                <button onclick="cerrarModalAdmin()" class="text-slate-400 hover:text-white font-bold text-xl transition cursor-pointer p-1">✕</button>
+                <button onclick="cerrarModalAdmin()" class="text-slate-400 hover:text-white font-bold text-base transition cursor-pointer p-1">✕</button>
             </div>
 
-            <div class="mb-5 p-4 bg-slate-900 rounded-xl border border-dashed border-slate-700">
-                <h4 class="text-xs font-bold text-yellow-500 uppercase tracking-wider mb-2">🔒 Estado del Candado de Pronósticos (Celda C2)</h4>
+            <div class="mb-5 p-4 bg-slate-950 rounded border border-slate-800">
+                <h4 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Bloqueo Global de Edición</h4>
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
-                    <p class="text-xs text-slate-300 text-center sm:text-left">Muestra o altera el estado de bloqueo global de edición de la quiniela.</p>
-                    <button id="btn-toggle-torneo" onclick="alternarBloqueoTorneo()" class="w-full sm:w-auto px-4 py-2.5 rounded-lg text-xs font-bold transition shadow-md cursor-pointer">Cargando estado...</button>
+                    <p class="text-xs text-slate-400 text-center sm:text-left">Determina si los usuarios aún pueden modificar sus pronósticos.</p>
+                    <button id="btn-toggle-torneo" onclick="alternarBloqueoTorneo()" class="w-full sm:w-auto px-4 py-2 rounded text-xs font-medium transition shadow-sm cursor-pointer uppercase tracking-wider">Cargando estado...</button>
                 </div>
             </div>
 
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Modificación Manual de Resultados Reales</h4>
+            <h4 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Ingresar Marcadores Manuales</h4>
             <div class="mb-3">
-                <select id="admin-filtro-fase-lista" onchange="renderizarListaPartidosAdmin()" class="w-full bg-slate-700 text-xs text-white p-2.5 rounded-lg border border-slate-600 focus:outline-none cursor-pointer">
+                <select id="admin-filtro-fase-lista" onchange="renderizarListaPartidosAdmin()" class="w-full bg-slate-800 text-xs text-slate-200 p-2.5 rounded border border-slate-700 focus:outline-none cursor-pointer">
                     <option value="Grupos">Ver Fase de Grupos</option>
                     <option value="16avos">Ver 16avos de Final</option>
                     <option value="Octavos">Ver Octavos de Final</option>
@@ -201,11 +203,11 @@
                 </select>
             </div>
 
-            <div id="admin-lista-partidos-render" class="space-y-2 mb-6 max-h-60 overflow-y-auto pr-1 divide-y divide-slate-800"></div>
+            <div id="admin-lista-partidos-render" class="space-y-2 mb-6 max-h-60 overflow-y-auto pr-1 divide-y divide-slate-800/40"></div>
 
-            <div class="flex flex-col sm:flex-row justify-end gap-3 border-t border-slate-700 pt-4">
-                <button onclick="cerrarModalAdmin()" class="bg-slate-700 hover:bg-slate-600 text-white px-5 py-2.5 rounded-lg text-sm transition font-medium cursor-pointer">Cerrar</button>
-                <button onclick="guardarResultadosAdminReales()" class="bg-red-600 hover:bg-red-500 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition cursor-pointer shadow-lg shadow-red-950">Guardar Resultados Manuales</button>
+            <div class="flex flex-col sm:flex-row justify-end gap-3 border-t border-slate-800 pt-4">
+                <button onclick="cerrarModalAdmin()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-5 py-2 rounded text-xs transition font-medium cursor-pointer uppercase tracking-wider">Cerrar</button>
+                <button onclick="guardarResultadosAdminReales()" class="bg-emerald-700 hover:bg-emerald-600 text-white px-5 py-2 rounded text-xs font-medium transition cursor-pointer shadow-sm uppercase tracking-wider">Guardar Resultados</button>
             </div>
         </div>
     </div>
@@ -238,7 +240,7 @@
 
         function verificarBloqueoNavegacion() {
             if (tieneCambiosSinGuardar) {
-                return confirm("⚠️ Tienes cambios en tus pronósticos que no has guardado. Si continúas, se perderán. ¿Deseas cambiar de pestaña de todas formas?");
+                return confirm("Tienes cambios sin guardar en tus predicciones. ¿Deseas cambiar de sección de todas formas?");
             }
             return true;
         }
@@ -256,11 +258,11 @@
                 const mes = meses[fragmentos[1].trim()];
                 
                 let horas = parseInt(horaStr.split(":")[0]);
-                const minutos = parseInt(horaStr.split(":")[1].split(" ")[0]);
+                const minutes = parseInt(horaStr.split(":")[1].split(" ")[0]);
                 const ampm = horaStr.toLowerCase().includes("pm");
                 if (ampm && horas < 12) horas += 12;
                 if (!ampm && horas === 12) horas = 0;
-                return new Date(2026, mes, dia, horas, minutos);
+                return new Date(2026, mes, dia, horas, minutes);
             } catch(e) { return new Date(2026, 11, 31); }
         }
 
@@ -282,7 +284,7 @@
                 else tarjeta.classList.add('hidden');
             });
             document.querySelectorAll('.bloque-grupo-contenedor').forEach(bloque => {
-                const visibles = bloque.querySelectorAll('.tarjeta-partido-item:not(.hidden)').length;
+                const visibles = block = bloque.querySelectorAll('.tarjeta-partido-item:not(.hidden)').length;
                 if(visibles === 0 && texto !== "") bloque.classList.add('hidden');
                 else bloque.classList.remove('hidden');
             });
@@ -300,9 +302,9 @@
             const cont = document.getElementById('contador-pendientes');
             if(cont) {
                 if(faltantes > 0 && !estadoGlobal.torneoIniciado) {
-                    cont.innerHTML = `⚠️ Tienes <span class="text-emerald-400 font-bold">${faltantes}</span> pronóstico(s) pendiente(s) en esta fase.`;
+                    cont.innerHTML = `Faltan <span class="text-emerald-500 font-medium">${faltantes}</span> pronósticos por completar en esta fase.`;
                 } else if(tieneCambiosSinGuardar) {
-                    cont.innerHTML = `<span class="text-orange-400 font-medium">⚠️ Modificaciones sin guardar en esta sección</span>`;
+                    cont.innerHTML = `<span class="text-amber-500">Cambios pendientes de guardar en esta sección</span>`;
                 } else { cont.textContent = ""; }
             }
         }
@@ -343,7 +345,7 @@
             if (!input) return;
             const nombre = input.value.trim();
             if (!nombre || estadoGlobal.usuarios.map(u => u.toLowerCase()).includes(nombre.toLowerCase())) {
-                alert("Nombre no válido o ya registrado."); return;
+                alert("Nombre no disponible o ya registrado."); return;
             }
             mostrarCarga(40);
             if (await enviarComandoNube({ action: "create_user", nombreUsuario: nombre })) {
@@ -354,10 +356,10 @@
         }
 
         async function eliminarUsuario(nombre) {
-            if(estadoGlobal.usuarios.length <= 1) { alert("Mínimo un jugador."); return; }
-            if(confirm(`¿Eliminar a ${nombre}?`)) {
+            if(estadoGlobal.usuarios.length <= 1) { alert("Debe permanecer al menos un jugador."); return; }
+            if(confirm(`¿Deseas eliminar permanentemente a ${nombre}?`)) {
                 mostrarCarga(40);
-                if (await enviarComandoNube({ action: "delete_user", textoreUsr: nombre, nombreUsuario: nombre })) {
+                if (await enviarComandoNube({ action: "delete_user", nombreUsuario: nombre })) {
                     estadoGlobal.usuarios = estadoGlobal.usuarios.filter(u => u !== nombre);
                     if(usuarioActivo === nombre) usuarioActivo = estadoGlobal.usuarios[0];
                     localStorage.setItem('q_pro_usuario', usuarioActivo);
@@ -367,7 +369,7 @@
         }
 
         async function guardarPronosticos() {
-            if(estadoGlobal.torneoIniciado) { alert("🚫 Predicciones cerradas."); return; }
+            if(estadoGlobal.torneoIniciado) { alert("Periodo de edición cerrado."); return; }
             const partidosFiltrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
             let pronosticosLote = [];
             partidosFiltrados.forEach(partido => {
@@ -377,10 +379,10 @@
                     pronosticosLote.push({ partidoId: partido.id, golesA: parseInt(inpA.value), golesB: parseInt(inpB.value) });
                 }
             });
-            if(pronosticosLote.length === 0) { alert("Completa marcas antes."); return; }
+            if(pronosticosLote.length === 0) { alert("Ingresa marcadores antes de guardar."); return; }
             const btnGuardar = document.getElementById('btn-guardar-pronosticos');
             const textoOriginal = btnGuardar.innerHTML;
-            btnGuardar.disabled = true; btnGuardar.textContent = "⏳ Guardando...";
+            btnGuardar.disabled = true; btnGuardar.textContent = "Almacenando...";
             mostrarCarga(50);
             const exito = await enviarComandoNube({
                 action: "save_pronosticos",
@@ -390,30 +392,30 @@
                 if(!estadoGlobal.pronosticos[usuarioActivo]) estadoGlobal.pronosticos[usuarioActivo] = {};
                 pronosticosLote.forEach(p => { estadoGlobal.pronosticos[usuarioActivo][p.partidoId] = { golesA: p.golesA, golesB: p.golesB }; });
                 tieneCambiosSinGuardar = false;
-                btnGuardar.className = "w-full sm:w-auto bg-emerald-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition";
-                btnGuardar.textContent = "✓ ¡Guardado!"; mostrarCarga(100);
+                btnGuardar.className = "w-full sm:w-auto bg-emerald-700 text-white font-medium px-6 py-2.5 rounded transition text-xs uppercase tracking-wider";
+                btnGuardar.textContent = "Cambios Guardados"; mostrarCarga(100);
                 setTimeout(() => {
-                    btnGuardar.className = "w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition transform active:scale-95 disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed cursor-pointer";
+                    btnGuardar.className = "w-full sm:w-auto bg-emerald-700 hover:bg-emerald-600 text-white font-medium px-6 py-2.5 rounded transition transform active:scale-95 disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed cursor-pointer text-xs uppercase tracking-wider shadow-sm";
                     btnGuardar.innerHTML = textoOriginal; btnGuardar.disabled = false; actualizarPantallaQuiniela();
                 }, 2000);
-            } else { btnGuardar.disabled = false; btnGuardar.innerHTML = textoOriginal; alert("Error de transmisión."); }
+            } else { btnGuardar.disabled = false; btnGuardar.innerHTML = textoOriginal; alert("Error de sincronización con el servidor."); }
         }
 
         function verificarAccAccessAdmin() {
-            const pss = prompt("Introduce la clave:");
+            const pss = prompt("Introduce credencial de acceso:");
             if(pss === LLAVE_ADMIN) {
                 esAdminActivo = true; document.getElementById('modal-admin').classList.remove('hidden');
                 renderizarListaPartidosAdmin(); actualizarBotonAdminTorneo(); actualizarPantallaQuiniela();
-            } else if (pss !== null) alert("Incorrecta.");
+            } else if (pss !== null) alert("Credencial denegada.");
         }
         function cerrarModalAdmin() { document.getElementById('modal-admin').classList.add('hidden'); }
 
         function actualizarBotonAdminTorneo() {
             const btn = document.getElementById('btn-toggle-torneo'); if(!btn) return;
             if(estadoGlobal.torneoIniciado) {
-                btn.textContent = "🔒 C2: BLOQUEADO"; btn.className = "px-4 py-2 bg-red-700 text-white rounded-lg text-xs font-bold cursor-pointer";
+                btn.textContent = "Edición: Bloqueada"; btn.className = "px-4 py-2 bg-red-950 text-red-400 border border-red-900 rounded text-xs font-medium cursor-pointer uppercase tracking-wider";
             } else {
-                btn.textContent = "🔓 C2: ABIERTO"; btn.className = "px-4 py-2 bg-emerald-700 text-white rounded-lg text-xs font-bold cursor-pointer";
+                btn.textContent = "Edición: Abierta"; btn.className = "px-4 py-2 bg-emerald-950 text-emerald-400 border border-emerald-900 rounded text-xs font-medium cursor-pointer uppercase tracking-wider";
             }
         }
 
@@ -429,11 +431,11 @@
             if(!renderCont) return; renderCont.innerHTML = '';
             estadoGlobal.partidos.filter(p => p.fase === faseFiltro).forEach(p => {
                 renderCont.innerHTML += `
-                    <div class="flex items-center justify-between bg-slate-900 p-2 text-xs gap-2">
-                        <span>${p.equipoA} vs ${p.equipoB}</span>
+                    <div class="flex items-center justify-between bg-slate-950 p-3 text-xs gap-2 border border-slate-800 rounded mt-2">
+                        <span class="font-medium text-slate-300">${p.equipoA} vs ${p.equipoB}</span>
                         <div>
-                            <input type="number" id="admin-golesA-${p.id}" value="${p.golesA!==null?p.golesA:''}" class="w-8 bg-slate-800 text-center rounded"> :
-                            <input type="number" id="admin-golesB-${p.id}" value="${p.golesB!==null?p.golesB:''}" class="w-8 bg-slate-800 text-center rounded">
+                            <input type="number" id="admin-golesA-${p.id}" value="${p.golesA!==null?p.golesA:''}" class="w-10 bg-slate-900 text-center rounded border border-slate-700 py-0.5"> :
+                            <input type="number" id="admin-golesB-${p.id}" value="${p.golesB!==null?p.golesB:''}" class="w-10 bg-slate-900 text-center rounded border border-slate-700 py-0.5">
                         </div>
                     </div>`;
             });
@@ -458,11 +460,49 @@
             ["Grupos", "16avos", "Octavos", "Cuartos", "Semifinales", "Finales"].forEach(f => {
                 const btn = document.getElementById(`tab-${f}`);
                 if (btn) btn.className = f === faseSeleccionada ?
-                    "flex-1 font-bold py-2.5 px-1 rounded-lg text-xs md:text-sm bg-emerald-600 text-white scale-105 transition shadow" :
-                    "flex-1 font-bold py-2.5 px-1 rounded-lg text-xs md:text-sm bg-slate-800 text-slate-400 hover:text-slate-200 transition";
+                    "flex-1 font-medium py-2 rounded text-xs bg-slate-800 border border-slate-700 text-white scale-102 transition shadow-sm" :
+                    "flex-1 font-medium py-2 rounded text-xs text-slate-500 hover:text-slate-300 transition";
             });
             if(document.getElementById('nombre-fase-titulo')) document.getElementById('nombre-fase-titulo').textContent = faseSeleccionada;
             actualizarPantallaQuiniela();
+        }
+
+        function desglosarMetricasTorneoCompleto(nombreUsuario) {
+            let marcadoresAcertados = 0;
+            let marcadoresNoAcertados = 0;
+            let ganadorSinAcertarMarcador = 0;
+            let empateSinAcertarMarcador = 0;
+
+            const pronosticos = estadoGlobal.pronosticos[nombreUsuario] || {};
+
+            estadoGlobal.partidos.forEach(p => {
+                if (p.golesA === null || p.golesB === null) return;
+                const pr = pronosticos[p.id]; 
+                if (!pr || pr.golesA === null || pr.golesB === null || pr.golesA === '' || pr.golesB === '') {
+                    marcadoresNoAcertados++;
+                    return;
+                }
+
+                const gRealA = parseInt(p.golesA); const gRealB = parseInt(p.golesB);
+                const gPronA = parseInt(pr.golesA); const gPronB = parseInt(pr.golesB);
+
+                const tReal = gRealA > gRealB ? 'A' : (gRealA < gRealB ? 'B' : 'E');
+                const tPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
+
+                if (gRealA === gPronA && gRealB === gPronB) {
+                    marcadoresAcertados++;
+                } else if (tReal === tPron) {
+                    if (tReal === 'E') {
+                        empateSinAcertarMarcador++;
+                    } else {
+                        ganadorSinAcertarMarcador++;
+                    }
+                } else {
+                    marcadoresNoAcertados++;
+                }
+            });
+
+            return { marcadoresAcertados, marcadoresNoAcertados, ganadorSinAcertarMarcador, empateSinAcertarMarcador };
         }
 
         function desglosarMetricasUsuario(nombreUsuario) {
@@ -485,32 +525,137 @@
             return { puntos, exactos, tendencias };
         }
 
+        function verMiHistorial() {
+            if(!usuarioActivo || usuarioActivo === "Invitado") return;
+            espiarJugador(usuarioActivo);
+        }
+
         function espiarJugador(nombre) {
+            const esUsuarioPropio = (nombre === usuarioActivo);
+            document.getElementById('espiar-icono-titulo').textContent = esUsuarioPropio ? "▪" : "🔍";
+            document.getElementById('espiar-tipo-titulo').textContent = esUsuarioPropio ? "Historial General" : "Auditoría de Pronósticos";
             document.getElementById('espiar-nombre-usuario').textContent = nombre;
-            document.getElementById('espiar-fase-nombre').textContent = faseActiva;
+            
+            const descMeta = document.getElementById('espiar-descripcion-meta');
             const contenedorLista = document.getElementById('espiar-lista-contenido');
             contenedorLista.innerHTML = '';
 
-            const partidosFase = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
             const prUser = estadoGlobal.pronosticos[nombre] || {};
+            
+            // Separar partidos de la fase activa en jugados y futuros
+            const partidosFase = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
+            const partidosJugados = partidosFase.filter(p => p.golesA !== null && p.golesB !== null);
+            const partidosFuturos = partidosFase.filter(p => p.golesA === null || p.golesB === null);
+            
+            const metricas = desglosarMetricasTorneoCompleto(nombre);
 
-            partidosFase.forEach(p => {
-                const marca = prUser[p.id];
-                const textoPrediccion = (marca && marca.golesA !== '' && marca.golesB !== '' && marca.golesA !== null && marca.golesB !== null) ?
-                    `<span class="text-emerald-400 font-extrabold text-sm">${marca.golesA} - ${marca.golesB}</span>` :
-                    `<span class="text-slate-500 text-xs italic">Sin registrar</span>`;
+            // 1. Renderizar Métricas de Resumen
+            descMeta.innerHTML = `
+                <div class="flex flex-col gap-1 text-slate-300 font-sans text-xs">
+                    <div><b>Acertados:</b> <span class="text-slate-200">${metricas.marcadoresAcertados}</span></div>
+                    <div><b>No acertados:</b> <span class="text-slate-200">${metricas.marcadoresNoAcertados}</span></div>
+                    <div><b>Ganador Acertado:</b> <span class="text-slate-200">${metricas.ganadorSinAcertarMarcador}</span></div>
+                    <div><b>Empate Acertado:</b> <span class="text-slate-200">${metricas.empateSinAcertarMarcador}</span></div>
+                </div>
+            `;
 
-                contenedorLista.innerHTML += `
-                    <div class="flex justify-between items-center bg-slate-900/80 p-2.5 rounded-lg border border-slate-700/50">
-                        <div class="text-left max-w-[70%] truncate">
-                            <p class="text-[10px] text-slate-400">${p.grupo || p.jornada || ''}</p>
-                            <p class="text-xs font-semibold text-slate-200">${p.equipoA} vs ${p.equipoB}</p>
-                        </div>
-                        <div class="bg-slate-950 px-3 py-1 rounded-md border border-slate-800">${textoPrediccion}</div>
-                    </div>`;
-            });
+            if (partidosFase.length === 0) {
+                contenedorLista.innerHTML = `<p class="text-center text-slate-500 py-6 text-xs italic">No hay partidos registrados en esta fase.</p>`;
+                document.getElementById('modal-espiar').classList.remove('hidden');
+                return;
+            }
+
+            // 2. Renderizar Partidos Ya Jugados (Con auditoría de colores)
+            if (partidosJugados.length > 0) {
+                contenedorLista.innerHTML += `<div class="text-[10px] uppercase font-bold tracking-wider text-slate-500 mt-2 mb-1">Resultados Evaluados</div>`;
+                partidosJugados.forEach(p => {
+                    const marca = prUser[p.id];
+                    let badgePuntosHTML = '';
+                    let textoMarcadores = '';
+                    let estiloBordeCard = 'border-slate-800 bg-slate-950/40';
+
+                    if (!marca || marca.golesA === null || marca.golesB === null || marca.golesA === '' || marca.golesB === '') {
+                        estiloBordeCard = 'border-red-900/40 bg-gradient-to-r from-slate-900 to-red-950/10';
+                        badgePuntosHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium px-2 py-1 rounded">No acertado (+0)</span>`;
+                        textoMarcadores = `<p class="text-xs text-slate-500">Oficial: ${p.golesA}-${p.golesB} | Pronóstico: --</p>`;
+                    } else {
+                        const gRealA = parseInt(p.golesA); const gRealB = parseInt(p.golesB);
+                        const gPronA = parseInt(marca.golesA); const gPronB = parseInt(marca.golesB);
+                        const tReal = gRealA > gRealB ? 'A' : (gRealA < gRealB ? 'B' : 'E');
+                        const tPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
+
+                        textoMarcadores = `<p class="text-xs text-slate-400">Oficial: <span class="text-slate-200 font-medium">${gRealA}-${gRealB}</span> | Pronóstico: <span class="text-slate-200 font-medium">${gPronA}-${gPronB}</span></p>`;
+
+                        if (gRealA === gPronA && gRealB === gPronB) {
+                            estiloBordeCard = 'border-emerald-900/40 bg-gradient-to-r from-slate-900 to-emerald-950/20';
+                            badgePuntosHTML = `<span class="bg-emerald-950 text-emerald-400 border border-emerald-900 text-[10px] font-medium px-2 py-1 rounded">Acertado (+3)</span>`;
+                        } else if (tReal === tPron) {
+                            estiloBordeCard = 'border-emerald-900/40 bg-gradient-to-r from-slate-900 to-emerald-950/20';
+                            if (tReal === 'E') {
+                                badgePuntosHTML = `<span class="bg-emerald-950 text-emerald-400 border border-emerald-900 text-[10px] font-medium px-2 py-1 rounded">Empate Acertado (+1)</span>`;
+                            } else {
+                                badgePuntosHTML = `<span class="bg-emerald-950 text-emerald-400 border border-emerald-900 text-[10px] font-medium px-2 py-1 rounded">Ganador Acertado (+1)</span>`;
+                            }
+                        } else {
+                            estiloBordeCard = 'border-red-900/40 bg-gradient-to-r from-slate-950 to-red-950/10';
+                            badgePuntosHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium px-2 py-1 rounded">No acertado (+0)</span>`;
+                        }
+                    }
+
+                    contenedorLista.innerHTML += `
+                        <div class="flex justify-between items-center p-3 rounded border ${estiloBordeCard}">
+                            <div class="text-left max-w-[65%] truncate space-y-0.5">
+                                <span class="text-slate-500 text-[9px] uppercase tracking-wider font-mono">${p.grupo || p.jornada || ''}</span>
+                                <p class="text-xs font-medium text-slate-300 mt-1">${p.equipoA} vs ${p.equipoB}</p>
+                                ${textoMarcadores}
+                            </div>
+                            <div class="shrink-0">${badgePuntosHTML}</div>
+                        </div>`;
+                });
+            }
+
+            // 3. Renderizar Partidos Futuros (Visibilidad protegida o revelada según el candado del torneo)
+            if (partidosFuturos.length > 0) {
+                contenedorLista.innerHTML += `<div class="text-[10px] uppercase font-bold tracking-wider text-slate-500 mt-4 mb-1">Próximos Encuentros</div>`;
+                partidosFuturos.forEach(p => {
+                    const marca = prUser[p.id];
+                    let textoPrediccion = '';
+                    let badgeEstadoFuturo = '';
+
+                    const tieneProno = (marca && marca.golesA !== '' && marca.golesB !== '' && marca.golesA !== null && marca.golesB !== null);
+
+                    if (esUsuarioPropio) {
+                        // El usuario siempre puede ver sus propias predicciones futuras
+                        textoPrediccion = tieneProno ? `<span class="text-slate-200 font-mono text-xs bg-slate-950 px-2 py-0.5 rounded border border-slate-800">${marca.golesA} - ${marca.golesB}</span>` : `<span class="text-slate-600 text-xs italic">Sin registrar</span>`;
+                        badgeEstadoFuturo = `<span class="text-[10px] text-slate-400 font-mono">Tus datos</span>`;
+                    } else {
+                        // Para los rivales, depende de si la fase está cerrada/iniciada
+                        if (estadoGlobal.torneoIniciado) {
+                            textoPrediccion = tieneProno ? `<span class="text-slate-200 font-mono text-xs bg-slate-950 px-2 py-0.5 rounded border border-slate-800">${marca.golesA} - ${marca.golesB}</span>` : `<span class="text-slate-600 text-xs italic">Sin registro</span>`;
+                            badgeEstadoFuturo = `<span class="text-[10px] text-emerald-500 font-mono">Revelado</span>`;
+                        } else {
+                            textoPrediccion = `<span class="text-slate-600 text-xs bg-slate-950 px-2.5 py-1 rounded border border-slate-900 select-none font-mono">X - X</span>`;
+                            badgeEstadoFuturo = `<span class="text-[10px] text-amber-600 font-medium bg-amber-500/5 px-2 py-0.5 rounded border border-amber-950/30">Oculto</span>`;
+                        }
+                    }
+
+                    contenedorLista.innerHTML += `
+                        <div class="flex justify-between items-center p-3 rounded border border-slate-800 bg-slate-950/40">
+                            <div class="text-left max-w-[60%] truncate">
+                                <span class="text-slate-500 text-[9px] uppercase tracking-wider font-mono">${p.grupo || p.jornada || ''} — ${p.fecha}</span>
+                                <p class="text-xs font-medium text-slate-300 mt-0.5">${p.equipoA} vs ${p.equipoB}</p>
+                            </div>
+                            <div class="flex items-center gap-3 shrink-0">
+                                ${textoPrediccion}
+                                ${badgeEstadoFuturo}
+                            </div>
+                        </div>`;
+                });
+            }
+
             document.getElementById('modal-espiar').classList.remove('hidden');
         }
+
         function cerrarModalEspiar() { document.getElementById('modal-espiar').classList.add('hidden'); }
 
         function calcularTendenciaComunidad(partidoId) {
@@ -537,8 +682,7 @@
 
         function actualizarProximoPartidoDestacado() {
             const contenedor = document.getElementById('contenedor-proximo-partido');
-            if (!estadoGlobal.partidos || estadoGlobal.partidos.length === 0) return null;
-            
+            if (!estadoGlobal.partidos) return null;
             const pendientes = estadoGlobal.partidos.filter(p => p.golesA === null || p.golesB === null);
             if (pendientes.length > 0) {
                 pendientes.sort((a, b) => normalizarFechaHora(a.fecha, a.hora) - normalizarFechaHora(b.fecha, b.hora));
@@ -546,12 +690,8 @@
                 document.getElementById('proximo-meta').textContent = `${proximo.fase} • ${proximo.grupo || proximo.jornada || ''} • ${proximo.fecha} (${proximo.hora})`;
                 document.getElementById('proximo-equipoA').textContent = proximo.equipoA;
                 document.getElementById('proximo-equipoB').textContent = proximo.equipoB;
-                contenedor.classList.remove('hidden'); 
-                return proximo;
-            } else { 
-                contenedor.classList.add('hidden'); 
-                return null; 
-            }
+                contenedor.classList.remove('hidden'); return proximo;
+            } else { contenedor.classList.add('hidden'); return null; }
         }
 
         function actualizarPantallaQuiniela() {
@@ -572,10 +712,10 @@
 
             if (btnGuardar) {
                 if(estadoGlobal.torneoIniciado) {
-                    btnGuardar.disabled = true; btnGuardar.textContent = "🔒 Pronósticos Bloqueados";
+                    btnGuardar.disabled = true; btnGuardar.textContent = "Edición Bloqueada";
                     if(avisoBloqueo) avisoBloqueo.classList.remove('hidden');
                 } else {
-                    btnGuardar.disabled = false; btnGuardar.textContent = "💾 Guardar Pronósticos de esta Sección";
+                    btnGuardar.disabled = false; btnGuardar.textContent = "Guardar Sección Activa";
                     if(avisoBloqueo) avisoBloqueo.classList.add('hidden');
                 }
             }
@@ -603,11 +743,7 @@
                 const indiceUsuario = posiciones.findIndex(p => p.nombre === usuarioActivo);
                 if (indiceUsuario !== -1) {
                     const datosUsuario = posiciones[indiceUsuario];
-                    let puestoVisual = indiceUsuario + 1;
-                    if(puestoVisual === 1) puestoVisual = "🥇 Primero";
-                    else if(puestoVisual === 2) puestoVisual = "🥈 Segundo";
-                    else if(puestoVisual === 3) puestoVisual = "🥉 Tercero";
-                    else puestoVisual = `# ${puestoVisual}`;
+                    let puestoVisual = `${indiceUsuario + 1}º`;
 
                     if (widgetNombre) widgetNombre.textContent = datosUsuario.nombre;
                     if (widgetRank) widgetRank.textContent = puestoVisual;
@@ -618,23 +754,22 @@
 
             if (tablaPos) {
                 tablaPos.innerHTML = '';
-                if(posiciones.length === 0) tablaPos.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Ningún jugador unido.</td></tr>`;
+                if(posiciones.length === 0) tablaPos.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-600 text-xs">Sin registros activos.</td></tr>`;
                 posiciones.forEach((p, idx) => {
                     const esElUsuarioActivo = (p.nombre === usuarioActivo);
-                    const esActivoClase = esElUsuarioActivo ? 'bg-emerald-500/20 font-bold text-emerald-300 ring-2 ring-emerald-500 border-l-4 border-l-emerald-500 shadow-md shadow-emerald-950/50' : 'hover:bg-slate-700/40 border-b border-slate-800/40';
+                    const esActivoClase = esElUsuarioActivo ? 'bg-slate-800/40 font-medium text-emerald-400 ring-1 ring-slate-700/60' : 'hover:bg-slate-900/50';
                     let visualPos = idx + 1;
-                    if(idx === 0) visualPos = "🥇"; else if(idx === 1) visualPos = "🥈"; else if(idx === 2) visualPos = "🥉";
 
-                    const btnDel = esAdminActivo ? `<td class="p-3 text-center"><button onclick="event.stopPropagation(); eliminarUsuario('${p.nombre}')" class="text-xs text-red-400 bg-red-950/40 px-2 py-1 rounded cursor-pointer">✕</button></td>` : '';
-                    const indicadorTuHTML = esElUsuarioActivo ? `<span class="bg-emerald-500 text-slate-950 text-[9px] uppercase tracking-wider font-black px-1.5 py-0.5 rounded ml-1.5 animate-pulse shadow-sm">Tú</span>` : `<span class="text-[10px] text-slate-500 font-normal opacity-0 group-hover:opacity-100 transition-opacity">🔍 espiar</span>`;
+                    const btnDel = esAdminActivo ? `<td class="p-3 text-center"><button onclick="event.stopPropagation(); eliminarUsuario('${p.nombre}')" class="text-[11px] text-red-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded cursor-pointer">Remover</button></td>` : '';
+                    const indicadorTuHTML = esElUsuarioActivo ? `<span class="text-[9px] uppercase tracking-wider font-bold text-slate-400 ml-2">Tú</span>` : `<span class="text-[10px] text-slate-500 font-normal opacity-0 group-hover:opacity-100 transition-all ml-auto">Revisar</span>`;
 
                     tablaPos.innerHTML += `
-                        <tr onclick="espiarJugador('${p.nombre}')" class="${esActivoClase} transition cursor-pointer group" title="Exactos: ${p.exactos}, Tendencias: ${p.tendencias}">
-                            <td class="p-3 text-center font-bold ${esElUsuarioActivo ? 'text-emerald-400 text-sm' : 'text-slate-400 text-xs'}">${visualPos}</td>
-                            <td class="p-3 font-semibold flex items-center gap-1 truncate max-w-[150px]">
-                                <span class="${esElUsuarioActivo ? 'text-emerald-200 font-black' : 'text-slate-200'}">${p.nombre}</span> ${indicadorTuHTML}
+                        <tr onclick="espiarJugador('${p.nombre}')" class="${esActivoClase} transition cursor-pointer group text-xs border-b border-slate-900/60" title="Marcadores acertados: ${p.exactos}, Resultados ganadores: ${p.tendencias}">
+                            <td class="p-3 text-center font-mono font-medium text-slate-500">${visualPos}</td>
+                            <td class="p-3 font-medium flex items-center justify-between gap-1 truncate max-w-[170px]">
+                                <span class="${esElUsuarioActivo ? 'text-emerald-400' : 'text-slate-300'}">${p.nombre}</span> ${indicadorTuHTML}
                             </td>
-                            <td class="p-3 text-center ${esElUsuarioActivo ? 'text-emerald-300 font-black' : 'text-emerald-400 font-extrabold'} text-sm">${p.puntos}</td>
+                            <td class="p-3 text-center font-medium font-mono text-slate-300">${p.puntos}</td>
                             ${btnDel}
                         </tr>`;
                 });
@@ -645,10 +780,9 @@
                 if (!estadoGlobal.partidos) return;
                 const partidosFiltrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
                 if (partidosFiltrados.length === 0) {
-                    contenedor.innerHTML = `<p class="text-center text-slate-500 py-8 text-sm">No hay partidos registrados en esta fase.</p>`; return;
+                    contenedor.innerHTML = `<p class="text-center text-slate-600 py-8 text-xs tracking-wide">No hay encuentros programados en esta sección.</p>`; return;
                 }
 
-                // --- MEJORA: ORDENAMIENTO EN ALFABÉTICO + EXCEPCIÓN DE PARTIDOS PARA EL DÍA DE HOY ---
                 let llavesAgrupacion = [...new Set(partidosFiltrados.map(p => p.grupo || p.jornada || "Encuentros"))];
 
                 const hoy = new Date();
@@ -660,7 +794,6 @@
                     const partidosA = partidosFiltrados.filter(p => (p.grupo === a || p.jornada === a));
                     const partidosB = partidosFiltrados.filter(p => (p.grupo === b || p.jornada === b));
                     
-                    // Comprobar si alguno de los partidos del grupo coincide estrictamente con la fecha de HOY
                     const tienePartidoHoyA = partidosA.some(p => {
                         const fechaP = normalizarFechaHora(p.fecha, p.hora);
                         return fechaP.getFullYear() === hoyAño && fechaP.getMonth() === hoyMes && fechaP.getDate() === hoyDia;
@@ -671,16 +804,13 @@
                         return fechaP.getFullYear() === hoyAño && fechaP.getMonth() === hoyMes && fechaP.getDate() === hoyDia;
                     });
 
-                    // Si el grupo A tiene partido hoy y el B no, el A sube al encabezado
                     if (tienePartidoHoyA && !tienePartidoHoyB) return -1;
                     if (!tienePartidoHoyA && tienePartidoHoyB) return 1;
                     
-                    // Si ambos tienen partidos hoy (o ninguno lo tiene), se ordenan alfabéticamente de forma natural
                     return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
                 });
 
                 llavesAgrupacion.forEach((grupoNombre, indiceGrupo) => {
-                    // El que quede de primero en el array (índice 0) obtiene el badge especial de acción del día
                     const partidosDelGrupo = partidosFiltrados.filter(p => (p.grupo === grupoNombre || p.jornada === grupoNombre)).sort((a,b)=>normalizarFechaHora(a.fecha,a.hora)-normalizarFechaHora(b.fecha,b.hora));
                     
                     const tieneAccionHoy = partidosDelGrupo.some(p => {
@@ -689,36 +819,52 @@
                     });
 
                     const esDestacado = (indiceGrupo === 0 && tieneAccionHoy);
-                    const claseContenedor = esDestacado ? 'bg-slate-900/70 p-4 rounded-xl border-2 border-emerald-500/40 relative shadow-lg bloque-grupo-contenedor' : 'bg-slate-900/30 p-4 rounded-xl border border-slate-700/40 bloque-grupo-contenedor';
-                    const indicadorHTML = esDestacado ? `<span class="absolute top-3 right-4 bg-emerald-600 text-slate-950 text-[9px] font-black tracking-widest px-2 py-0.5 rounded animate-pulse">🔥 PARTIDOS DE HOY</span>` : '';
+                    const claseContenedor = esDestacado ? 'bg-slate-900 p-4 rounded-xl border border-emerald-800/40 relative shadow-sm bloque-grupo-contenedor' : 'bg-slate-950/40 p-4 rounded-xl border border-slate-900 bloque-grupo-contenedor';
+                    const indicadorHTML = esDestacado ? `<span class="absolute top-3 right-4 text-[9px] text-emerald-400 font-bold tracking-widest uppercase">▪ Partidos programados para hoy</span>` : '';
 
-                    let bloqueHTML = `<div class="${claseContenedor}" data-grupo="${grupoNombre}">${indicadorHTML}<h3 class="text-xs font-black text-emerald-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-1.5">${grupoNombre}</h3><div class="space-y-4">`;
+                    let bloqueHTML = `<div class="${claseContenedor}" data-grupo="${grupoNombre}">${indicadorHTML}<h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-1.5">${grupoNombre}</h3><div class="space-y-4">`;
 
                     partidosDelGrupo.forEach(partido => {
                         const prUser = (estadoGlobal.pronosticos[usuarioActivo] && estadoGlobal.pronosticos[usuarioActivo][partido.id]) ? estadoGlobal.pronosticos[usuarioActivo][partido.id] : { golesA: '', golesB: '' };
-                        let txtReal = `<span class="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded font-medium border border-slate-700">⏳ Por Jugar</span>`;
-                        if(partido.golesA !== null && partido.golesB !== null) txtReal = `<span class="bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">Marcador: ${partido.golesA} - ${partido.golesB}</span>`;
+                        let txtReal = `<span class="text-[10px] text-slate-500 uppercase tracking-wider font-medium">Por Jugar</span>`;
+                        if(partido.golesA !== null && partido.golesB !== null) txtReal = `<span class="text-[10px] font-medium text-emerald-500 uppercase tracking-wide">Oficial: ${partido.golesA} - ${partido.golesB}</span>`;
 
                         let badgeAcertadoHTML = '';
+                        let estiloFilaPartido = 'border-slate-900 bg-slate-950/60 hover:border-slate-800';
+
                         if (partido.golesA !== null && partido.golesB !== null) {
                             if (prUser.golesA === '' || prUser.golesB === '' || prUser.golesA === null || prUser.golesB === null) {
-                                badgeAcertadoHTML = `<span class="bg-slate-950/60 text-slate-500 text-[10px] px-2 py-1 rounded border border-slate-800 text-center block w-full sm:w-auto">➖ Sin pronóstico</span>`;
+                                estiloFilaPartido = 'border-red-900/40 bg-gradient-to-r from-slate-950 to-red-950/10';
+                                badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium block w-full sm:w-auto sm:text-right shadow-sm rounded px-1.5 py-0.5">Sin Acierto</span>`;
                             } else {
                                 const gRealA = parseInt(partido.golesA); const gRealB = parseInt(partido.golesB);
                                 const gPronA = parseInt(prUser.golesA); const gPronB = parseInt(prUser.golesB);
                                 const tReal = gRealA > gRealB ? 'A' : (gRealA < gRealB ? 'B' : 'E');
                                 const tPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
-                                if (gRealA === gPronA && gRealB === gPronB) badgeAcertadoHTML = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-black px-2 py-1 rounded text-center block w-full sm:w-auto shadow-sm">🎯 Exacto (+3)</span>`;
-                                else if (tReal === tPron) badgeAcertadoHTML = `<span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block w-full sm:w-auto shadow-sm">✅ Tendencia (+1)</span>`;
-                                else badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium px-2 py-1 rounded text-center block w-full sm:w-auto">❌ Fallado (+0)</span>`;
+
+                                if (gRealA === gPronA && gRealB === gPronB) {
+                                    estiloFilaPartido = 'border-emerald-900/40 bg-gradient-to-r from-slate-950 to-emerald-950/20';
+                                    badgeAcertadoHTML = `<span class="bg-emerald-950 text-emerald-400 border border-emerald-900 text-[10px] font-medium block w-full sm:w-auto sm:text-right shadow-sm rounded px-1.5 py-0.5">Acertado (+3)</span>`;
+                                } else if (tReal === tPron) {
+                                    estiloFilaPartido = 'border-emerald-900/40 bg-gradient-to-r from-slate-950 to-emerald-950/20';
+                                    if (tReal === 'E') {
+                                        badgeAcertadoHTML = `<span class="bg-emerald-950 text-emerald-400 border border-emerald-900 text-[10px] font-medium block w-full sm:w-auto sm:text-right shadow-sm rounded px-1.5 py-0.5">Empate Acertado (+1)</span>`;
+                                    } else {
+                                        badgeAcertadoHTML = `<span class="bg-emerald-950 text-emerald-400 border border-emerald-900 text-[10px] font-medium block w-full sm:w-auto sm:text-right shadow-sm rounded px-1.5 py-0.5">Ganador Acertado (+1)</span>`;
+                                    }
+                                } else {
+                                    estiloFilaPartido = 'border-red-900/40 bg-gradient-to-r from-slate-950 to-red-950/10';
+                                    badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium block w-full sm:w-auto sm:text-right shadow-sm rounded px-1.5 py-0.5">No acertado</span>`;
+                                }
                             }
                         }
 
                         const tendencia = calcularTendenciaComunidad(partido.id);
-                        const barraTendenciaHTML = `<div class="w-full mt-2 bg-slate-950 rounded-full h-1.5 flex overflow-hidden border border-slate-800"><div class="bg-emerald-500 transition-all duration-300" style="width: ${tendencia.local}%"></div><div class="bg-slate-600 transition-all duration-300" style="width: ${tendencia.empate}%"></div><div class="bg-purple-500 transition-all duration-300" style="width: ${tendencia.visita}%"></div></div>`;
+                        const barraTendenciaHTML = `<div class="w-full mt-2 bg-slate-950 rounded-full h-[3px] flex overflow-hidden"><div class="bg-emerald-600 transition-all duration-300" style="width: ${tendencia.local}%"></div><div class="bg-slate-700 transition-all duration-300" style="width: ${tendencia.empate}%"></div><div class="bg-slate-800 transition-all duration-300" style="width: ${tendencia.visita}%"></div></div>`;
                         const esSiguiente = (partidoProximoAbsoluto && partidoProximoAbsoluto.id === partido.id);
-                        const claseFila = esSiguiente ? `tarjeta-partido-item flex flex-col sm:flex-row items-center justify-between p-3.5 bg-emerald-950/20 rounded-xl gap-3 border border-emerald-500/40 shadow-[inset_0_0_10px_rgba(16,185,129,0.1)]` : `tarjeta-partido-item flex flex-col sm:flex-row items-center justify-between p-3.5 bg-slate-800/60 rounded-xl gap-3 border border-slate-700/30 hover:bg-slate-700/30 transition`;
-                        const inputEstilo = estadoGlobal.torneoIniciado ? 'disabled class="w-11 bg-slate-950 text-center text-emerald-400 py-1 font-bold rounded-lg border border-slate-800 cursor-not-allowed"' : 'class="w-11 bg-slate-950 text-center text-white py-1 font-black rounded-lg border border-slate-700 focus:ring-2 focus:ring-emerald-500 transition duration-150 focus:outline-none"';
+                        
+                        const claseFila = esSiguiente ? `flex flex-col sm:flex-row items-center justify-between p-3.5 bg-slate-900 border border-slate-700 rounded-lg gap-3` : `flex flex-col sm:flex-row items-center justify-between p-3.5 rounded-lg gap-3 border ${estiloFilaPartido} transition`;
+                        const inputEstilo = estadoGlobal.torneoIniciado ? 'disabled class="w-10 bg-slate-900 text-center text-slate-400 py-1 font-mono text-xs rounded border border-slate-800 cursor-not-allowed"' : 'class="w-10 bg-slate-950 text-center text-slate-200 py-1 font-mono text-xs rounded border border-slate-800 focus:border-emerald-600 transition duration-150 focus:outline-none"';
 
                         const normEqA = partido.equipoA.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                         const normEqB = partido.equipoB.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -726,16 +872,16 @@
                         bloqueHTML += `
                             <div class="space-y-1 tarjeta-partido-item" data-equipoa="${normEqA}" data-equipob="${normEqB}">
                                 <div class="${claseFila}">
-                                    <div class="text-center sm:text-left min-w-[130px] space-y-1">
-                                        <p class="text-[11px] text-slate-400 font-semibold tracking-wide">${partido.fecha} • ${partido.hora}</p>
+                                    <div class="text-center sm:text-left min-w-[130px] space-y-0.5">
+                                        <p class="text-[10px] text-slate-400 font-medium font-mono">${partido.fecha} • ${partido.hora}</p>
                                         <div class="flex flex-col gap-1 items-center sm:items-start">${txtReal}</div>
                                     </div>
                                     <div class="flex items-center justify-center gap-2.5 flex-1 w-full sm:w-auto">
-                                        <div class="text-right flex-1 font-bold text-sm truncate text-slate-200">${partido.equipoA}</div>
+                                        <div class="text-right flex-1 font-medium text-xs text-slate-300">${partido.equipoA}</div>
                                         <input type="number" oninput="validarInputMinimo(this)" id="pron-A-${partido.id}" value="${prUser.golesA!==undefined?prUser.golesA:''}" min="0" placeholder="-" ${inputEstilo}>
-                                        <span class="text-slate-600 text-xs font-black select-none">VS</span>
+                                        <span class="text-slate-600 text-[10px] font-mono select-none">VS</span>
                                         <input type="number" oninput="validarInputMinimo(this)" id="pron-B-${partido.id}" value="${prUser.golesB!==undefined?prUser.golesB:''}" min="0" placeholder="-" ${inputEstilo}>
-                                        <div class="text-left flex-1 font-bold text-sm truncate text-slate-200">${partido.equipoB}</div>
+                                        <div class="text-left flex-1 font-medium text-xs text-slate-300">${partido.equipoB}</div>
                                     </div>
                                     <div class="min-w-[125px] flex justify-center sm:justify-end shrink-0">${badgeAcertadoHTML}</div>
                                 </div>
@@ -746,21 +892,6 @@
                 });
                 filtrarPartidosPorTexto();
                 contarPronosticosPendientes();
-            }
-        }
-
-        function cambiarUsuario() {
-            if (!verificarBloqueoNavegacion()) {
-                const selectUsr = document.getElementById('select-usuario');
-                if (selectUsr) selectUsr.value = usuarioActivo;
-                return;
-            }
-            const selectUsr = document.getElementById('select-usuario');
-            if (selectUsr) {
-                usuarioActivo = selectUsr.value;
-                localStorage.setItem('q_pro_usuario', usuarioActivo);
-                tieneCambiosSinGuardar = false;
-                actualizarPantallaQuiniela();
             }
         }
     </script>
