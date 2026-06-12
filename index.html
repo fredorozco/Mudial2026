@@ -7,12 +7,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         /* Eliminar las flechas nativas de los inputs numéricos */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         input[type=number] { -moz-appearance: textfield; }
+        #resumen-usuario-destacado {
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen pb-12 selection:bg-emerald-600 selection:text-white">
@@ -24,11 +27,9 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <!-- COLUMNA IZQUIERDA: USUARIO, RESUMEN PERSONAL, POSICIONES Y ADMINISTRACIÓN -->
+
         <div class="lg:col-span-1 space-y-6">
-            
-            <!-- SECCIÓN DE SELECCIÓN / REGISTRO DE USUARIO -->
+
             <div class="bg-slate-800/90 backdrop-blur p-5 rounded-xl shadow-md border border-slate-700/60 transition hover:border-slate-600">
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">👤 Tu Usuario</h2>
@@ -47,7 +48,6 @@
                 </div>
             </div>
 
-            <!-- NUEVA SECCIÓN: WIDGET DE RESUMEN PERSONAL DE RENDIMIENTO -->
             <div id="widget-perfil-tarjeta" class="bg-gradient-to-br from-slate-800 via-slate-800 to-emerald-950/40 p-5 rounded-xl shadow-lg border border-emerald-500/30 shadow-emerald-950/20 relative overflow-hidden hidden">
                 <div class="absolute -right-6 -bottom-6 text-emerald-500/10 text-7xl font-black select-none pointer-events-none">MY RANK</div>
                 <div class="flex items-center gap-4">
@@ -71,7 +71,6 @@
                 </div>
             </div>
 
-            <!-- TABLA DE POSICIONES GENERAL -->
             <div class="bg-slate-800/90 backdrop-blur p-5 rounded-xl shadow-md border border-slate-700/60">
                 <div class="flex justify-between items-center mb-2">
                     <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">📊 Tabla General</h2>
@@ -94,7 +93,6 @@
                 </div>
             </div>
 
-            <!-- PANEL DE ADMINISTRADOR -->
             <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700 border-dashed space-y-2">
                 <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">🔒 Panel de Administrador</h3>
                 <button onclick="verificarAccAccessAdmin()" class="w-full bg-red-950/30 hover:bg-red-900/50 text-red-300 border border-red-900/60 py-2.5 rounded-lg text-xs font-bold transition shadow-sm cursor-pointer tracking-wide">
@@ -103,14 +101,12 @@
             </div>
         </div>
 
-        <!-- COLUMNA DERECHA: PARTIDOS Y PRONÓSTICOS -->
         <div class="lg:col-span-2 space-y-4">
-            
-            <!-- MARQUESINA PRÓXIMO PARTIDO -->
+
             <div id="contenedor-proximo-partido" class="bg-gradient-to-r from-slate-950 via-emerald-950/30 to-slate-950 p-4 rounded-xl border border-emerald-500/30 shadow-xl hidden">
                 <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
                     <span class="bg-emerald-600/20 text-emerald-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md border border-emerald-500/30 tracking-wider animate-pulse flex items-center gap-1.5">
-                        <span class="text-emerald-500">⚡</span> PRÓXIMO PARTIDO
+                        <span class="text-emerald-500">⚡</span> PRÓXIMO PARTIDO DEL TORNEO
                     </span>
                     <span id="proximo-meta" class="text-xs font-semibold text-slate-400">Cargando...</span>
                 </div>
@@ -123,7 +119,6 @@
                 </div>
             </div>
 
-            <!-- SELECTOR DE FASES -->
             <div class="bg-slate-800 p-1.5 rounded-xl border border-slate-700 shadow-inner">
                 <div class="flex flex-wrap md:flex-nowrap gap-1 w-full" id="barra-navegacion-fases">
                     <button onclick="cambiarFaseFiltro('Grupos')" id="tab-Grupos" class="flex-1 font-bold py-2.5 px-2 rounded-lg text-xs md:text-sm transition-all duration-200 cursor-pointer">⚽ Grupos</button>
@@ -135,13 +130,12 @@
                 </div>
             </div>
 
-            <!-- CONTENEDOR DE ENCUENTROS -->
             <div class="bg-slate-800 p-6 rounded-xl shadow-md border border-slate-700">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-700/50">
                     <h2 class="text-xl font-bold text-white flex items-center gap-2">
                         📅 Fase: <span id="nombre-fase-titulo" class="text-emerald-400">Grupos</span>
                     </h2>
-                    
+
                     <div class="w-full sm:w-auto flex items-center gap-2">
                         <input type="text" id="buscador-partidos" oninput="filtrarPartidosPorTexto()" placeholder="🔍 Buscar selección..." class="bg-slate-900 text-xs px-3 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-emerald-500 w-full sm:w-44 transition">
                         <div class="flex flex-col items-end shrink-0">
@@ -150,7 +144,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div id="lista-partidos-contenedor" class="space-y-6"></div>
 
                 <div class="mt-8 pt-4 border-t border-slate-700 flex flex-col sm:flex-row justify-between items-center gap-3">
@@ -163,7 +157,6 @@
         </div>
     </main>
 
-    <!-- MODAL ESPIAR -->
     <div id="modal-espiar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50 backdrop-blur-sm">
         <div class="bg-slate-800 border border-slate-700 max-w-xl w-full rounded-2xl p-6 shadow-2xl">
             <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-700">
@@ -178,7 +171,6 @@
         </div>
     </div>
 
-    <!-- MODAL ADMINISTRADOR -->
     <div id="modal-admin" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50 backdrop-blur-sm">
         <div class="bg-slate-800 border border-slate-700 max-w-2xl w-full rounded-2xl p-6 shadow-2xl my-8 transform transition-all scale-100">
             <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-700">
@@ -208,9 +200,9 @@
                     <option value="Finales">Ver Finales</option>
                 </select>
             </div>
-            
+
             <div id="admin-lista-partidos-render" class="space-y-2 mb-6 max-h-60 overflow-y-auto pr-1 divide-y divide-slate-800"></div>
-            
+
             <div class="flex flex-col sm:flex-row justify-end gap-3 border-t border-slate-700 pt-4">
                 <button onclick="cerrarModalAdmin()" class="bg-slate-700 hover:bg-slate-600 text-white px-5 py-2.5 rounded-lg text-sm transition font-medium cursor-pointer">Cerrar</button>
                 <button onclick="guardarResultadosAdminReales()" class="bg-red-600 hover:bg-red-500 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition cursor-pointer shadow-lg shadow-red-950">Guardar Resultados Manuales</button>
@@ -218,7 +210,6 @@
         </div>
     </div>
 
-    <!-- LOGÍSTICA DE CONEXIÓN -->
     <script>
         const API_KEY = "https://script.google.com/macros/s/AKfycbzaQD1eNCSLJbpjixksoC4tEmvh4kZD1U_IdlzXXIl0mz1SwTZsUFfkftAqy7lOBx5qqA/exec";
         const LLAVE_ADMIN = "Mundial2026";
@@ -231,9 +222,9 @@
 
         let estadoGlobal = { torneoIniciado: false, usuarios: [], partidos: [], pronosticos: {} };
         let usuarioActivo = localStorage.getItem('q_pro_usuario') || "";
-        let faseActiva = "Grupos"; 
+        let faseActiva = "Grupos";
         let esAdminActivo = false;
-        let tieneCambiosSinGuardar = false; 
+        let tieneCambiosSinGuardar = false;
 
         window.onload = function() {
             cambiarFaseFiltro(faseActiva);
@@ -263,12 +254,13 @@
                 const fragmentos = fechaStr.toLowerCase().split(" de ");
                 const dia = parseInt(fragmentos[0]);
                 const mes = meses[fragmentos[1].trim()];
+                
                 let horas = parseInt(horaStr.split(":")[0]);
                 const minutos = parseInt(horaStr.split(":")[1].split(" ")[0]);
                 const ampm = horaStr.toLowerCase().includes("pm");
                 if (ampm && horas < 12) horas += 12;
                 if (!ampm && horas === 12) horas = 0;
-                return new Date(2026, mes, dia, horas, mi);
+                return new Date(2026, mes, dia, horas, minutos);
             } catch(e) { return new Date(2026, 11, 31); }
         }
 
@@ -285,7 +277,8 @@
             tarjetas.forEach(tarjeta => {
                 const eqA = tarjeta.getAttribute('data-equipoa');
                 const eqB = tarjeta.getAttribute('data-equipob');
-                if(eqA.includes(texto) || eqB.includes(texto)) tarjeta.classList.remove('hidden');
+                if(eqA && eqB && (eqA.includes(texto) || eqB.includes(texto))) tarjeta.classList.remove('hidden');
+                else if (!eqA) tarjeta.classList.remove('hidden');
                 else tarjeta.classList.add('hidden');
             });
             document.querySelectorAll('.bloque-grupo-contenedor').forEach(bloque => {
@@ -364,7 +357,7 @@
             if(estadoGlobal.usuarios.length <= 1) { alert("Mínimo un jugador."); return; }
             if(confirm(`¿Eliminar a ${nombre}?`)) {
                 mostrarCarga(40);
-                if (await enviarComandoNube({ action: "delete_user", nombreUsuario: nombre })) {
+                if (await enviarComandoNube({ action: "delete_user", textoreUsr: nombre, nombreUsuario: nombre })) {
                     estadoGlobal.usuarios = estadoGlobal.usuarios.filter(u => u !== nombre);
                     if(usuarioActivo === nombre) usuarioActivo = estadoGlobal.usuarios[0];
                     localStorage.setItem('q_pro_usuario', usuarioActivo);
@@ -410,7 +403,7 @@
             const pss = prompt("Introduce la clave:");
             if(pss === LLAVE_ADMIN) {
                 esAdminActivo = true; document.getElementById('modal-admin').classList.remove('hidden');
-                renderizarListaPartidosAdmin(); actualizarBotonAdminTorneo(); actualizarPantallaQuiniela(); 
+                renderizarListaPartidosAdmin(); actualizarBotonAdminTorneo(); actualizarPantallaQuiniela();
             } else if (pss !== null) alert("Incorrecta.");
         }
         function cerrarModalAdmin() { document.getElementById('modal-admin').classList.add('hidden'); }
@@ -464,8 +457,8 @@
             faseActiva = faseSeleccionada;
             ["Grupos", "16avos", "Octavos", "Cuartos", "Semifinales", "Finales"].forEach(f => {
                 const btn = document.getElementById(`tab-${f}`);
-                if (btn) btn.className = f === faseSeleccionada ? 
-                    "flex-1 font-bold py-2.5 px-1 rounded-lg text-xs md:text-sm bg-emerald-600 text-white scale-105 transition shadow" : 
+                if (btn) btn.className = f === faseSeleccionada ?
+                    "flex-1 font-bold py-2.5 px-1 rounded-lg text-xs md:text-sm bg-emerald-600 text-white scale-105 transition shadow" :
                     "flex-1 font-bold py-2.5 px-1 rounded-lg text-xs md:text-sm bg-slate-800 text-slate-400 hover:text-slate-200 transition";
             });
             if(document.getElementById('nombre-fase-titulo')) document.getElementById('nombre-fase-titulo').textContent = faseSeleccionada;
@@ -475,14 +468,14 @@
         function desglosarMetricasUsuario(nombreUsuario) {
             let puntos = 0, exactos = 0, tendencias = 0;
             const pronosticos = estadoGlobal.pronosticos[nombreUsuario] || {};
-            
+
             estadoGlobal.partidos.forEach(p => {
                 if (p.golesA === null || p.golesB === null) return;
                 const pr = pronosticos[p.id]; if (!pr || pr.golesA === null || pr.golesB === null) return;
-                
+
                 const tReal = p.golesA > p.golesB ? 'A' : (p.golesA < p.golesB ? 'B' : 'E');
                 const tPron = pr.golesA > pr.golesB ? 'A' : (pr.golesA < pr.golesB ? 'B' : 'E');
-                
+
                 if (parseInt(p.golesA) === parseInt(pr.golesA) && parseInt(p.golesB) === parseInt(pr.golesB)) {
                     puntos += 3; exactos++;
                 } else if (tReal === tPron) {
@@ -497,14 +490,14 @@
             document.getElementById('espiar-fase-nombre').textContent = faseActiva;
             const contenedorLista = document.getElementById('espiar-lista-contenido');
             contenedorLista.innerHTML = '';
-            
+
             const partidosFase = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
             const prUser = estadoGlobal.pronosticos[nombre] || {};
 
             partidosFase.forEach(p => {
                 const marca = prUser[p.id];
-                const textoPrediccion = (marca && marca.golesA !== '' && marca.golesB !== '' && marca.golesA !== null && marca.golesB !== null) ? 
-                    `<span class="text-emerald-400 font-extrabold text-sm">${marca.golesA} - ${marca.golesB}</span>` : 
+                const textoPrediccion = (marca && marca.golesA !== '' && marca.golesB !== '' && marca.golesA !== null && marca.golesB !== null) ?
+                    `<span class="text-emerald-400 font-extrabold text-sm">${marca.golesA} - ${marca.golesB}</span>` :
                     `<span class="text-slate-500 text-xs italic">Sin registrar</span>`;
 
                 contenedorLista.innerHTML += `
@@ -522,7 +515,7 @@
 
         function calcularTendenciaComunidad(partidoId) {
             let totalLocal = 0, totalEmpate = 0, totalVisita = 0, totalPronos = 0;
-            
+
             Object.values(estadoGlobal.pronosticos).forEach(userPronos => {
                 const pr = userPronos[partidoId];
                 if (pr && pr.golesA !== null && pr.golesB !== null && pr.golesA !== '' && pr.golesB !== '') {
@@ -544,7 +537,8 @@
 
         function actualizarProximoPartidoDestacado() {
             const contenedor = document.getElementById('contenedor-proximo-partido');
-            if (!estadoGlobal.partidos) return null;
+            if (!estadoGlobal.partidos || estadoGlobal.partidos.length === 0) return null;
+            
             const pendientes = estadoGlobal.partidos.filter(p => p.golesA === null || p.golesB === null);
             if (pendientes.length > 0) {
                 pendientes.sort((a, b) => normalizarFechaHora(a.fecha, a.hora) - normalizarFechaHora(b.fecha, b.hora));
@@ -552,8 +546,12 @@
                 document.getElementById('proximo-meta').textContent = `${proximo.fase} • ${proximo.grupo || proximo.jornada || ''} • ${proximo.fecha} (${proximo.hora})`;
                 document.getElementById('proximo-equipoA').textContent = proximo.equipoA;
                 document.getElementById('proximo-equipoB').textContent = proximo.equipoB;
-                contenedor.classList.remove('hidden'); return proximo;
-            } else { contenedor.classList.add('hidden'); return null; }
+                contenedor.classList.remove('hidden'); 
+                return proximo;
+            } else { 
+                contenedor.classList.add('hidden'); 
+                return null; 
+            }
         }
 
         function actualizarPantallaQuiniela() {
@@ -565,7 +563,6 @@
             const thAdmin = document.getElementById('th-acciones-admin');
             const avisoBloqueo = document.getElementById('aviso-bloqueo-vista');
 
-            // Elementos del Widget de Perfil Separado
             const widgetTarjeta = document.getElementById('widget-perfil-tarjeta');
             const widgetNombre = document.getElementById('widget-nombre-usuario');
             const widgetRank = document.getElementById('widget-ranking-puesto');
@@ -595,7 +592,6 @@
             if (badgeUsr) badgeUsr.textContent = usuarioActivo || "Invitado";
             if(thAdmin) esAdminActivo ? thAdmin.classList.remove('hidden') : thAdmin.classList.add('hidden');
 
-            // --- LÓGICA DE PROCESAMIENTO DE RANKING ---
             let posiciones = estadoGlobal.usuarios.map(u => ({ nombre: u, ...desglosarMetricasUsuario(u) }));
             posiciones.sort((a, b) => {
                 if (b.puntos !== a.puntos) return b.puntos - a.puntos;
@@ -603,7 +599,6 @@
                 return b.tendencias - a.tendencias;
             });
 
-            // --- ACTUALIZACIÓN DEL WIDGET SEPARADO DE PERFIL ---
             if (usuarioActivo && usuarioActivo !== "Invitado" && posiciones.length > 0) {
                 const indiceUsuario = posiciones.findIndex(p => p.nombre === usuarioActivo);
                 if (indiceUsuario !== -1) {
@@ -621,39 +616,27 @@
                 } else { if (widgetTarjeta) widgetTarjeta.classList.add('hidden'); }
             } else { if (widgetTarjeta) widgetTarjeta.classList.add('hidden'); }
 
-            // --- TABLA DE POSICIONES GENERAL (CON RESALTADO VERDE ESMERALDA) ---
             if (tablaPos) {
                 tablaPos.innerHTML = '';
-                if(posiciones.length === 0) {
-                    tablaPos.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Ningún jugador unido.</td></tr>`;
-                }
-                
+                if(posiciones.length === 0) tablaPos.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Ningún jugador unido.</td></tr>`;
                 posiciones.forEach((p, idx) => {
                     const esElUsuarioActivo = (p.nombre === usuarioActivo);
-                    
-                    // CAMBIO A VERDE ESMERALDA EXTREMADAMENTE VISIBLE:
-                    const esActivoClase = esElUsuarioActivo 
-                        ? 'bg-emerald-500/20 font-bold text-emerald-300 ring-2 ring-emerald-500 border-l-4 border-l-emerald-500 shadow-md shadow-emerald-950/50' 
-                        : 'hover:bg-slate-700/40 border-b border-slate-800/40';
-                    
+                    const esActivoClase = esElUsuarioActivo ? 'bg-emerald-500/20 font-bold text-emerald-300 ring-2 ring-emerald-500 border-l-4 border-l-emerald-500 shadow-md shadow-emerald-950/50' : 'hover:bg-slate-700/40 border-b border-slate-800/40';
                     let visualPos = idx + 1;
                     if(idx === 0) visualPos = "🥇"; else if(idx === 1) visualPos = "🥈"; else if(idx === 2) visualPos = "🥉";
-                    
+
                     const btnDel = esAdminActivo ? `<td class="p-3 text-center"><button onclick="event.stopPropagation(); eliminarUsuario('${p.nombre}')" class="text-xs text-red-400 bg-red-950/40 px-2 py-1 rounded cursor-pointer">✕</button></td>` : '';
-                    
-                    const indicadorTuHTML = esElUsuarioActivo 
-                        ? `<span class="bg-emerald-500 text-slate-950 text-[9px] uppercase tracking-wider font-black px-1.5 py-0.5 rounded ml-1.5 animate-pulse shadow-sm">Tú</span>`
-                        : `<span class="text-[10px] text-slate-500 font-normal opacity-0 group-hover:opacity-100 transition-opacity">🔍 espiar</span>`;
+                    const indicadorTuHTML = esElUsuarioActivo ? `<span class="bg-emerald-500 text-slate-950 text-[9px] uppercase tracking-wider font-black px-1.5 py-0.5 rounded ml-1.5 animate-pulse shadow-sm">Tú</span>` : `<span class="text-[10px] text-slate-500 font-normal opacity-0 group-hover:opacity-100 transition-opacity">🔍 espiar</span>`;
 
                     tablaPos.innerHTML += `
-                    <tr onclick="espiarJugador('${p.nombre}')" class="${esActivoClase} transition cursor-pointer group" title="Exactos: ${p.exactos}, Tendencias: ${p.tendencias}">
-                        <td class="p-3 text-center font-bold ${esElUsuarioActivo ? 'text-emerald-400 text-sm' : 'text-slate-400 text-xs'}">${visualPos}</td>
-                        <td class="p-3 font-semibold flex items-center gap-1 truncate max-w-[150px]">
-                            <span class="${esElUsuarioActivo ? 'text-emerald-200 font-black' : 'text-slate-200'}">${p.nombre}</span> ${indicadorTuHTML}
-                        </td>
-                        <td class="p-3 text-center ${esElUsuarioActivo ? 'text-emerald-300 font-black' : 'text-emerald-400 font-extrabold'} text-sm">${p.puntos}</td>
-                        ${btnDel}
-                    </tr>`;
+                        <tr onclick="espiarJugador('${p.nombre}')" class="${esActivoClase} transition cursor-pointer group" title="Exactos: ${p.exactos}, Tendencias: ${p.tendencias}">
+                            <td class="p-3 text-center font-bold ${esElUsuarioActivo ? 'text-emerald-400 text-sm' : 'text-slate-400 text-xs'}">${visualPos}</td>
+                            <td class="p-3 font-semibold flex items-center gap-1 truncate max-w-[150px]">
+                                <span class="${esElUsuarioActivo ? 'text-emerald-200 font-black' : 'text-slate-200'}">${p.nombre}</span> ${indicadorTuHTML}
+                            </td>
+                            <td class="p-3 text-center ${esElUsuarioActivo ? 'text-emerald-300 font-black' : 'text-emerald-400 font-extrabold'} text-sm">${p.puntos}</td>
+                            ${btnDel}
+                        </tr>`;
                 });
             }
 
@@ -664,27 +647,57 @@
                 if (partidosFiltrados.length === 0) {
                     contenedor.innerHTML = `<p class="text-center text-slate-500 py-8 text-sm">No hay partidos registrados en esta fase.</p>`; return;
                 }
+
+                // --- MEJORA: ORDENAMIENTO EN ALFABÉTICO + EXCEPCIÓN DE PARTIDOS PARA EL DÍA DE HOY ---
                 let llavesAgrupacion = [...new Set(partidosFiltrados.map(p => p.grupo || p.jornada || "Encuentros"))];
-                if (partidoProximoAbsoluto && partidoProximoAbsoluto.fase === faseActiva) {
-                    const gDestacado = partidoProximoAbsoluto.grupo || partidoProximoAbsoluto.jornada || "Encuentros";
-                    llavesAgrupacion = llavesAgrupacion.filter(g => g !== gDestacado); llavesAgrupacion.unshift(gDestacado);
-                }
+
+                const hoy = new Date();
+                const hoyAño = hoy.getFullYear();
+                const hoyMes = hoy.getMonth();
+                const hoyDia = hoy.getDate();
+
+                llavesAgrupacion.sort((a, b) => {
+                    const partidosA = partidosFiltrados.filter(p => (p.grupo === a || p.jornada === a));
+                    const partidosB = partidosFiltrados.filter(p => (p.grupo === b || p.jornada === b));
+                    
+                    // Comprobar si alguno de los partidos del grupo coincide estrictamente con la fecha de HOY
+                    const tienePartidoHoyA = partidosA.some(p => {
+                        const fechaP = normalizarFechaHora(p.fecha, p.hora);
+                        return fechaP.getFullYear() === hoyAño && fechaP.getMonth() === hoyMes && fechaP.getDate() === hoyDia;
+                    });
+                    
+                    const tienePartidoHoyB = partidosB.some(p => {
+                        const fechaP = normalizarFechaHora(p.fecha, p.hora);
+                        return fechaP.getFullYear() === hoyAño && fechaP.getMonth() === hoyMes && fechaP.getDate() === hoyDia;
+                    });
+
+                    // Si el grupo A tiene partido hoy y el B no, el A sube al encabezado
+                    if (tienePartidoHoyA && !tienePartidoHoyB) return -1;
+                    if (!tienePartidoHoyA && tienePartidoHoyB) return 1;
+                    
+                    // Si ambos tienen partidos hoy (o ninguno lo tiene), se ordenan alfabéticamente de forma natural
+                    return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+                });
 
                 llavesAgrupacion.forEach((grupoNombre, indiceGrupo) => {
-                    const esDestacado = (indiceGrupo === 0 && partidoProximoAbsoluto && (partidoProximoAbsoluto.grupo === grupoNombre || partidoProximoAbsoluto.jornada === grupoNombre));
-                    const claseContenedor = esDestacado ? 'bg-slate-900/70 p-4 rounded-xl border-2 border-emerald-500/40 relative shadow-lg bloque-grupo-contenedor' : 'bg-slate-900/30 p-4 rounded-xl border border-slate-700/40 bloque-grupo-contenedor';
-                    const indicadorHTML = esDestacado ? `<span class="absolute top-3 right-4 bg-emerald-600 text-slate-950 text-[9px] font-black tracking-widest px-2 py-0.5 rounded animate-pulse">🔥 PRÓXIMA ACCIÓN</span>` : '';
-
-                    let bloqueHTML = `<div class="${claseContenedor}">${indicadorHTML}<h3 class="text-xs font-black text-emerald-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-1.5">${grupoNombre}</h3><div class="space-y-4">`;
+                    // El que quede de primero en el array (índice 0) obtiene el badge especial de acción del día
                     const partidosDelGrupo = partidosFiltrados.filter(p => (p.grupo === grupoNombre || p.jornada === grupoNombre)).sort((a,b)=>normalizarFechaHora(a.fecha,a.hora)-normalizarFechaHora(b.fecha,b.hora));
+                    
+                    const tieneAccionHoy = partidosDelGrupo.some(p => {
+                        const fechaP = normalizarFechaHora(p.fecha, p.hora);
+                        return fechaP.getFullYear() === hoyAño && fechaP.getMonth() === hoyMes && fechaP.getDate() === hoyDia;
+                    });
+
+                    const esDestacado = (indiceGrupo === 0 && tieneAccionHoy);
+                    const claseContenedor = esDestacado ? 'bg-slate-900/70 p-4 rounded-xl border-2 border-emerald-500/40 relative shadow-lg bloque-grupo-contenedor' : 'bg-slate-900/30 p-4 rounded-xl border border-slate-700/40 bloque-grupo-contenedor';
+                    const indicadorHTML = esDestacado ? `<span class="absolute top-3 right-4 bg-emerald-600 text-slate-950 text-[9px] font-black tracking-widest px-2 py-0.5 rounded animate-pulse">🔥 PARTIDOS DE HOY</span>` : '';
+
+                    let bloqueHTML = `<div class="${claseContenedor}" data-grupo="${grupoNombre}">${indicadorHTML}<h3 class="text-xs font-black text-emerald-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-1.5">${grupoNombre}</h3><div class="space-y-4">`;
 
                     partidosDelGrupo.forEach(partido => {
                         const prUser = (estadoGlobal.pronosticos[usuarioActivo] && estadoGlobal.pronosticos[usuarioActivo][partido.id]) ? estadoGlobal.pronosticos[usuarioActivo][partido.id] : { golesA: '', golesB: '' };
-                        
                         let txtReal = `<span class="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded font-medium border border-slate-700">⏳ Por Jugar</span>`;
-                        if(partido.golesA !== null && partido.golesB !== null) {
-                            txtReal = `<span class="bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">Marcador: ${partido.golesA} - ${partido.golesB}</span>`;
-                        }
+                        if(partido.golesA !== null && partido.golesB !== null) txtReal = `<span class="bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">Marcador: ${partido.golesA} - ${partido.golesB}</span>`;
 
                         let badgeAcertadoHTML = '';
                         if (partido.golesA !== null && partido.golesB !== null) {
@@ -695,39 +708,24 @@
                                 const gPronA = parseInt(prUser.golesA); const gPronB = parseInt(prUser.golesB);
                                 const tReal = gRealA > gRealB ? 'A' : (gRealA < gRealB ? 'B' : 'E');
                                 const tPron = gPronA > gPronB ? 'A' : (gPronA < gPronB ? 'B' : 'E');
-
-                                if (gRealA === gPronA && gRealB === gPronB) {
-                                    badgeAcertadoHTML = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-black px-2 py-1 rounded text-center block w-full sm:w-auto shadow-sm">🎯 Exacto (+3)</span>`;
-                                } else if (tReal === tPron) {
-                                    badgeAcertadoHTML = `<span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block w-full sm:w-auto shadow-sm">✅ Tendencia (+1)</span>`;
-                                } else {
-                                    badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium px-2 py-1 rounded text-center block w-full sm:w-auto">❌ Fallado (+0)</span>`;
-                                }
+                                if (gRealA === gPronA && gRealB === gPronB) badgeAcertadoHTML = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-black px-2 py-1 rounded text-center block w-full sm:w-auto shadow-sm">🎯 Exacto (+3)</span>`;
+                                else if (tReal === tPron) badgeAcertadoHTML = `<span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-[10px] font-bold px-2 py-1 rounded text-center block w-full sm:w-auto shadow-sm">✅ Tendencia (+1)</span>`;
+                                else badgeAcertadoHTML = `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium px-2 py-1 rounded text-center block w-full sm:w-auto">❌ Fallado (+0)</span>`;
                             }
                         }
 
                         const tendencia = calcularTendenciaComunidad(partido.id);
-                        const barraTendenciaHTML = `
-                            <div class="w-full mt-2 bg-slate-950 rounded-full h-1.5 flex overflow-hidden border border-slate-800" title="Elecciones de la comunidad: ${tendencia.local}% Local | ${tendencia.empate}% Empate | ${tendencia.visita}% Visitante (${tendencia.total} votos)">
-                                <div class="bg-emerald-500 transition-all duration-300" style="width: ${tendencia.local}%"></div>
-                                <div class="bg-slate-600 transition-all duration-300" style="width: ${tendencia.empate}%"></div>
-                                <div class="bg-purple-500 transition-all duration-300" style="width: ${tendencia.visita}%"></div>
-                            </div>
-                        `;
-
-                        const normalizarBuscarStr = (t) => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                        const barraTendenciaHTML = `<div class="w-full mt-2 bg-slate-950 rounded-full h-1.5 flex overflow-hidden border border-slate-800"><div class="bg-emerald-500 transition-all duration-300" style="width: ${tendencia.local}%"></div><div class="bg-slate-600 transition-all duration-300" style="width: ${tendencia.empate}%"></div><div class="bg-purple-500 transition-all duration-300" style="width: ${tendencia.visita}%"></div></div>`;
                         const esSiguiente = (partidoProximoAbsoluto && partidoProximoAbsoluto.id === partido.id);
-                        const claseFila = esSiguiente ?
-                            `tarjeta-partido-item flex flex-col sm:flex-row items-center justify-between p-3.5 bg-emerald-950/20 rounded-xl gap-3 border border-emerald-500/40 shadow-[inset_0_0_10px_rgba(16,185,129,0.1)]` :
-                            `tarjeta-partido-item flex flex-col sm:flex-row items-center justify-between p-3.5 bg-slate-800/60 rounded-xl gap-3 border border-slate-700/30 hover:bg-slate-700/30 transition`;
+                        const claseFila = esSiguiente ? `tarjeta-partido-item flex flex-col sm:flex-row items-center justify-between p-3.5 bg-emerald-950/20 rounded-xl gap-3 border border-emerald-500/40 shadow-[inset_0_0_10px_rgba(16,185,129,0.1)]` : `tarjeta-partido-item flex flex-col sm:flex-row items-center justify-between p-3.5 bg-slate-800/60 rounded-xl gap-3 border border-slate-700/30 hover:bg-slate-700/30 transition`;
+                        const inputEstilo = estadoGlobal.torneoIniciado ? 'disabled class="w-11 bg-slate-950 text-center text-emerald-400 py-1 font-bold rounded-lg border border-slate-800 cursor-not-allowed"' : 'class="w-11 bg-slate-950 text-center text-white py-1 font-black rounded-lg border border-slate-700 focus:ring-2 focus:ring-emerald-500 transition duration-150 focus:outline-none"';
 
-                        const inputEstilo = estadoGlobal.torneoIniciado ? 
-                            'disabled class="w-11 bg-slate-950 text-center text-emerald-400 py-1 font-bold rounded-lg border border-slate-800 cursor-not-allowed"' : 
-                            'class="w-11 bg-slate-950 text-center text-white py-1 font-black rounded-lg border border-slate-700 focus:ring-2 focus:ring-emerald-500 transition duration-150 focus:outline-none"';
+                        const normEqA = partido.equipoA.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                        const normEqB = partido.equipoB.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
                         bloqueHTML += `
-                            <div class="space-y-1">
-                                <div class="${claseFila}" data-equipoa="${normalizarBuscarStr(partido.equipoA)}" data-equipob="${normalizarBuscarStr(partido.equipoB)}">
+                            <div class="space-y-1 tarjeta-partido-item" data-equipoa="${normEqA}" data-equipob="${normEqB}">
+                                <div class="${claseFila}">
                                     <div class="text-center sm:text-left min-w-[130px] space-y-1">
                                         <p class="text-[11px] text-slate-400 font-semibold tracking-wide">${partido.fecha} • ${partido.hora}</p>
                                         <div class="flex flex-col gap-1 items-center sm:items-start">${txtReal}</div>
@@ -746,9 +744,9 @@
                     });
                     bloqueHTML += `</div></div>`; contenedor.innerHTML += bloqueHTML;
                 });
+                filtrarPartidosPorTexto();
+                contarPronosticosPendientes();
             }
-            filtrarPartidosPorTexto();
-            contarPronosticosPendientes();
         }
 
         function cambiarUsuario() {
@@ -758,11 +756,11 @@
                 return;
             }
             const selectUsr = document.getElementById('select-usuario');
-            if (selectUsr) { 
-                usuarioActivo = selectUsr.value; 
-                localStorage.setItem('q_pro_usuario', usuarioActivo); 
+            if (selectUsr) {
+                usuarioActivo = selectUsr.value;
+                localStorage.setItem('q_pro_usuario', usuarioActivo);
                 tieneCambiosSinGuardar = false;
-                actualizarPantallaQuiniela(); 
+                actualizarPantallaQuiniela();
             }
         }
     </script>
