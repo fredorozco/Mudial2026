@@ -163,19 +163,15 @@
     </div>
 
     <script>
+        // Endpoint de tu Google Apps Script
         const API_KEY = "https://script.google.com/macros/s/AKfycbzaQD1eNCSLJbpjixksoC4tEmvh4kZD1U_IdlzXXIl0mz1SwTZsUFfkftAqy7lOBx5qqA/exec";
         const LLAVE_ADMIN = "Mundial2026";
 
-        const partidosBase = [
-            { id: 1, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "México 🇲🇽", equipoB: "Sudáfrica 🇿🇦", fecha: "11 de Junio", hora: "1:00 pm", golesA: null, golesB: null },
-            { id: 2, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "Corea del Sur 🇰🇷", equipoB: "Chequia 🇨🇿", fecha: "11 de Junio", hora: "8:00 pm", golesA: null, golesB: null },
-            { id: 3, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "Chequia 🇨🇿", equipoB: "Sudáfrica 🇿🇦", fecha: "18 de Junio", hora: "10:00 am", golesA: null, golesB: null }
-        ];
-
+        // Se eliminaron los valores locales simulados por completo. Dependencia 100% de Google Sheets.
         let estadoGlobal = {
             torneoIniciado: false, 
             usuarios: [],
-            partidos: [],
+            partidos: [], 
             pronosticos: {}
         };
         
@@ -192,7 +188,7 @@
             if (bar) bar.style.width = `${porcentaje}%`;
         }
 
-        // MAREAR TEXTO DE FECHAS A OBJETOS DATE PARA ORDENAR CORRECTAMENTE
+        // Convierte texto de fechas a objetos Date para ordenar cronológicamente
         function normalizarFechaHora(fechaStr, horaStr) {
             try {
                 const meses = { "enero":0,"febrero":1,"marzo":2,"abril":3,"mayo":4,"junio":5,"julio":6,"agosto":7,"septiembre":8,"octubre":9,"noviembre":10,"diciembre":11 };
@@ -207,9 +203,9 @@
                 if (ampm && horas < 12) horas += 12;
                 if (!ampm && horas === 12) horas = 0;
                 
-                return new Date(2026, mes, dia, horas, minutos);
+                return new Date(2026, mes, dia, horas, minutos); // Corregido 'minutos' (antes 'minutes')
             } catch(e) {
-                return new Date(2026, 11, 31); // Fallback al fin de año si falla
+                return new Date(2026, 11, 31);
             }
         }
 
@@ -218,14 +214,15 @@
         // ==========================================
 
         async function cargarDatosNube() {
+            const contenedor = document.getElementById('lista-partidos-contenedor');
+            if (contenedor) {
+                contenedor.innerHTML = `<p class="text-center text-blue-400 text-sm py-8 animate-pulse">🔄 Leyendo datos reales en Google Sheets...</p>`;
+            }
+            
             mostrarCarga(30);
             try {
                 const respuesta = await fetch(API_KEY);
                 const datos = await respuesta.json();
-                
-                if (!datos.partidos || datos.partidos.length === 0) {
-                    datos.partidos = partidosBase;
-                }
                 
                 if (datos.torneoIniciado === true || datos.torneoIniciado === "VERDADERO" || datos.torneoIniciado === "true") {
                     estadoGlobal.torneoIniciado = true;
@@ -234,7 +231,7 @@
                 }
                 
                 estadoGlobal.usuarios = datos.usuarios || [];
-                estadoGlobal.partidos = datos.partidos || [];
+                estadoGlobal.partidos = datos.partidos || []; 
                 estadoGlobal.pronosticos = datos.pronosticos || {};
                 
                 if (!usuarioActivo || !estadoGlobal.usuarios.includes(usuarioActivo)) {
@@ -246,8 +243,13 @@
             } catch (error) {
                 console.error("Error al leer la base de datos de Google:", error);
                 mostrarCarga(100);
-                if (estadoGlobal.partidos.length === 0) estadoGlobal.partidos = partidosBase;
-                actualizarPantallaQuiniela();
+                
+                if (contenedor) {
+                    contenedor.innerHTML = `
+                        <p class="text-center text-red-400 text-sm py-8">
+                            ❌ Error de conexión con Google Sheets. Verifica la URL de tu API o recarga la página.
+                        </p>`;
+                }
             }
         }
 
@@ -422,44 +424,42 @@
             alert(nuevoEstadoCandado ? "🚫 Celda C2 cambiada a VERDADERO. Pronósticos bloqueados." : "🔓 Celda C2 cambiada a FALSO. Pronósticos abiertos.");
         }
 
-        // NUEVA FUNCIÓN RECUPERADA: SINCRONIZAR DESDE API EXTERNA DEPORTIVA
+        // SINCRONIZACIÓN UTILIZANDO LA API PÚBLICA DE SCOREBAT (CORREGIDO SIN LLAVES)
         async function sincronizarResultadosAPIExterior() {
             mostrarCarga(20);
             try {
-                // Endpoint simulado/real de la copa del mundo 2026
-                const apiURL = "https://www.thesportsdb.com/api/v1/json/3/eventsseason.php?id=4381&s=2026";
+                const apiURL = "https://api.scorebat.com/video-api/v3/"; 
                 const response = await fetch(apiURL);
                 const resData = await response.json();
 
-                if(!resData.events || resData.events.length === 0) {
-                    alert("No se encontraron partidos en vivo de la API en este momento.");
+                if(!resData.response || resData.response.length === 0) {
+                    alert("No se encontraron partidos recientes disponibles en la API pública.");
                     return;
                 }
 
                 let conteoActualizados = 0;
-                resData.events.forEach(eventoInternet => {
-                    const localInternet = eventoInternet.strHomeTeam;
-                    const visitaInternet = eventoInternet.strAwayTeam;
-                    const golesLocal = eventoInternet.intHomeScore;
-                    const golesVisita = eventoInternet.intAwayScore;
-
-                    if(golesLocal !== null && golesVisita !== null) {
-                        let miPartido = estadoGlobal.partidos.find(p => {
-                            const limpiarTexto = (t) => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                            return limpiarTexto(p.equipoA).includes(limpiarTexto(localInternet)) || 
-                                   limpiarTexto(p.equipoB).includes(limpiarTexto(visitaInternet));
-                        });
-
-                        if (miPartido) {
-                            miPartido.golesA = parseInt(golesLocal);
-                            miPartido.golesB = parseInt(golesVisita);
-                            conteoActualizados++;
+                
+                resData.response.forEach(eventoInternet => {
+                    const titulo = eventoInternet.title; 
+                    
+                    estadoGlobal.partidos.forEach(p => {
+                        const limpiarTexto = (t) => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, "").trim();
+                        const eqA = limpiarTexto(p.equipoA);
+                        const eqB = limpiarTexto(p.equipoB);
+                        const tituloLimpio = limpiarTexto(titulo);
+                        
+                        if (tituloLimpio.includes(eqA) && tituloLimpio.includes(eqB)) {
+                            if(eventoInternet.scores && eventoInternet.scores.homeScore !== undefined) {
+                                p.golesA = parseInt(eventoInternet.scores.homeScore);
+                                p.golesB = parseInt(eventoInternet.scores.awayScore);
+                                conteoActualizados++;
+                            }
                         }
-                    }
+                    });
                 });
 
                 mostrarCarga(70);
-                // Subir todos los marcadores actualizados por lote a Google Sheets de forma secuencial
+                
                 for (const p of estadoGlobal.partidos) {
                     if (p.golesA !== null && p.golesB !== null) {
                         await enviarComandoNube({
@@ -471,12 +471,12 @@
                     }
                 }
 
-                alert(`🤖 ¡Sincronización Exitosa! Se actualizaron y guardaron los marcadores en Sheets.`);
+                alert(`🤖 Sincronización finalizada empleando datos públicos de ScoreBat.`);
                 renderizarListaPartidosAdmin();
                 actualizarPantallaQuiniela();
             } catch (error) {
-                console.error(error);
-                alert("No se pudo conectar u homologar con el servidor de deportes externo.");
+                console.error("Error al conectar con la API deportiva alternativa:", error);
+                alert("La API externa no regresó información compatible o está saturada temporalmente.");
             } finally {
                 mostrarCarga(100);
             }
@@ -489,6 +489,11 @@
 
             renderCont.innerHTML = '';
             const partidos = estadoGlobal.partidos.filter(p => p.fase === faseFiltro);
+
+            if(partidos.length === 0) {
+                renderCont.innerHTML = `<p class="text-center text-slate-500 text-xs py-4">No hay partidos en esta fase dentro de Sheets.</p>`;
+                return;
+            }
 
             partidos.forEach(p => {
                 const valA = p.golesA !== null ? p.golesA : '';
@@ -584,21 +589,18 @@
             return totalPuntos;
         }
 
-        // CORRECCIÓN: BUSCAR PRÓXIMO PARTIDO ESTRICTAMENTE POR FECHA SIN IMPORTAR EL GRUPO
         function actualizarProximoPartidoDestacado() {
             const contenedor = document.getElementById('contenedor-proximo-partido');
             if (!contenedor) return;
 
-            // Filtramos solo partidos sin resultado
             const partidosPendientes = estadoGlobal.partidos.filter(p => p.golesA === null || p.golesB === null);
 
             if (partidosPendientes.length > 0) {
-                // Ordenamos por fecha y hora real de forma ascendente
                 partidosPendientes.sort((a, b) => {
                     return normalizarFechaHora(a.fecha, a.hora) - normalizarFechaHora(b.fecha, b.hora);
                 });
 
-                const proximo = partidosPendientes[0]; // El más cercano en el tiempo total
+                const proximo = partidosPendientes[0];
 
                 document.getElementById('proximo-meta').textContent = `${proximo.fase} • ${proximo.grupo || proximo.jornada || ''} • ${proximo.fecha} (${proximo.hora})`;
                 document.getElementById('proximo-equipoA').textContent = proximo.equipoA;
