@@ -79,7 +79,7 @@
                 </div>
             </div>
 
-            <div class="bg-slate-950/60 p-2 rounded-xl border border-slate-800 shadow-inner">
+            <div class="bg-slate-800 p-2 rounded-xl border border-slate-700 shadow-inner">
                 <div class="flex flex-wrap sm:flex-nowrap gap-1 w-full" id="barra-navegacion-fases">
                     <button onclick="cambiarFaseFiltro('Grupos')" id="tab-Grupos" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200">Grupos</button>
                     <button onclick="cambiarFaseFiltro('16avos')" id="tab-16avos" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200">16avos</button>
@@ -117,6 +117,16 @@
                     <p class="text-xs text-slate-400">Introduce marcadores reales de forma manual o sincronizada.</p>
                 </div>
                 <button onclick="cerrarModalAdmin()" class="text-slate-400 hover:text-white font-bold text-xl">✕</button>
+            </div>
+
+            <div class="mb-5 p-4 bg-slate-900 rounded-xl border border-blue-900/60 flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div>
+                    <h4 class="text-xs font-bold text-blue-400 uppercase tracking-wider">🤖 Sincronización Automática Global</h4>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Trae los resultados oficiales de la API de deportes externa en un clic.</p>
+                </div>
+                <button onclick="sincronizarResultadosAPIExterior()" class="w-full sm:w-auto bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-white font-bold px-4 py-2 rounded text-xs transition shadow-md whitespace-nowrap">
+                    🔄 Sincronizar desde API Externa
+                </button>
             </div>
 
             <div class="mb-6 p-4 bg-slate-900 rounded-xl border border-dashed border-slate-700">
@@ -182,6 +192,27 @@
             if (bar) bar.style.width = `${porcentaje}%`;
         }
 
+        // MAREAR TEXTO DE FECHAS A OBJETOS DATE PARA ORDENAR CORRECTAMENTE
+        function normalizarFechaHora(fechaStr, horaStr) {
+            try {
+                const meses = { "enero":0,"febrero":1,"marzo":2,"abril":3,"mayo":4,"junio":5,"julio":6,"agosto":7,"septiembre":8,"octubre":9,"noviembre":10,"diciembre":11 };
+                const fragmentos = fechaStr.toLowerCase().split(" de ");
+                const dia = parseInt(fragmentos[0]);
+                const mes = meses[fragmentos[1].trim()];
+                
+                let horas = parseInt(horaStr.split(":")[0]);
+                const minutos = parseInt(horaStr.split(":")[1].split(" ")[0]);
+                const ampm = horaStr.toLowerCase().includes("pm");
+                
+                if (ampm && horas < 12) horas += 12;
+                if (!ampm && horas === 12) horas = 0;
+                
+                return new Date(2026, mes, dia, horas, minutos);
+            } catch(e) {
+                return new Date(2026, 11, 31); // Fallback al fin de año si falla
+            }
+        }
+
         // ==========================================
         // OPERACIONES CON LA NUBE (FETCH API)
         // ==========================================
@@ -196,7 +227,6 @@
                     datos.partidos = partidosBase;
                 }
                 
-                // EVALUACIÓN DE LA CELDA C2 (Usuarios) ENVIADA DESDE LA NUBE
                 if (datos.torneoIniciado === true || datos.torneoIniciado === "VERDADERO" || datos.torneoIniciado === "true") {
                     estadoGlobal.torneoIniciado = true;
                 } else {
@@ -211,7 +241,6 @@
                     usuarioActivo = estadoGlobal.usuarios.length > 0 ? estadoGlobal.usuarios[0] : "Invitado";
                 }
                 
-                console.log("¡Sincronizado con éxito! Estado de bloqueo (C2):", estadoGlobal.torneoIniciado);
                 mostrarCarga(100);
                 actualizarPantallaQuiniela();
             } catch (error) {
@@ -291,7 +320,6 @@
         }
 
         async function guardarPronosticos() {
-            // DOBLE VERIFICACIÓN DE SEGURIDAD ANTES DE GUARDAR
             if(estadoGlobal.torneoIniciado) {
                 alert("🚫 El torneo ya ha comenzado (Bloqueado desde celda C2). No se permiten modificaciones.");
                 return;
@@ -306,7 +334,7 @@
 
                 if(inpA && inpB && inpA.value !== "" && inpB.value !== "") {
                     pronosticosLote.push({
-                        partidoId: p.partidoId || partido.id,
+                        partidoId: partido.id,
                         golesA: parseInt(inpA.value),
                         golesB: parseInt(inpB.value)
                     });
@@ -373,7 +401,6 @@
 
         async function alternarBloqueoTorneo() {
             const nuevoEstadoCandado = !estadoGlobal.torneoIniciado;
-            
             const btn = document.getElementById('btn-toggle-torneo');
             if(btn) {
                 btn.disabled = true;
@@ -381,7 +408,6 @@
             }
 
             mostrarCarga(40);
-
             estadoGlobal.torneoIniciado = nuevoEstadoCandado;
             actualizarBotonAdminTorneo();
             actualizarPantallaQuiniela();
@@ -393,8 +419,67 @@
 
             if (btn) btn.disabled = false;
             mostrarCarga(100);
-            
             alert(nuevoEstadoCandado ? "🚫 Celda C2 cambiada a VERDADERO. Pronósticos bloqueados." : "🔓 Celda C2 cambiada a FALSO. Pronósticos abiertos.");
+        }
+
+        // NUEVA FUNCIÓN RECUPERADA: SINCRONIZAR DESDE API EXTERNA DEPORTIVA
+        async function sincronizarResultadosAPIExterior() {
+            mostrarCarga(20);
+            try {
+                // Endpoint simulado/real de la copa del mundo 2026
+                const apiURL = "https://www.thesportsdb.com/api/v1/json/3/eventsseason.php?id=4381&s=2026";
+                const response = await fetch(apiURL);
+                const resData = await response.json();
+
+                if(!resData.events || resData.events.length === 0) {
+                    alert("No se encontraron partidos en vivo de la API en este momento.");
+                    return;
+                }
+
+                let conteoActualizados = 0;
+                resData.events.forEach(eventoInternet => {
+                    const localInternet = eventoInternet.strHomeTeam;
+                    const visitaInternet = eventoInternet.strAwayTeam;
+                    const golesLocal = eventoInternet.intHomeScore;
+                    const golesVisita = eventoInternet.intAwayScore;
+
+                    if(golesLocal !== null && golesVisita !== null) {
+                        let miPartido = estadoGlobal.partidos.find(p => {
+                            const limpiarTexto = (t) => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                            return limpiarTexto(p.equipoA).includes(limpiarTexto(localInternet)) || 
+                                   limpiarTexto(p.equipoB).includes(limpiarTexto(visitaInternet));
+                        });
+
+                        if (miPartido) {
+                            miPartido.golesA = parseInt(golesLocal);
+                            miPartido.golesB = parseInt(golesVisita);
+                            conteoActualizados++;
+                        }
+                    }
+                });
+
+                mostrarCarga(70);
+                // Subir todos los marcadores actualizados por lote a Google Sheets de forma secuencial
+                for (const p of estadoGlobal.partidos) {
+                    if (p.golesA !== null && p.golesB !== null) {
+                        await enviarComandoNube({
+                            action: "update_results",
+                            id: p.id,
+                            golesA: p.golesA,
+                            golesB: p.golesB
+                        });
+                    }
+                }
+
+                alert(`🤖 ¡Sincronización Exitosa! Se actualizaron y guardaron los marcadores en Sheets.`);
+                renderizarListaPartidosAdmin();
+                actualizarPantallaQuiniela();
+            } catch (error) {
+                console.error(error);
+                alert("No se pudo conectar u homologar con el servidor de deportes externo.");
+            } finally {
+                mostrarCarga(100);
+            }
         }
 
         function renderizarListaPartidosAdmin() {
@@ -426,7 +511,6 @@
             const partidos = estadoGlobal.partidos.filter(p => p.fase === faseFiltro);
             
             mostrarCarga(40);
-            
             for (const p of partidos) {
                 const inpA = document.getElementById(`admin-golesA-${p.id}`);
                 const inpB = document.getElementById(`admin-golesB-${p.id}`);
@@ -500,13 +584,22 @@
             return totalPuntos;
         }
 
+        // CORRECCIÓN: BUSCAR PRÓXIMO PARTIDO ESTRICTAMENTE POR FECHA SIN IMPORTAR EL GRUPO
         function actualizarProximoPartidoDestacado() {
             const contenedor = document.getElementById('contenedor-proximo-partido');
             if (!contenedor) return;
 
-            const proximo = estadoGlobal.partidos.find(p => p.golesA === null || p.golesB === null);
+            // Filtramos solo partidos sin resultado
+            const partidosPendientes = estadoGlobal.partidos.filter(p => p.golesA === null || p.golesB === null);
 
-            if (proximo) {
+            if (partidosPendientes.length > 0) {
+                // Ordenamos por fecha y hora real de forma ascendente
+                partidosPendientes.sort((a, b) => {
+                    return normalizarFechaHora(a.fecha, a.hora) - normalizarFechaHora(b.fecha, b.hora);
+                });
+
+                const proximo = partidosPendientes[0]; // El más cercano en el tiempo total
+
                 document.getElementById('proximo-meta').textContent = `${proximo.fase} • ${proximo.grupo || proximo.jornada || ''} • ${proximo.fecha} (${proximo.hora})`;
                 document.getElementById('proximo-equipoA').textContent = proximo.equipoA;
                 document.getElementById('proximo-equipoB').textContent = proximo.equipoB;
@@ -525,7 +618,6 @@
 
             actualizarProximoPartidoDestacado();
 
-            // DESACTIVACIÓN DEL BOTÓN DE GUARDAR SI ESTADO GLOBAL ES VERDADERO
             if (btnGuardar) {
                 if(estadoGlobal.torneoIniciado) {
                     btnGuardar.disabled = true;
@@ -619,7 +711,6 @@
                             }
                         }
 
-                        // DESACTIVACIÓN DE LOS INPUTS COMPLETA SI ESTADO GLOBAL ES VERDADERO
                         const estaDeshabilitado = estadoGlobal.torneoIniciado ? 'disabled class="w-10 bg-slate-950 text-center text-slate-500 py-1 font-bold rounded border border-slate-850 cursor-not-allowed text-sm opacity-60"' : 'class="w-10 bg-slate-950 text-center text-white py-1 font-bold rounded border border-slate-700 focus:border-blue-500 focus:outline-none text-sm"';
 
                         bloqueHTML += `
