@@ -21,7 +21,7 @@
             <div class="bg-slate-800 p-5 rounded-xl shadow-md border border-slate-700">
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-lg font-bold text-blue-400">👤 Tu Usuario</h2>
-                    <button onclick="cargarDatosNube()" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded text-slate-300 transition">🔄 Sincronizar</button>
+                    <button onclick="cargarDatosNube()" class="text-xs bg-slate-700 hover:bg-slate-600 px-2.5 py-1 rounded text-slate-300 transition cursor-pointer">🔄 Sincronizar</button>
                 </div>
                 <div class="mb-4">
                     <select id="select-usuario" onchange="cambiarUsuario()" class="w-full bg-slate-700 text-white p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500"></select>
@@ -29,7 +29,7 @@
                 <div class="border-t border-slate-700 pt-3">
                     <div class="flex gap-2">
                         <input type="text" id="nuevo-usuario" placeholder="Tu Nombre..." class="flex-1 bg-slate-700 text-white p-2 text-sm rounded border border-slate-600 focus:outline-none">
-                        <button onclick="registrarUsuario()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 text-sm font-bold rounded transition">Unirse</button>
+                        <button onclick="registrarUsuario()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 text-sm font-bold rounded transition cursor-pointer">Unirse</button>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                                 <th class="p-2 text-center">#</th>
                                 <th class="p-2">Jugador</th>
                                 <th class="p-2 text-center">Pts</th>
-                                <th class="p-2 text-center">🗑️</th>
+                                <th id="th-acciones-admin" class="p-2 text-center hidden">🗑️</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-posiciones" class="divide-y divide-slate-700">
@@ -55,7 +55,7 @@
 
             <div class="bg-slate-800 p-4 rounded-xl shadow-md border border-slate-700 border-dashed space-y-2">
                 <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">🔒 Panel de Administrador</h3>
-                <button onclick="verificarAccAccessAdmin()" class="w-full bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800 py-2 rounded text-xs font-semibold transition">
+                <button onclick="verificarAccAccessAdmin()" class="w-full bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800 py-2 rounded text-xs font-semibold transition cursor-pointer">
                     ⚙️ Control de Torneo & Resultados
                 </button>
             </div>
@@ -81,12 +81,12 @@
 
             <div class="bg-slate-800 p-2 rounded-xl border border-slate-700 shadow-inner">
                 <div class="flex flex-wrap sm:flex-nowrap gap-1 w-full" id="barra-navegacion-fases">
-                    <button onclick="cambiarFaseFiltro('Grupos')" id="tab-Grupos" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200">Grupos</button>
-                    <button onclick="cambiarFaseFiltro('16avos')" id="tab-16avos" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200">16avos</button>
-                    <button onclick="cambiarFaseFiltro('Octavos')" id="tab-Octavos" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200">Octavos</button>
-                    <button onclick="cambiarFaseFiltro('Cuartos')" id="tab-Cuartos" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200">Cuartos</button>
-                    <button onclick="cambiarFaseFiltro('Semifinales')" id="tab-Semifinales" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200">Semifinales</button>
-                    <button onclick="cambiarFaseFiltro('Finales')" id="tab-Finales" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200">Finales</button>
+                    <button onclick="cambiarFaseFiltro('Grupos')" id="tab-Grupos" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200 cursor-pointer">Grupos</button>
+                    <button onclick="cambiarFaseFiltro('16avos')" id="tab-16avos" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200 cursor-pointer">16avos</button>
+                    <button onclick="cambiarFaseFiltro('Octavos')" id="tab-Octavos" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200 cursor-pointer">Octavos</button>
+                    <button onclick="cambiarFaseFiltro('Cuartos')" id="tab-Cuartos" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200 cursor-pointer">Cuartos</button>
+                    <button onclick="cambiarFaseFiltro('Semifinales')" id="tab-Semifinales" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200 cursor-pointer">Semifinales</button>
+                    <button onclick="cambiarFaseFiltro('Finales')" id="tab-Finales" class="w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm transition-all duration-200 cursor-pointer">Finales</button>
                 </div>
             </div>
 
@@ -95,13 +95,16 @@
                     <h2 class="text-xl font-bold text-white flex items-center gap-2">
                         ⚽ Visualizando: <span id="nombre-fase-titulo" class="text-blue-400">Grupos</span>
                     </h2>
-                    <span id="badge-usuario" class="bg-blue-950 text-blue-300 text-xs font-bold px-3 py-1 rounded-full border border-blue-700">Invitado</span>
+                    <div class="flex flex-col items-end gap-1">
+                        <span id="badge-usuario" class="bg-blue-950 text-blue-300 text-xs font-bold px-3 py-1 rounded-full border border-blue-700">Invitado</span>
+                        <span id="aviso-bloqueo-vista" class="text-[10px] text-yellow-500 font-medium hidden">⚠️ Modo Lectura (Bloqueado)</span>
+                    </div>
                 </div>
                 
                 <div id="lista-partidos-contenedor" class="space-y-8"></div>
 
                 <div class="mt-8 pt-4 border-t border-slate-700 flex justify-end">
-                    <button id="btn-guardar-pronosticos" onclick="guardarPronosticos()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-lg shadow-lg transition transform active:scale-95 disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed">
+                    <button id="btn-guardar-pronosticos" onclick="guardarPronosticos()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-lg shadow-lg transition transform active:scale-95 disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed cursor-pointer">
                         💾 Guardar Pronósticos de esta Sección
                     </button>
                 </div>
@@ -116,7 +119,7 @@
                     <h3 class="text-xl font-bold text-red-400">Panel de Control de Torneo</h3>
                     <p class="text-xs text-slate-400">Introduce marcadores reales de forma manual o sincronizada.</p>
                 </div>
-                <button onclick="cerrarModalAdmin()" class="text-slate-400 hover:text-white font-bold text-xl">✕</button>
+                <button onclick="cerrarModalAdmin()" class="text-slate-400 hover:text-white font-bold text-xl cursor-pointer">✕</button>
             </div>
 
             <div class="mb-5 p-4 bg-slate-900 rounded-xl border border-blue-900/60 flex flex-col sm:flex-row justify-between items-center gap-3">
@@ -124,7 +127,7 @@
                     <h4 class="text-xs font-bold text-blue-400 uppercase tracking-wider">🤖 Sincronización Automática Global</h4>
                     <p class="text-[11px] text-slate-400 mt-0.5">Trae los resultados oficiales de la API de deportes externa en un clic.</p>
                 </div>
-                <button onclick="sincronizarResultadosAPIExterior()" class="w-full sm:w-auto bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-white font-bold px-4 py-2 rounded text-xs transition shadow-md whitespace-nowrap">
+                <button onclick="sincronizarResultadosAPIExterior()" class="w-full sm:w-auto bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-white font-bold px-4 py-2 rounded text-xs transition shadow-md whitespace-nowrap cursor-pointer">
                     🔄 Sincronizar desde API Externa
                 </button>
             </div>
@@ -135,7 +138,7 @@
                     <p class="text-xs text-slate-300 text-center sm:text-left">
                         Muestra el estado actual leído desde Google Sheets. También puedes cambiarlo desde aquí.
                     </p>
-                    <button id="btn-toggle-torneo" onclick="alternarBloqueoTorneo()" class="w-full sm:w-auto px-4 py-2 rounded text-xs font-bold transition shadow-md">
+                    <button id="btn-toggle-torneo" onclick="alternarBloqueoTorneo()" class="w-full sm:w-auto px-4 py-2 rounded text-xs font-bold transition shadow-md cursor-pointer">
                         Cargando estado...
                     </button>
                 </div>
@@ -156,27 +159,32 @@
             <div id="admin-lista-partidos-render" class="space-y-2 mb-6 max-h-64 overflow-y-auto pr-1"></div>
             
             <div class="flex flex-col sm:flex-row justify-end gap-3 border-t border-slate-700 pt-4">
-                <button onclick="cerrarModalAdmin()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-sm transition">Cerrar</button>
-                <button onclick="guardarResultadosAdminReales()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded text-sm font-bold transition">Guardar Marcadores Manuales</button>
+                <button onclick="cerrarModalAdmin()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-sm transition cursor-pointer">Cerrar</button>
+                <button onclick="guardarResultadosAdminReales()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded text-sm font-bold transition cursor-pointer">Guardar Marcadores Manuales</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Endpoint de tu Google Apps Script
         const API_KEY = "https://script.google.com/macros/s/AKfycbzaQD1eNCSLJbpjixksoC4tEmvh4kZD1U_IdlzXXIl0mz1SwTZsUFfkftAqy7lOBx5qqA/exec";
         const LLAVE_ADMIN = "Mundial2026";
 
-        // Se eliminaron los valores locales simulados por completo. Dependencia 100% de Google Sheets.
+        const partidosBase = [
+            { id: 1, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "México 🇲🇽", equipoB: "Sudáfrica 🇿🇦", fecha: "11 de Junio", hora: "1:00 pm", golesA: null, golesB: null },
+            { id: 2, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 1", equipoA: "Corea del Sur 🇰🇷", equipoB: "Chequia 🇨🇿", fecha: "11 de Junio", hora: "8:00 pm", golesA: null, golesB: null },
+            { id: 3, fase: "Grupos", grupo: "Grupo A", jornada: "Jornada 2", equipoA: "Chequia 🇨🇿", equipoB: "Sudáfrica 🇿🇦", fecha: "18 de Junio", hora: "10:00 am", golesA: null, golesB: null }
+        ];
+
         let estadoGlobal = {
             torneoIniciado: false, 
             usuarios: [],
-            partidos: [], 
+            partidos: [],
             pronosticos: {}
         };
         
         let usuarioActivo = localStorage.getItem('q_pro_usuario') || "";
         let faseActiva = "Grupos"; 
+        let esAdminActivo = false; // Nueva variable para controlar la UI de la eliminación
 
         window.onload = function() {
             cambiarFaseFiltro(faseActiva);
@@ -188,7 +196,6 @@
             if (bar) bar.style.width = `${porcentaje}%`;
         }
 
-        // Convierte texto de fechas a objetos Date para ordenar cronológicamente
         function normalizarFechaHora(fechaStr, horaStr) {
             try {
                 const meses = { "enero":0,"febrero":1,"marzo":2,"abril":3,"mayo":4,"junio":5,"julio":6,"agosto":7,"septiembre":8,"octubre":9,"noviembre":10,"diciembre":11 };
@@ -203,9 +210,16 @@
                 if (ampm && horas < 12) horas += 12;
                 if (!ampm && horas === 12) horas = 0;
                 
-                return new Date(2026, mes, dia, horas, minutos); // Corregido 'minutos' (antes 'minutes')
+                return new Date(2026, mes, dia, horas, minutos);
             } catch(e) {
                 return new Date(2026, 11, 31);
+            }
+        }
+
+        // Validar que no inserten valores negativos por teclado numérico erróneo
+        function validarInputMinimo(input) {
+            if (input.value !== "" && parseInt(input.value) < 0) {
+                input.value = 0;
             }
         }
 
@@ -214,15 +228,14 @@
         // ==========================================
 
         async function cargarDatosNube() {
-            const contenedor = document.getElementById('lista-partidos-contenedor');
-            if (contenedor) {
-                contenedor.innerHTML = `<p class="text-center text-blue-400 text-sm py-8 animate-pulse">🔄 Leyendo datos reales en Google Sheets...</p>`;
-            }
-            
             mostrarCarga(30);
             try {
                 const respuesta = await fetch(API_KEY);
                 const datos = await respuesta.json();
+                
+                if (!datos.partidos || datos.partidos.length === 0) {
+                    datos.partidos = partidosBase;
+                }
                 
                 if (datos.torneoIniciado === true || datos.torneoIniciado === "VERDADERO" || datos.torneoIniciado === "true") {
                     estadoGlobal.torneoIniciado = true;
@@ -231,7 +244,7 @@
                 }
                 
                 estadoGlobal.usuarios = datos.usuarios || [];
-                estadoGlobal.partidos = datos.partidos || []; 
+                estadoGlobal.partidos = datos.partidos || [];
                 estadoGlobal.pronosticos = datos.pronosticos || {};
                 
                 if (!usuarioActivo || !estadoGlobal.usuarios.includes(usuarioActivo)) {
@@ -243,13 +256,8 @@
             } catch (error) {
                 console.error("Error al leer la base de datos de Google:", error);
                 mostrarCarga(100);
-                
-                if (contenedor) {
-                    contenedor.innerHTML = `
-                        <p class="text-center text-red-400 text-sm py-8">
-                            ❌ Error de conexión con Google Sheets. Verifica la URL de tu API o recarga la página.
-                        </p>`;
-                }
+                if (estadoGlobal.partidos.length === 0) estadoGlobal.partidos = partidosBase;
+                actualizarPantallaQuiniela();
             }
         }
 
@@ -348,7 +356,13 @@
                 return;
             }
 
+            const btnGuardar = document.getElementById('btn-guardar-pronosticos');
+            const textoOriginal = btnGuardar.textContent;
+            
+            btnGuardar.disabled = true;
+            btnGuardar.textContent = "⏳ Guardando en la nube...";
             mostrarCarga(50);
+            
             const exito = await enviarComandoNube({
                 action: "save_pronosticos",
                 pronosticos: pronosticosLote.map(p => ({
@@ -364,9 +378,22 @@
                 pronosticosLote.forEach(p => {
                     estadoGlobal.pronosticos[usuarioActivo][p.partidoId] = { golesA: p.golesA, golesB: p.golesB };
                 });
-                alert("💾 ¡Pronósticos guardados con éxito!");
+                
+                // Feedback visual dinámico sin alert molesto
+                btnGuardar.className = "bg-blue-600 text-white font-bold px-6 py-3 rounded-lg shadow-lg transition";
+                btnGuardar.textContent = "✓ ¡Pronósticos Guardados!";
                 mostrarCarga(100);
-                actualizarPantallaQuiniela();
+                
+                setTimeout(() => {
+                    btnGuardar.className = "bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-lg shadow-lg transition transform active:scale-95 disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed cursor-pointer";
+                    btnGuardar.textContent = textoOriginal;
+                    btnGuardar.disabled = false;
+                    actualizarPantallaQuiniela();
+                }, 2500);
+            } else {
+                btnGuardar.disabled = false;
+                btnGuardar.textContent = textoOriginal;
+                alert("Hubo un error al guardar. Inténtalo de nuevo.");
             }
         }
 
@@ -377,9 +404,11 @@
         function verificarAccAccessAdmin() {
             const pss = prompt("Introduce la clave de Administrador:");
             if(pss === LLAVE_ADMIN) {
+                esAdminActivo = true; // Activar privilegios en la UI local
                 document.getElementById('modal-admin').classList.remove('hidden');
                 renderizarListaPartidosAdmin();
                 actualizarBotonAdminTorneo();
+                actualizarPantallaQuiniela(); // Re-renderiza para mostrar columna de eliminación
             } else if (pss !== null) {
                 alert("Clave incorrecta.");
             }
@@ -394,10 +423,10 @@
             if(!btn) return;
             if(estadoGlobal.torneoIniciado) {
                 btn.textContent = "🔒 C2: VERDADERO (Bloqueado)";
-                btn.className = "w-full sm:w-auto px-4 py-2 rounded text-xs font-bold bg-red-700 hover:bg-red-600 text-white transition shadow-md";
+                btn.className = "w-full sm:w-auto px-4 py-2 rounded text-xs font-bold bg-red-700 hover:bg-red-600 text-white transition shadow-md cursor-pointer";
             } else {
                 btn.textContent = "🔓 C2: FALSO (Abierto)";
-                btn.className = "w-full sm:w-auto px-4 py-2 rounded text-xs font-bold bg-emerald-700 hover:bg-emerald-600 text-white transition shadow-md";
+                btn.className = "w-full sm:w-auto px-4 py-2 rounded text-xs font-bold bg-emerald-700 hover:bg-emerald-600 text-white transition shadow-md cursor-pointer";
             }
         }
 
@@ -424,42 +453,41 @@
             alert(nuevoEstadoCandado ? "🚫 Celda C2 cambiada a VERDADERO. Pronósticos bloqueados." : "🔓 Celda C2 cambiada a FALSO. Pronósticos abiertos.");
         }
 
-        // SINCRONIZACIÓN UTILIZANDO LA API PÚBLICA DE SCOREBAT (CORREGIDO SIN LLAVES)
         async function sincronizarResultadosAPIExterior() {
             mostrarCarga(20);
             try {
-                const apiURL = "https://api.scorebat.com/video-api/v3/"; 
+                const apiURL = "https://www.thesportsdb.com/api/v1/json/3/eventsseason.php?id=4381&s=2026";
                 const response = await fetch(apiURL);
                 const resData = await response.json();
 
-                if(!resData.response || resData.response.length === 0) {
-                    alert("No se encontraron partidos recientes disponibles en la API pública.");
+                if(!resData.events || resData.events.length === 0) {
+                    alert("No se encontraron partidos en vivo de la API en este momento.");
                     return;
                 }
 
                 let conteoActualizados = 0;
-                
-                resData.response.forEach(eventoInternet => {
-                    const titulo = eventoInternet.title; 
-                    
-                    estadoGlobal.partidos.forEach(p => {
-                        const limpiarTexto = (t) => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9 ]/g, "").trim();
-                        const eqA = limpiarTexto(p.equipoA);
-                        const eqB = limpiarTexto(p.equipoB);
-                        const tituloLimpio = limpiarTexto(titulo);
-                        
-                        if (tituloLimpio.includes(eqA) && tituloLimpio.includes(eqB)) {
-                            if(eventoInternet.scores && eventoInternet.scores.homeScore !== undefined) {
-                                p.golesA = parseInt(eventoInternet.scores.homeScore);
-                                p.golesB = parseInt(eventoInternet.scores.awayScore);
-                                conteoActualizados++;
-                            }
+                resData.events.forEach(eventoInternet => {
+                    const localInternet = eventoInternet.strHomeTeam;
+                    const visitaInternet = eventoInternet.strAwayTeam;
+                    const golesLocal = eventoInternet.intHomeScore;
+                    const golesVisita = eventoInternet.intAwayScore;
+
+                    if(golesLocal !== null && golesVisita !== null) {
+                        let miPartido = estadoGlobal.partidos.find(p => {
+                            const limpiarTexto = (t) => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                            return limpiarTexto(p.equipoA).includes(limpiarTexto(localInternet)) || 
+                                   limpiarTexto(p.equipoB).includes(limpiarTexto(visitaInternet));
+                        });
+
+                        if (miPartido) {
+                            miPartido.golesA = parseInt(golesLocal);
+                            miPartido.golesB = parseInt(golesVisita);
+                            conteoActualizados++;
                         }
-                    });
+                    }
                 });
 
                 mostrarCarga(70);
-                
                 for (const p of estadoGlobal.partidos) {
                     if (p.golesA !== null && p.golesB !== null) {
                         await enviarComandoNube({
@@ -471,12 +499,12 @@
                     }
                 }
 
-                alert(`🤖 Sincronización finalizada empleando datos públicos de ScoreBat.`);
+                alert(`🤖 ¡Sincronización Exitosa! Se actualizaron y guardaron los marcadores en Sheets.`);
                 renderizarListaPartidosAdmin();
                 actualizarPantallaQuiniela();
             } catch (error) {
-                console.error("Error al conectar con la API deportiva alternativa:", error);
-                alert("La API externa no regresó información compatible o está saturada temporalmente.");
+                console.error(error);
+                alert("No se pudo conectar u homologar con el servidor de deportes externo.");
             } finally {
                 mostrarCarga(100);
             }
@@ -490,11 +518,6 @@
             renderCont.innerHTML = '';
             const partidos = estadoGlobal.partidos.filter(p => p.fase === faseFiltro);
 
-            if(partidos.length === 0) {
-                renderCont.innerHTML = `<p class="text-center text-slate-500 text-xs py-4">No hay partidos en esta fase dentro de Sheets.</p>`;
-                return;
-            }
-
             partidos.forEach(p => {
                 const valA = p.golesA !== null ? p.golesA : '';
                 const valB = p.golesB !== null ? p.golesB : '';
@@ -502,9 +525,9 @@
                     <div class="flex items-center justify-between bg-slate-900 p-2 rounded border border-slate-800 text-xs gap-2">
                         <span class="text-slate-400 w-1/2 truncate">${p.equipoA} vs ${p.equipoB}</span>
                         <div class="flex items-center gap-1">
-                            <input type="number" id="admin-golesA-${p.id}" value="${valA}" placeholder="-" class="w-8 bg-slate-800 text-center text-white py-0.5 rounded border border-slate-700">
+                            <input type="number" onblur="validarInputMinimo(this)" id="admin-golesA-${p.id}" value="${valA}" placeholder="-" class="w-8 bg-slate-800 text-center text-white py-0.5 rounded border border-slate-700">
                             <span class="text-slate-600">:</span>
-                            <input type="number" id="admin-golesB-${p.id}" value="${valB}" placeholder="-" class="w-8 bg-slate-800 text-center text-white py-0.5 rounded border border-slate-700">
+                            <input type="number" onblur="validarInputMinimo(this)" id="admin-golesB-${p.id}" value="${valB}" placeholder="-" class="w-8 bg-slate-800 text-center text-white py-0.5 rounded border border-slate-700">
                         </div>
                     </div>
                 `;
@@ -552,8 +575,8 @@
                 const btn = document.getElementById(`tab-${f}`);
                 if (btn) {
                     btn.className = f === faseSeleccionada ? 
-                        "w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm bg-blue-600 text-white shadow-md border border-blue-500" : 
-                        "w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm bg-slate-800 text-slate-400 hover:text-slate-200 transition border border-transparent";
+                        "w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm bg-blue-600 text-white shadow-md border border-blue-500 cursor-pointer" : 
+                        "w-full font-bold py-3 px-2 rounded-lg text-xs md:text-sm bg-slate-800 text-slate-400 hover:text-slate-200 transition border border-transparent cursor-pointer";
                 }
             });
             const titulo = document.getElementById('nombre-fase-titulo');
@@ -617,6 +640,8 @@
             const badgeUsr = document.getElementById('badge-usuario');
             const tablaPos = document.getElementById('tabla-posiciones');
             const btnGuardar = document.getElementById('btn-guardar-pronosticos');
+            const thAdmin = document.getElementById('th-acciones-admin');
+            const avisoBloqueo = document.getElementById('aviso-bloqueo-vista');
 
             actualizarProximoPartidoDestacado();
 
@@ -624,9 +649,11 @@
                 if(estadoGlobal.torneoIniciado) {
                     btnGuardar.disabled = true;
                     btnGuardar.textContent = "🔒 Pronósticos Bloqueados (Celda C2: VERDADERO)";
+                    if(avisoBloqueo) avisoBloqueo.classList.remove('hidden');
                 } else {
                     btnGuardar.disabled = false;
                     btnGuardar.textContent = "💾 Guardar Pronósticos de esta Sección";
+                    if(avisoBloqueo) avisoBloqueo.classList.add('hidden');
                 }
             }
 
@@ -643,6 +670,12 @@
 
             if (badgeUsr) badgeUsr.textContent = usuarioActivo || "Invitado";
 
+            // Control de visibilidad de cabecera de eliminación
+            if(thAdmin) {
+                if(esAdminActivo) thAdmin.classList.remove('hidden');
+                else thAdmin.classList.add('hidden');
+            }
+
             if (tablaPos) {
                 tablaPos.innerHTML = '';
                 let posiciones = estadoGlobal.usuarios.map(u => {
@@ -655,13 +688,18 @@
 
                 posiciones.forEach((p, idx) => {
                     const esActivo = p.nombre === usuarioActivo ? 'bg-blue-950/40 font-bold text-blue-300' : '';
+                    
+                    // Solo renderizar la celda del botón eliminar si es admin activo
+                    const botonEliminarHTML = esAdminActivo ? `
+                        <td class="p-2 text-center">
+                            <button onclick="eliminarUsuario('${p.nombre}')" class="text-xs text-red-400 bg-red-950/30 hover:bg-red-900/50 px-2 py-0.5 rounded transition cursor-pointer">✕</button>
+                        </td>` : '';
+
                     tablaPos.innerHTML += `<tr class="${esActivo} hover:bg-slate-700/30 transition">
                         <td class="p-2 text-center text-slate-400">${idx + 1}</td>
                         <td class="p-2">${p.nombre}</td>
                         <td class="p-2 text-center text-emerald-400 font-bold">${p.puntos}</td>
-                        <td class="p-2 text-center">
-                            <button onclick="eliminarUsuario('${p.nombre}')" class="text-xs text-slate-500 hover:text-red-400 px-1 py-0.5 rounded transition">✕</button>
-                        </td>
+                        ${botonEliminarHTML}
                     </tr>`;
                 });
             }
@@ -713,7 +751,10 @@
                             }
                         }
 
-                        const estaDeshabilitado = estadoGlobal.torneoIniciado ? 'disabled class="w-10 bg-slate-950 text-center text-slate-500 py-1 font-bold rounded border border-slate-850 cursor-not-allowed text-sm opacity-60"' : 'class="w-10 bg-slate-950 text-center text-white py-1 font-bold rounded border border-slate-700 focus:border-blue-500 focus:outline-none text-sm"';
+                        // Estilo mejorado para cuando está bloqueado
+                        const estaDeshabilitado = estadoGlobal.torneoIniciado ? 
+                            'disabled class="w-10 bg-slate-950 text-center text-emerald-400 py-1 font-bold rounded border border-slate-800 text-sm opacity-90 border-dashed cursor-not-allowed"' : 
+                            'class="w-10 bg-slate-950 text-center text-white py-1 font-bold rounded border border-slate-700 focus:border-blue-500 focus:outline-none text-sm"';
 
                         bloqueHTML += `
                             <div class="flex flex-col sm:flex-row items-center justify-between p-3 bg-slate-800/80 rounded-lg gap-3 border border-slate-700/30">
@@ -725,9 +766,9 @@
                                 </div>
                                 <div class="flex items-center justify-center gap-2 flex-1 w-full sm:w-auto">
                                     <div class="text-right flex-1 font-semibold text-sm truncate text-slate-200">${partido.equipoA}</div>
-                                    <input type="number" id="pron-A-${partido.id}" value="${prUser.golesA !== undefined ? prUser.golesA : ''}" min="0" placeholder="-" ${estaDeshabilitado}>
+                                    <input type="number" onblur="validarInputMinimo(this)" id="pron-A-${partido.id}" value="${prUser.golesA !== undefined ? prUser.golesA : ''}" min="0" placeholder="-" ${estaDeshabilitado}>
                                     <span class="text-slate-600 text-xs font-bold">vs</span>
-                                    <input type="number" id="pron-B-${partido.id}" value="${prUser.golesB !== undefined ? prUser.golesB : ''}" min="0" placeholder="-" ${estaDeshabilitado}>
+                                    <input type="number" onblur="validarInputMinimo(this)" id="pron-B-${partido.id}" value="${prUser.golesB !== undefined ? prUser.golesB : ''}" min="0" placeholder="-" ${estaDeshabilitado}>
                                     <div class="text-left flex-1 font-semibold text-sm truncate text-slate-200">${partido.equipoB}</div>
                                 </div>
                                 <div class="min-w-[130px] flex justify-center sm:justify-end">
