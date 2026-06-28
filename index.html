@@ -663,7 +663,7 @@
                     tabla.innerHTML += `
                     <tr class="${esPropio?'bg-emerald-950/20 text-emerald-400 font-medium':''} hover:bg-slate-900/40 transition group cursor-pointer text-xs" onclick="verHistorialCualquiera('${r.usuario}', 'Quiniela')">
                         <td class="p-3 text-center text-slate-500 font-mono">${idx+1}</td>
-                        <td class="p-3 truncate max-w-[120px] font-normal group-hover:text-white transition">${r.usuario} ${esPropio?'⭐':''}</td>
+                        <td class="p-3 truncate max-w-[120px] font-normal group-hover:text-white transition">${r.usuario} ${esPropio?'⚽️':''}</td>
                         <td class="p-3 text-center font-bold text-sm text-slate-100">${r.puntos}</td>
                         <td class="p-2 text-center ${esAdminActivo?'':'hidden'}">
                             <button onclick="event.stopPropagation(); eliminarUsuario('${r.usuario}')" class="bg-red-950/60 hover:bg-red-900 text-red-400 border border-red-950/80 p-1 px-2 rounded text-[10px] transition">Eliminar</button>
