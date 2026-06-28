@@ -745,10 +745,10 @@
                                 const rReal = partido.golesA > partido.golesB ? 'A' : (partido.golesA < partido.golesB ? 'B' : 'E');
                                 const rProno = prUser.golesA > prUser.golesB ? 'A' : (prUser.golesA < prUser.golesB ? 'B' : 'E');
                                 if (partido.golesA === prUser.golesA && partido.golesB === prUser.golesB) {
-                                    badgeAcertadoHTML = `<span class="bg-emerald-950/80 text-emerald-400 text-[11px] px-2.5 py-1 rounded border border-emerald-900/60 font-bold tracking-wide" ¡Acierto +3 Pts!</span>`;
+                                    badgeAcertadoHTML = `<span class="bg-emerald-950/80 text-emerald-400 text-[11px] px-2.5 py-1 rounded border border-emerald-900/60 font-bold tracking-wide"> Acierto +3 Pts!</span>`;
                                     inputEstilo = `disabled class="w-10 bg-emerald-950/40 text-center text-emerald-400 rounded border border-emerald-900/60 py-1 font-semibold text-sm cursor-not-allowed"`;
                                 } else if (rReal === rProno) {
-                                    badgeAcertadoHTML = `<span class="bg-blue-950/80 text-blue-400 text-[11px] px-2.5 py-1 rounded border border-blue-900/60 font-medium tracking-wide"> Ganador Acertado +1 Pt</span>`;
+                                    badgeAcertadoHTML = `<span class="bg-blue-950/80 text-blue-400 text-[11px] px-2.5 py-1 rounded border border-blue-900/60 font-medium tracking-wide"> Ganador/Empate +1 Pt</span>`;
                                     inputEstilo = `disabled class="w-10 bg-blue-950/40 text-center text-blue-400 rounded border border-blue-900/60 py-1 font-semibold text-sm cursor-not-allowed"`;
                                 } else {
                                     badgeAcertadoHTML = `<span class="bg-slate-900 text-slate-500 text-[11px] px-2.5 py-1 rounded border border-slate-800 font-normal">❌ 0 Pts</span>`;
