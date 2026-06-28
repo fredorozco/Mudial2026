@@ -197,11 +197,11 @@
                     <div>
                         <label class="text-[10px] text-slate-400 uppercase block mb-1">Fase del Encuentro</label>
                         <select id="admin-nuevo-fase" class="w-full bg-slate-900 text-xs text-slate-200 p-2 rounded border border-slate-700 focus:outline-none focus:border-emerald-600">
-                            <option value="16avos">⚔️ 16avos de Final</option>
-                            <option value="Octavos">🛡️ Octavos de Final</option>
-                            <option value="Cuartos">📊 Cuartos de Final</option>
-                            <option value="Semifinales">🔥 Semifinales</option>
-                            <option value="Finales">🏆 Finales</option>
+                            <option value="16avos">16avos de Final</option>
+                            <option value="Octavos">Octavos de Final</option>
+                            <option value="Cuartos">Cuartos de Final</option>
+                            <option value="Semifinales">Semifinales</option>
+                            <option value="Finales">Finales</option>
                             <option value="Grupos">Fase de Grupos</option>
                         </select>
                     </div>
@@ -635,7 +635,7 @@
             lista.innerHTML = htmlContenido || `<div class="p-6 text-center text-slate-500 text-xs">Sin registros creados por el jugador aún.</div>`;
             desc.innerHTML = `
             <div class="grid grid-cols-3 gap-2 text-center text-[10px]">
-                <div class="bg-slate-900/60 p-1.5 rounded border border-slate-800"><p class="text-slate-400 uppercase font-medium">Baticinados</p><p class="text-base font-bold text-slate-200 mt-0.5">${jugadosYMarcados}</p></div>
+                <div class="bg-slate-900/60 p-1.5 rounded border border-slate-800"><p class="text-slate-400 uppercase font-medium">Pronosticados</p><p class="text-base font-bold text-slate-200 mt-0.5">${jugadosYMarcados}</p></div>
                 <div class="bg-slate-900/60 p-1.5 rounded border border-slate-800"><p class="text-emerald-400 uppercase font-medium">Acertado (3pts)</p><p class="text-base font-bold text-emerald-400 mt-0.5">${aciertosExactos}</p></div>
                 <div class="bg-slate-900/60 p-1.5 rounded border border-slate-800"><p class="text-blue-400 uppercase font-medium">Ganador Acertado (1pt)</p><p class="text-base font-bold text-blue-400 mt-0.5">${aciertosResultado}</p></div>
             </div>`;
@@ -745,10 +745,10 @@
                                 const rReal = partido.golesA > partido.golesB ? 'A' : (partido.golesA < partido.golesB ? 'B' : 'E');
                                 const rProno = prUser.golesA > prUser.golesB ? 'A' : (prUser.golesA < prUser.golesB ? 'B' : 'E');
                                 if (partido.golesA === prUser.golesA && partido.golesB === prUser.golesB) {
-                                    badgeAcertadoHTML = `<span class="bg-emerald-950/80 text-emerald-400 text-[11px] px-2.5 py-1 rounded border border-emerald-900/60 font-bold tracking-wide">🔥 ¡Pleno +3 Pts!</span>`;
+                                    badgeAcertadoHTML = `<span class="bg-emerald-950/80 text-emerald-400 text-[11px] px-2.5 py-1 rounded border border-emerald-900/60 font-bold tracking-wide" ¡Acierto +3 Pts!</span>`;
                                     inputEstilo = `disabled class="w-10 bg-emerald-950/40 text-center text-emerald-400 rounded border border-emerald-900/60 py-1 font-semibold text-sm cursor-not-allowed"`;
                                 } else if (rReal === rProno) {
-                                    badgeAcertadoHTML = `<span class="bg-blue-950/80 text-blue-400 text-[11px] px-2.5 py-1 rounded border border-blue-900/60 font-medium tracking-wide">👍 Acierto +1 Pt</span>`;
+                                    badgeAcertadoHTML = `<span class="bg-blue-950/80 text-blue-400 text-[11px] px-2.5 py-1 rounded border border-blue-900/60 font-medium tracking-wide"> Ganador Acertado +1 Pt</span>`;
                                     inputEstilo = `disabled class="w-10 bg-blue-950/40 text-center text-blue-400 rounded border border-blue-900/60 py-1 font-semibold text-sm cursor-not-allowed"`;
                                 } else {
                                     badgeAcertadoHTML = `<span class="bg-slate-900 text-slate-500 text-[11px] px-2.5 py-1 rounded border border-slate-800 font-normal">❌ 0 Pts</span>`;
