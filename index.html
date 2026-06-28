@@ -635,9 +635,9 @@
             lista.innerHTML = htmlContenido || `<div class="p-6 text-center text-slate-500 text-xs">Sin registros creados por el jugador aún.</div>`;
             desc.innerHTML = `
             <div class="grid grid-cols-3 gap-2 text-center text-[10px]">
-                <div class="bg-slate-900/60 p-1.5 rounded border border-slate-800"><p class="text-slate-400 uppercase font-medium">Marcados</p><p class="text-base font-bold text-slate-200 mt-0.5">${jugadosYMarcados}</p></div>
-                <div class="bg-slate-900/60 p-1.5 rounded border border-slate-800"><p class="text-emerald-400 uppercase font-medium">Plenos (3pts)</p><p class="text-base font-bold text-emerald-400 mt-0.5">${aciertosExactos}</p></div>
-                <div class="bg-slate-900/60 p-1.5 rounded border border-slate-800"><p class="text-blue-400 uppercase font-medium">Parcial (1pt)</p><p class="text-base font-bold text-blue-400 mt-0.5">${aciertosResultado}</p></div>
+                <div class="bg-slate-900/60 p-1.5 rounded border border-slate-800"><p class="text-slate-400 uppercase font-medium">Baticinados</p><p class="text-base font-bold text-slate-200 mt-0.5">${jugadosYMarcados}</p></div>
+                <div class="bg-slate-900/60 p-1.5 rounded border border-slate-800"><p class="text-emerald-400 uppercase font-medium">Acertado (3pts)</p><p class="text-base font-bold text-emerald-400 mt-0.5">${aciertosExactos}</p></div>
+                <div class="bg-slate-900/60 p-1.5 rounded border border-slate-800"><p class="text-blue-400 uppercase font-medium">Ganador Acertado (1pt)</p><p class="text-base font-bold text-blue-400 mt-0.5">${aciertosResultado}</p></div>
             </div>`;
             m.classList.remove('hidden');
         }
