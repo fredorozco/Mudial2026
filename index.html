@@ -310,7 +310,7 @@
                 const ampm = horaStr.toLowerCase().includes("pm");
                 if (ampm && horas < 12) horas += 12;
                 if (!ampm && horas === 12) horas = 0;
-                return new Date(2026, mes, dia, horas, minutos); // Corrección hecha
+                return new Date(2026, mes, dia, horas, minutos);
             } catch(e) { return new Date(2026, 11, 31); }
         }
 
@@ -377,7 +377,7 @@
                 console.error(error);
                 mostrarCarga(100);
                 if (estadoGlobal.partidos.length === 0) estadoGlobal.partidos = partidosBase;
-                actualizarPantallaQuiniela();
+                actualizarPantaranQuiniela();
             }
         }
 
@@ -421,48 +421,59 @@
             const partidosFiltrados = estadoGlobal.partidos.filter(p => p.fase === faseActiva);
             let pronosticosLote = [];
             const ahora = new Date();
-            let intentoFraude = false;
+            let partidosOmitidosPorTiempo = false;
 
             partidosFiltrados.forEach(partido => {
                 const inpA = document.getElementById(`pron-A-${partido.id}`);
                 const inpB = document.getElementById(`pron-B-${partido.id}`);
+                
                 if(inpA && inpB && inpA.value !== "" && inpB.value !== "") {
-                    // Validar tiempo en el guardado real
+                    // Validar tiempo en el guardado real de forma individual
                     const fechaPartido = normalizarFechaHora(partido.fecha, partido.hora);
+                    
                     if (ahora >= fechaPartido) {
-                        intentoFraude = true;
+                        // Si el partido ya empezó o terminó, lo saltamos silenciosamente del lote
+                        partidosOmitidosPorTiempo = true;
                         return;
                     }
+                    
                     pronosticosLote.push({ partidoId: partido.id, golesA: parseInt(inpA.value), golesB: parseInt(inpB.value) });
                 }
             });
 
-            if (intentoFraude) {
-                alert("No se guardaron las predicciones de los partidos que ya han comenzado.");
-                cargarDatosNube();
-                return;
+            if(pronosticosLote.length === 0) { 
+                alert("No hay pronósticos nuevos o válidos de partidos futuros por guardar."); 
+                return; 
             }
-
-            if(pronosticosLote.length === 0) { alert("Ingresa marcadores antes de guardar."); return; }
+            
             const btnGuardar = document.getElementById('btn-guardar-pronosticos');
             const textoOriginal = btnGuardar.innerHTML;
             btnGuardar.disabled = true; btnGuardar.textContent = "Almacenando...";
             mostrarCarga(50);
+            
             const exito = await enviarComandoNube({
                 action: "save_pronosticos",
                 pronosticos: pronosticosLote.map(p => ({ usuario: usuarioActivo, partidoId: p.partidoId, golesA: p.golesA, golesB: p.golesB }))
             });
+            
             if (exito) {
                 if(!estadoGlobal.pronosticos[usuarioActivo]) estadoGlobal.pronosticos[usuarioActivo] = {};
                 pronosticosLote.forEach(p => { estadoGlobal.pronosticos[usuarioActivo][p.partidoId] = { golesA: p.golesA, golesB: p.golesB }; });
                 tieneCambiosSinGuardar = false;
+                
                 btnGuardar.className = "w-full sm:w-auto bg-emerald-700 text-white font-medium px-6 py-2.5 rounded transition text-xs uppercase tracking-wider";
-                btnGuardar.textContent = "Cambios Guardados"; mostrarCarga(100);
+                btnGuardar.textContent = partidosOmitidosPorTiempo ? "Guardado (Se omitieron los ya empezados)" : "Cambios Guardados"; 
+                mostrarCarga(100);
+                
                 setTimeout(() => {
                     btnGuardar.className = "w-full sm:w-auto bg-emerald-700 hover:bg-emerald-600 text-white font-medium px-6 py-2.5 rounded transition transform active:scale-95 disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed cursor-pointer text-xs uppercase tracking-wider shadow-sm";
                     btnGuardar.innerHTML = textoOriginal; btnGuardar.disabled = false; actualizarPantallaQuiniela();
                 }, 2000);
-            } else { btnGuardar.disabled = false; btnGuardar.innerHTML = textoOriginal; alert("Error de sincronización con el servidor."); }
+            } else { 
+                btnGuardar.disabled = false; 
+                btnGuardar.innerHTML = textoOriginal; 
+                alert("Error de sincronización con el servidor."); 
+            }
         }
 
         function verificarAccAccessAdmin() {
